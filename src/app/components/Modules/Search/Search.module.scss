@@ -1,0 +1,16 @@
+.pagination{
+    :global{
+        .ant-pagination{
+            .ant-pagination-item.ant-pagination-item-active{
+                background-color: #fff;
+            }
+            .ant-pagination-item{
+                background-color: transparent;
+                border: none;
+                a{
+                    color: #182230
+                }
+            }
+        }
+    }
+}

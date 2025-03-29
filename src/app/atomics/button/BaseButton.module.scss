@@ -1,0 +1,14 @@
+:global(.ant-btn).baseButton{
+    border-radius: 12px;
+    padding: 8px 20px;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 150%;
+    height: auto;
+    border: none;
+}
+
+:global(.ant-btn).activeButton{
+    background-color: #FFC858 !important;
+    color: #000 !important;
+}
