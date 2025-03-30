@@ -3,13 +3,17 @@ import dynamic from 'next/dynamic'
 import React, { useState } from 'react'
 import Image from 'next/image'
 import { Popover } from 'antd'
-
+import { SearchParams } from '@/app/lib/interfaces/search'
 
 const SearchFilteringContent = dynamic(() => import('./SearchFilteringContent'), {
   ssr: false,
 })
 
-const SearchFiltering = () => {
+interface SearchFilteringProps {
+  initialParams?: SearchParams;
+}
+
+const SearchFiltering = ({ initialParams }: SearchFilteringProps) => {
   const [openFilterMobile, setOpenFilterMobile] = useState(false);
 
   return (
@@ -29,7 +33,7 @@ const SearchFiltering = () => {
           }}
           className="block md:hidden"
           placement="bottom"
-          content={<SearchFilteringContent />}
+          content={<SearchFilteringContent initialParams={initialParams} />}
           trigger="click"
           arrow={false}
           open={openFilterMobile}
@@ -44,7 +48,7 @@ const SearchFiltering = () => {
       </Popover>
 
       <div className='hidden md:block'>
-        <SearchFilteringContent />
+        <SearchFilteringContent initialParams={initialParams} />
       </div>
 
     </div>

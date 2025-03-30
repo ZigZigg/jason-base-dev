@@ -75,7 +75,17 @@ export default function LoginPage() {
             style={{ marginTop: '16px', marginBottom: '32px' }}
             label="Password"
             name="password"
-            rules={[{ required: true, message: 'Please input your password!' }]}
+            rules={[
+              { required: true, message: 'Please input your password!' },
+              { 
+                min: 6, 
+                message: 'Password must be at least 6 characters!' 
+              },
+              {
+                pattern: /^(?=.*[a-z])(?=.*[A-Z]).+$/,
+                message: 'Password must contain at least one uppercase and one lowercase letter!'
+              }
+            ]}
           >
             <BaseInput type="password" />
           </Form.Item>

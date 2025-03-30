@@ -47,11 +47,11 @@ const SubjectModulePage = async ({ params }: Props) => {
   }
   
   // Fetch subject resources
-  const resources = await getSubjectResources(id);
+  const { resources, subjects } = await getSubjectResources(id);
   
   return (
     <div className='w-full flex flex-col flex-1 min-w-0'>
-      <CategoryTabs activeId={id} />
+      <CategoryTabs activeId={id} subjects={subjects} />
       <div 
         className="aspect-[343/100] md:aspect-[1200/150] rounded-[16px] my-[24px] w-full relative"
         style={{
@@ -61,12 +61,12 @@ const SubjectModulePage = async ({ params }: Props) => {
         }}
       >
         <div className="absolute inset-0 flex items-center">
-          <span className="font-[700] text-[40px] leading-[120%] text-white ml-[64px]">
+          <span className="font-[700] text-[20px] md:text-[40px] leading-[120%] text-white ml-[16px] md:ml-[64px]">
             Explore {subject.name}
           </span>
         </div>
       </div>
-      <FilteringSubject />
+      <FilteringSubject count={resources.length} />
       <SubjectModuleContent resources={resources} />
     </div>
   )

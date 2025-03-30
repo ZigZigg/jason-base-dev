@@ -72,15 +72,19 @@ export async function getSubjectById(subjectId: number): Promise<SubjectData | n
   return subjects.find(subject => subject.id === subjectId) || null;
 }
 
-export async function getSubjectResources(subjectId: number): Promise<ResourceCollection[]> {
+export async function getSubjectResources(subjectId: number): Promise<{ subjects: SubjectData[], resources: ResourceCollection[] }> {
   try {
     // First get the subject to obtain its name
-    const subject = await getSubjectById(subjectId);
+    const subjects = await getSubjectData();
+    const subject = subjects.find(subject => subject.id === subjectId);
     
     // If subject not found, return empty array
     if (!subject) {
       console.error(`Subject with ID ${subjectId} not found`);
-      return [];
+      return {
+        subjects: [],
+        resources: [],
+      };
     }
 
     // Now use the subject name to fetch resources
@@ -95,9 +99,15 @@ export async function getSubjectResources(subjectId: number): Promise<ResourceCo
       next: { revalidate: 1800 }, // Cache for 30 minutes
     });
 
-    return resources;
+    return {
+      subjects,
+      resources,
+    };
   } catch (error) {
     console.error("Error fetching subject resources:", error);
-    return [];
+    return {
+      subjects: [],
+      resources: [],
+    };
   }
 }

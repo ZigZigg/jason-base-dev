@@ -11,11 +11,11 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <Provider store={makeStore()}>
       <SessionProvider>
-        <NotificationProvider>
-          <NoticeProvider>
-            <ThemeProvider>{children}</ThemeProvider>
-          </NoticeProvider>
-        </NotificationProvider>
+          <NotificationProvider>
+            <NoticeProvider>
+              <ThemeProvider>{children}</ThemeProvider>
+            </NoticeProvider>
+          </NotificationProvider>
       </SessionProvider>
     </Provider>
   );

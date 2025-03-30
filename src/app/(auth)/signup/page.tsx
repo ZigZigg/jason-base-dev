@@ -2,10 +2,49 @@
 
 import BaseButton from '@/app/atomics/button/BaseButton';
 import BaseInput from '@/app/atomics/input/BaseInput';
-import { Form } from 'antd';
+import NotificationContext from '@/app/context/NotificationContext';
+import { Form, message } from 'antd';
+import { IconType } from 'antd/es/notification/interface';
+import { signIn } from 'next-auth/react';
 import Link from 'next/link';
-export default function LoginPage() {
-  const onFinish = async () => {};
+import { useRouter } from 'next/navigation';
+import { useContext, useState } from 'react';
+export default function SignUpPage() {
+  const router = useRouter();
+  const { api } = useContext(NotificationContext);
+  const [isLoading, setIsLoading] = useState(false);
+  const onNotification = (description: string, type: IconType = 'error') => {
+    api!.open({
+      message: '',
+      description,
+      duration: 2,
+      closeIcon: false,
+      type: type,
+    });
+  };
+  // const dispatch = useDispatch();
+
+  const onFinish = async (values: any) => {
+    setIsLoading(true);
+    try {
+      const result = await signIn('signup', {
+        redirect: false,
+        ...values,
+      });
+
+      if (result?.error) {
+        onNotification(result?.error, 'error');
+      } else {
+        message.success('SignUp successful!');
+        router.push('/');
+      }
+    } catch (error) {
+      console.error('SignUp error:', error);
+      message.error('An error occurred. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="w-full h-[100vh] flex flex-col align-center justify-center items-center px-[20px] md:px-[0px] bg-[#F5F5F5]">
@@ -31,7 +70,10 @@ export default function LoginPage() {
             style={{ marginTop: '16px', marginBottom: '16px' }}
             label="Email"
             name="email"
-            rules={[{ required: true, message: 'Please input your email!' }]}
+            rules={[
+              { required: true, message: 'Please input your email!' },
+              { type: 'email', message: 'The input is not valid E-mail!' },
+            ]}
           >
             <BaseInput />
           </Form.Item>
@@ -40,9 +82,19 @@ export default function LoginPage() {
             style={{ marginTop: '16px', marginBottom: '16px' }}
             label="Password"
             name="password"
-            rules={[{ required: true, message: 'Please input your password!' }]}
+            rules={[
+              { required: true, message: 'Please input your password!' },
+              {
+                min: 6,
+                message: 'Password must be at least 6 characters!',
+              },
+              {
+                pattern: /^(?=.*[a-z])(?=.*[A-Z]).+$/,
+                message: 'Password must contain at least one uppercase and one lowercase letter!',
+              },
+            ]}
           >
-            <BaseInput />
+            <BaseInput type="password" />
           </Form.Item>
           <Form.Item
             style={{ marginTop: '16px', marginBottom: '32px' }}
@@ -63,11 +115,11 @@ export default function LoginPage() {
               }),
             ]}
           >
-            <BaseInput />
+            <BaseInput type="password" />
           </Form.Item>
 
           <Form.Item style={{ marginBottom: '0px' }}>
-            <BaseButton customType="primaryActive" type="default" htmlType="submit" block>
+            <BaseButton customType="primaryActive" type="default" htmlType="submit" block loading={isLoading}>
               Sign Up
             </BaseButton>
           </Form.Item>

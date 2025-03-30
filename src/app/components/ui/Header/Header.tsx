@@ -109,7 +109,7 @@ export default function AppHeader() {
             alt="Avatar"
             width={40} // Adjust based on your logo's dimensions
             height={40}
-            className="rounded-full"
+            className="rounded-full w-[40px] h-[40px] object-cover"
           />
           <span className="text-[16px] text-[#fff] font-[500] hidden md:block">
             {session?.user?.fullName}

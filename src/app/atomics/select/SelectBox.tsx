@@ -24,11 +24,16 @@ const mockData = [
 
 type Props = {
   placeholder: string;
+  options?: { title: string; value: string }[];
+  onChange?: (value: string) => void;
+  value?: string;
 };
+
 interface OptionsProps {
   data: { title: string; value: string }[];
   setSelectedValue: (value: string) => void;
 }
+
 const OptionsComponent = (props: OptionsProps) => {
   const { data, setSelectedValue } = props;
   const [searchKeyword, setSearchKeyword] = useState('');
@@ -50,8 +55,8 @@ const OptionsComponent = (props: OptionsProps) => {
             key={index}
             className="py-[6px] px-[16px] hover:bg-[#2867DC33] cursor-pointer"
             onClick={() => {
-              console.log('ON CLICK')
-              setSelectedValue(item.value)
+              console.log('ON CLICK');
+              setSelectedValue(item.value);
             }}
           >
             <span className="text-[#475467] font-[400] text-[14px]">{item.title}</span>
@@ -63,21 +68,34 @@ const OptionsComponent = (props: OptionsProps) => {
 };
 
 const SelectBox = (props: Props) => {
-  const { placeholder } = props;
+  const { placeholder, options = mockData, onChange, value: externalValue } = props;
   const selectBoxRef = useRef<HTMLDivElement>(null);
   const [popoverWidth, setPopoverWidth] = useState(0);
-  const [selectedValue, setSelectedValue] = useState('');
+  const [selectedValue, setSelectedValue] = useState(externalValue || '');
   const [openSelectModal, setOpenSelectModal] = useState(false);
-  console.log('🚀 ~ SelectBox ~ selectedValue:', selectedValue);
-  const handleChangedValue = useCallback((value: string) => {
-    setOpenSelectModal(false)
-    setSelectedValue(value);
-  },[]);
-  const label = useMemo(() => {
 
-    return selectedValue ? mockData.find(value => value.value === selectedValue)?.title : placeholder;
-  }
-  ,[selectedValue]);
+  const handleChangedValue = useCallback(
+    (value: string) => {
+      setOpenSelectModal(false);
+      setSelectedValue(value);
+      onChange?.(value);
+    },
+    [onChange]
+  );
+
+  // Update internal state when external value changes
+  useEffect(() => {
+    if (externalValue !== undefined && externalValue !== selectedValue) {
+      setSelectedValue(externalValue);
+    }
+  }, [externalValue]);
+
+  const label = useMemo(() => {
+    return selectedValue
+      ? options.find((value) => value.value === selectedValue)?.title
+      : placeholder;
+  }, [selectedValue, options, placeholder]);
+
   useEffect(() => {
     if (selectBoxRef.current) {
       setPopoverWidth(selectBoxRef.current.offsetWidth);
@@ -96,7 +114,7 @@ const SelectBox = (props: Props) => {
       }}
       trigger="click"
       placement="bottom"
-      content={<OptionsComponent data={mockData} setSelectedValue={handleChangedValue} />}
+      content={<OptionsComponent data={options} setSelectedValue={handleChangedValue} />}
       arrow={false}
       open={openSelectModal}
       onOpenChange={(visible) => {
@@ -108,7 +126,13 @@ const SelectBox = (props: Props) => {
         ref={selectBoxRef}
         className="flex flex-row items-center justify-between bg-[#F5F5F2] rounded-[8px] py-[16px] px-[14px] cursor-pointer"
       >
-        <span className={`${selectedValue ? 'text-[#182230]' : 'text-[#98A2B3]'} font-[400] text-[16px]`}>{label}</span>
+        <span
+          className={`${
+            selectedValue ? 'text-[#182230]' : 'text-[#98A2B3]'
+          } font-[400] text-[16px]`}
+        >
+          {label}
+        </span>
         <Image
           className="rotate-180"
           src="/assets/icon/up-icon.svg"
