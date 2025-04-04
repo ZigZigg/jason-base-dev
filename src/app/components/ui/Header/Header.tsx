@@ -82,7 +82,7 @@ export default function AppHeader() {
             router.push('/signup');
           }}
         >
-          Signup
+          Sign Up
         </BaseButton>
 
         <BaseButton
@@ -94,7 +94,7 @@ export default function AppHeader() {
             router.push('/login');
           }}
         >
-          Login
+          Log In
         </BaseButton>
       </>
     );
@@ -142,7 +142,7 @@ export default function AppHeader() {
           <Image
             src="/assets/logo.webp" // Path to your logo file in the public folder
             alt="Logo"
-            className="w-[160px] md:w-[270px]"
+            className="w-[195px] md:w-[270px]"
             width={270} // Adjust based on your logo's dimensions
             height={54}
           />

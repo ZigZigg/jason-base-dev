@@ -33,7 +33,7 @@ const SearchFiltering = ({ initialParams }: SearchFilteringProps) => {
           }}
           className="block md:hidden"
           placement="bottom"
-          content={<SearchFilteringContent initialParams={initialParams} />}
+          content={<SearchFilteringContent initialParams={initialParams} onSearch={() => {setOpenFilterMobile(false)}} />}
           trigger="click"
           arrow={false}
           open={openFilterMobile}

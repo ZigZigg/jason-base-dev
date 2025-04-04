@@ -168,7 +168,7 @@ const SearchFilteringContent = ({ onSearch, initialParams }: SearchFilteringCont
           closable
         />
       )}
-      <div>
+      <div className='pb-[14px] md:pb-[0px]'>
         <div className="flex flex-col md:flex-row md:w-[1416px] gap-[20px] mb-[24px] px-[16px] md:px-[0px] pb-[24px] md:pb-[0px]">
           <div className="flex flex-col gap-[4px] flex-1">
             <span className="text-[#667085] text-[16px] font-[500]">Text Search</span>
@@ -234,7 +234,7 @@ const SearchFilteringContent = ({ onSearch, initialParams }: SearchFilteringCont
               </div>
             ))}
             
-            {activeFilters.length > 1 && (
+            {activeFilters.length && (
               <button 
                 onClick={() => {
                   setSearchQuery('');

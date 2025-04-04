@@ -1,6 +1,6 @@
 "use client"
 import BaseButton from '@/app/atomics/button/BaseButton'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import { SubjectData } from '@/app/lib/modules/subjects/data'
 type Props = {
@@ -13,6 +13,25 @@ const CategoryTabs = ({ activeId, onTabChange, subjects }: Props) => {
   const router = useRouter()
   const pathname = usePathname()
   const [currentActiveId, setCurrentActiveId] = useState<number>(activeId || 1)
+  const tabsContainerRef = useRef<HTMLDivElement>(null)
+  const buttonRefs = useRef<Map<number, HTMLElement>>(new Map())
+  const [isMobile, setIsMobile] = useState(false)
+  
+  // Check if device is mobile
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    
+    // Check on initial load
+    checkIsMobile()
+    
+    // Add resize listener
+    window.addEventListener('resize', checkIsMobile)
+    
+    // Cleanup
+    return () => window.removeEventListener('resize', checkIsMobile)
+  }, [])
   
   // Extract ID from path when component mounts or pathname changes
   useEffect(() => {
@@ -23,6 +42,30 @@ const CategoryTabs = ({ activeId, onTabChange, subjects }: Props) => {
       }
     }
   }, [pathname])
+  
+  // Scroll to active tab when ID changes (only on mobile)
+  useEffect(() => {
+    if (isMobile && tabsContainerRef.current && buttonRefs.current.has(currentActiveId)) {
+      const button = buttonRefs.current.get(currentActiveId)
+      if (button) {
+        // Get the container's scroll position and dimensions
+        const container = tabsContainerRef.current
+        const containerRect = container.getBoundingClientRect()
+        const buttonRect = button.getBoundingClientRect()
+        
+        // Calculate the center position
+        const buttonCenter = buttonRect.left + buttonRect.width / 2
+        const containerCenter = containerRect.left + containerRect.width / 2
+        const scrollOffset = buttonCenter - containerCenter
+        
+        // Scroll the container
+        container.scrollBy({
+          left: scrollOffset,
+          behavior: 'smooth'
+        })
+      }
+    }
+  }, [currentActiveId, isMobile])
   
   const handleTabClick = (id: number) => {
     setCurrentActiveId(id)
@@ -35,20 +78,33 @@ const CategoryTabs = ({ activeId, onTabChange, subjects }: Props) => {
   }
 
   return (
-    <div className='w-full flex flex-row items-center overflow-x-auto h-fit'>
+    <div 
+      ref={tabsContainerRef}
+      className='w-full flex flex-row items-center overflow-x-auto h-fit scrollbar-hide'
+    >
         {
             subjects.map((subject) => {
                 const isActive = subject.id === (activeId || currentActiveId)
+                
                 return (
-                    <BaseButton 
-                      type={isActive ? 'primary' : 'text'} 
-                      variant='text' 
-                      key={subject.id} 
-                      className='h-[48px]! text-[16px] font-[400] text-[#182230] rounded-[12px] px-[12px]! whitespace-nowrap'
-                      onClick={() => handleTabClick(subject.id)}
+                    <div 
+                      key={subject.id}
+                      ref={(el) => {
+                        if (el) {
+                          buttonRefs.current.set(subject.id, el)
+                        }
+                      }}
                     >
-                        {subject.name}
-                    </BaseButton>
+                      <BaseButton 
+                        type={isActive ? 'primary' : 'text'} 
+                        variant='text' 
+                        id={String(subject.id)}
+                        className='h-[48px]! text-[16px] font-[400] text-[#182230] rounded-[12px] px-[12px]! whitespace-nowrap'
+                        onClick={() => handleTabClick(subject.id)}
+                      >
+                          {subject.name}
+                      </BaseButton>
+                    </div>
                 )
             })
         }

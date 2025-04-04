@@ -22,7 +22,7 @@ export interface SearchResource {
 // Paginated response structure
 export interface SearchResponse {
   current_page: number;
-  data: SearchResource[];
+  results: SearchResource[];
   from: number;
   last_page: number;
   per_page: number;

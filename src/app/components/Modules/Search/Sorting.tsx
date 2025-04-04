@@ -29,7 +29,7 @@ const SearchSorting = ({ total = 0 }: SearchSortingProps) => {
       <div className="flex flex-row gap-[4px] items-center">
         <span className="text-[14px] md:text-[16px] font-[400] text-[#0F72F3]">{total}</span>
         <span className="text-[14px] md:text-[16px] font-[400] text-[#667085]">
-          {total === 1 ? 'collection found.' : 'collections found.'}
+          {total === 1 ? 'collection found' : 'collections found'}
         </span>
       </div>
 

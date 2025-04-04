@@ -52,13 +52,19 @@ export interface ResourceCollection {
   subjects: ResourceSubject[];
 }
 
+export interface ResourceCollectionResponse {
+  results: ResourceCollection[];
+  total: number;
+  current_page: number;
+}
+
 export async function getSubjectData(): Promise<SubjectData[]> {
   const session = await getServerSession(authOptions);
   const apiClient = new ApiClient(session?.accessToken);
 
   try {
     const data = await apiClient.get<SubjectData[]>("/v2/subjects", { next: { revalidate: 1800 } });
-
+    
     return data;
   } catch (error) {
     console.error("Error fetching subject data:", error);
@@ -95,13 +101,15 @@ export async function getSubjectResources(subjectId: number): Promise<{ subjects
     // Since this is an array parameter, make sure it's handled properly
     const url = `/v2/search_resource_collections?subjects[]=${encodeURIComponent(subject.name)}`;
     
-    const resources = await apiClient.get<ResourceCollection[]>(url, {
+
+    const resources = await apiClient.get<ResourceCollectionResponse>(url, {
       next: { revalidate: 1800 }, // Cache for 30 minutes
     });
 
+    const result = resources?.results || [] ;
     return {
       subjects,
-      resources,
+      resources: result,
     };
   } catch (error) {
     console.error("Error fetching subject resources:", error);

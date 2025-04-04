@@ -1,7 +1,16 @@
+'use client';
+
 import { Layout } from 'antd';
 import Sidebar from '@/app/components/ui/Sidebar';
+import Image from 'next/image';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  const isSubjectDetailPage = pathname?.match(/\/subjects\/[^/]+$/);
+  
   return (
     <Layout
       style={{
@@ -11,9 +20,34 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         backgroundColor: 'transparent',
       }}
     >
-      <div className="w-[100%] md:w-[1416px] h-auto flex flex-col md:flex-row gap-[24px] md:gap-[32px] py-[16px] px-[16px] md:px-[0px]">
-        <Sidebar />
-        {children}
+      <div className="w-full md:w-[1416px] h-auto flex flex-col md:flex-row gap-6 md:gap-8 py-4 px-4 md:px-0">
+        {/* Sidebar - hidden on mobile for subject detail pages */}
+        <div className={`${isSubjectDetailPage ? 'hidden md:block' : 'block'}`}>
+          <Sidebar />
+        </div>
+        
+        <div className="flex flex-col w-full">
+          {/* Back link - shown only on mobile for subject detail pages */}
+          {isSubjectDetailPage && (
+            <div id="back-to-main" className="flex items-center gap-1.5 mb-[14px] md:hidden">
+              <Image 
+                className="rotate-270" 
+                src="/assets/icon/up-icon.svg" 
+                alt="Back Icon" 
+                width={14} 
+                height={6} 
+              />
+              <Link 
+                className="text-[#667085]! font-[400] text-sm" 
+                href="/subjects"
+              >
+                Back to Subjects
+              </Link>
+            </div>
+          )}
+          
+          {children}
+        </div>
       </div>
     </Layout>
   );

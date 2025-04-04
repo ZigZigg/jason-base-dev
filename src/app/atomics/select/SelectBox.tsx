@@ -50,18 +50,29 @@ const OptionsComponent = (props: OptionsProps) => {
     <div className="flex flex-col py-[12px] px-[8px]">
       <BaseSearchBar onChange={(e) => setSearchKeyword(e.target.value)} />
       <div className="flex flex-col h-[200px] overflow-y-auto">
-        {filteredData.map((item, index) => (
-          <div
-            key={index}
-            className="py-[6px] px-[16px] hover:bg-[#2867DC33] cursor-pointer"
-            onClick={() => {
-              console.log('ON CLICK');
-              setSelectedValue(item.value);
-            }}
-          >
-            <span className="text-[#475467] font-[400] text-[14px]">{item.title}</span>
+        {filteredData.length > 0 ? (
+          filteredData.map((item, index) => (
+            <div
+              key={index}
+              className="py-[6px] px-[16px] hover:bg-[#2867DC33] cursor-pointer"
+              onClick={() => {
+                setSelectedValue(item.value);
+              }}
+            >
+              <span className="text-[#475467] font-[400] text-[14px]">{item.title}</span>
+            </div>
+          ))
+        ) : (
+          <div className="flex items-center justify-center h-full">
+            <div className="flex flex-col items-center py-6">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-gray-300 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <p className="text-[#667085] text-sm font-medium">No data found</p>
+              <p className="text-[#94A3B8] text-xs mt-1">Try a different search term</p>
+            </div>
           </div>
-        ))}
+        )}
       </div>
     </div>
   );
@@ -129,7 +140,7 @@ const SelectBox = (props: Props) => {
         <span
           className={`${
             selectedValue ? 'text-[#182230]' : 'text-[#98A2B3]'
-          } font-[400] text-[16px]`}
+          } font-[400] text-[16px] truncate`}
         >
           {label}
         </span>

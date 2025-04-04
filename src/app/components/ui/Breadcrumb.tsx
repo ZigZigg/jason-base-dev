@@ -31,6 +31,7 @@ const BreadcrumbComponent = () => {
             onClick={() => {
               if (!route.children?.length) navigate(route.path!);
             }}
+            className='text-[#0F72F3] font-[600]'
           >
             {route.breadcrumbName}
           </span>
@@ -43,7 +44,20 @@ const BreadcrumbComponent = () => {
 
     setItems([
       {
-        title: <Image src="/assets/icon/home.svg" alt="Home" width={20} height={20} />,
+        title: (
+          <div 
+            onClick={() => navigate('/')} 
+            className="cursor-pointer"
+          >
+            <Image 
+              id='home-icon' 
+              src="/assets/icon/home.svg" 
+              alt="Home" 
+              width={20} 
+              height={20} 
+            />
+          </div>
+        ),
       },
       ...addItems,
     ]);

@@ -14,6 +14,7 @@ const SubjectPage = async () => {
   // Fetch subjects data from the API
   const subjectData = await getSubjectData();
 
+
   // Handle empty state
   if (!subjectData || subjectData.length === 0) {
     return (
@@ -39,7 +40,7 @@ const SubjectPage = async () => {
               priority={subject.id <= 4} // Only prioritize first 4 images
             />
             <div style={{borderBottom: '8px solid #E49A29'}} className="w-full h-[45px] md:h-[62px] flex justify-center items-center bg-[#FDAC30] rounded-b-[16px] md:rounded-b-[24px]">
-              <span className="text-[14px] md:text-[20px] font-[800] text-white">
+              <span className="text-[14px] md:text-[20px] font-[800] text-white text-center">
                 {subject.name}
               </span>
             </div>

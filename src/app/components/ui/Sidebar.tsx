@@ -11,15 +11,23 @@ export default function Sidebar() {
   const menuItems = [
     {
       id: 1,
-      title: 'Subject',
+      title: 'Subjects',
       path: '/subjects',
       icon: (
         <Image src="/assets/category/subject-menu.svg" alt="subject-icon" width={48} height={48} />
       ),
     },
     {
+      id: 6,
+      title: 'Search',
+      path: '/search',
+      icon: (
+        <Image src="/assets/category/search-menu.svg" alt="subject-icon" width={48} height={48} />
+      ),
+    },
+    {
       id: 2,
-      title: 'Grade',
+      title: 'Grades',
       path: '/grade',
       icon: (
         <Image src="/assets/category/grade-menu.svg" alt="subject-icon" width={48} height={48} />
@@ -51,14 +59,6 @@ export default function Sidebar() {
       title: 'For Fun',
       path: '/for-fun',
       icon: <Image src="/assets/category/fun-menu.svg" alt="subject-icon" width={48} height={48} />,
-    },
-    {
-      id: 6,
-      title: 'Search',
-      path: '/search',
-      icon: (
-        <Image src="/assets/category/search-menu.svg" alt="subject-icon" width={48} height={48} />
-      ),
     },
   ];
 

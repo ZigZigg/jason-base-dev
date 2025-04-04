@@ -66,7 +66,13 @@ export default function LoginPage() {
             rules={[
               { required: true, message: 'Please input your email!' },
               { type: 'email', message: 'The input is not valid E-mail!' },
+              { 
+                transform: (value) => value?.trim(), 
+                message: 'Email cannot contain leading or trailing spaces' 
+              }
             ]}
+            normalize={(value) => value?.trim()}
+            getValueFromEvent={(e) => e.target.value.trim()}
           >
             <BaseInput />
           </Form.Item>
@@ -77,13 +83,9 @@ export default function LoginPage() {
             name="password"
             rules={[
               { required: true, message: 'Please input your password!' },
-              { 
-                min: 6, 
-                message: 'Password must be at least 6 characters!' 
-              },
               {
-                pattern: /^(?=.*[a-z])(?=.*[A-Z]).+$/,
-                message: 'Password must contain at least one uppercase and one lowercase letter!'
+                pattern: /^(?=.*[a-z])(?=.*[A-Z]).{6,}$/,
+                message: 'Password must be at least 6 characters, contain at least one uppercase and one lowercase letter!'
               }
             ]}
           >

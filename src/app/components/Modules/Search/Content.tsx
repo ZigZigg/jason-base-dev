@@ -11,8 +11,8 @@ interface SearchContentProps {
 }
 
 const SearchContent = ({ searchResults }: SearchContentProps) => {
-  const { data, current_page, per_page, total } = searchResults;
-  const hasResults = data && data.length > 0;
+  const { results, current_page, per_page, total } = searchResults;
+  const hasResults = results && results.length > 0;
 
   return (
     <div className='w-[1416px] h-auto flex flex-col justify-center items-center py-[32px] px-[16px] md:px-[0px]'>
@@ -21,13 +21,13 @@ const SearchContent = ({ searchResults }: SearchContentProps) => {
         
         {hasResults ? (
           <div className='flex flex-col py-[24px] gap-[24px] w-full'>
-            {data.map((item, index) => (
+            {results.map((item, index) => (
               <SearchContentItem key={item.id || index} item={item} />
             ))}
           </div>
         ) : (
           <div className='w-full flex flex-col items-center justify-center'>
-            <div className='w-[350px] h-[350px] flex flex-col items-center justify-center'>
+            <div className='w-[350px] h-[350px] md:h-[600px] flex flex-col items-center justify-center'>
               <Image src="/assets/search/empty.svg" alt="empty-state" width={350} height={229} />
               <p className='text-[#667085] text-[16px] font-[500] mt-[24px]'>Start to lookup! Type something.</p>
             </div>

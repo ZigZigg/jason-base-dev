@@ -31,8 +31,20 @@ async function getSearchResults(searchParams: SearchParams): Promise<SearchRespo
     searchParams.subjects?.forEach(subject => {
       queryParams.append('subjects[]', subject);
     });
-      console.log("🚀 ~ getSearchResults ~ queryParams:", queryParams)
-    
+
+
+    // Return empty results if no search criteria provided
+    if (!searchParams.grades?.length && !searchParams.subjects?.length && !searchParams.search_text) {
+      return {
+        current_page: 1,
+        results: [],
+        from: 0,
+        last_page: 0,
+        per_page: 10,
+        to: 0,
+        total: 0
+      };
+    }
     // Use the ApiClient to make the request
     const result = await apiClient.get<SearchResponse>(`/v2/search_resources?${queryParams.toString()}`, {
       next: { revalidate: 60 } // Cache for 60 seconds
@@ -44,7 +56,7 @@ async function getSearchResults(searchParams: SearchParams): Promise<SearchRespo
     // Return empty response with error status
     return {
       current_page: 1,
-      data: [],
+      results: [],
       from: 0,
       last_page: 0,
       per_page: 10,
@@ -52,6 +64,7 @@ async function getSearchResults(searchParams: SearchParams): Promise<SearchRespo
       total: 0
     };
   }
+
 }
 
 export default async function SearchPage({
