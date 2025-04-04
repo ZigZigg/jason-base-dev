@@ -17,6 +17,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <meta httpEquiv="ScreenOrientation" content="autoRotate:disabled" />
+      </head>
       <body>
         <AntdRegistry>
           <Providers>
