@@ -54,7 +54,7 @@ export default function OrientationLock() {
           </svg>
         </div>
         <h2 className="text-white text-xl font-bold mb-2">Please Rotate Your Device</h2>
-        <p className="text-white/80 text-center text-sm">
+        <p className="text-white/80 text-center text-sm rotate-90">
           This application is designed for portrait mode only
         </p>
       </div>
