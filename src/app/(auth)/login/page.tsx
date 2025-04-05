@@ -37,7 +37,7 @@ export default function LoginPage() {
         onNotification(result?.error, 'error');
       } else {
         message.success('Login successful!');
-        router.push('/');
+        router.push('/subjects');
       }
     } catch (error) {
       console.error('Login error:', error);
@@ -48,7 +48,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="w-full h-[100vh] flex flex-col align-center justify-center items-center px-[20px] md:px-[0px] bg-[#F5F5F5]">
+    <div className={`w-full h-[100vh] landscape:max-lg:h-[auto] flex flex-col align-center justify-center items-center px-[20px] landscape:max-lg:py-[24px] md:px-[0px] bg-[#F5F5F5]`}>
       <div className="flex flex-col justify-center items-center w-full h-fit md:w-[420px] p-[20px] md:p-[40px] bg-white rounded-[16px]">
         <Form
           name="login"

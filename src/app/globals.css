@@ -19,7 +19,7 @@
 }
 
 /* Portrait lock for mobile devices */
-@media screen and (max-width: 767px) and (orientation: landscape) {
+/* @media screen and (max-width: 767px) and (orientation: landscape) {
   html, body {
     height: 100vh;
     overflow: hidden;
@@ -51,7 +51,7 @@
     width: 100%;
     padding: 1rem;
   }
-}
+} */
 
 .custom-height-subject {
   height: calc(100dvh - 100px);

@@ -36,7 +36,7 @@ export default function SignUpPage() {
         onNotification(result?.error, 'error');
       } else {
         message.success('SignUp successful!');
-        router.push('/');
+        router.push('/subjects');
       }
     } catch (error) {
       console.error('SignUp error:', error);
@@ -47,7 +47,7 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="w-full h-[100vh] flex flex-col align-center justify-center items-center px-[20px] md:px-[0px] bg-[#F5F5F5]">
+    <div className="w-full h-[100vh] landscape:max-lg:h-[auto] flex flex-col align-center justify-center items-center px-[20px] landscape:max-lg:py-[24px] md:px-[0px] bg-[#F5F5F5]">
       <div className="flex flex-col justify-center items-center w-full h-fit md:w-[420px] p-[20px] md:p-[40px] bg-white rounded-[16px]">
         <Form
           name="login"
@@ -73,10 +73,10 @@ export default function SignUpPage() {
             rules={[
               { required: true, message: 'Please input your email!' },
               { type: 'email', message: 'The input is not valid E-mail!' },
-              { 
-                transform: (value) => value?.trim(), 
-                message: 'Email cannot contain leading or trailing spaces' 
-              }
+              {
+                transform: (value) => value?.trim(),
+                message: 'Email cannot contain leading or trailing spaces',
+              },
             ]}
             normalize={(value) => value?.trim()}
             getValueFromEvent={(e) => e.target.value.trim()}
@@ -92,8 +92,9 @@ export default function SignUpPage() {
               { required: true, message: 'Please input your password!' },
               {
                 pattern: /^(?=.*[a-z])(?=.*[A-Z]).{6,}$/,
-                message: 'Password must be at least 6 characters, contain at least one uppercase and one lowercase letter!'
-              }
+                message:
+                  'Password must be at least 6 characters, contain at least one uppercase and one lowercase letter!',
+              },
             ]}
           >
             <BaseInput type="password" />
@@ -121,7 +122,13 @@ export default function SignUpPage() {
           </Form.Item>
 
           <Form.Item style={{ marginBottom: '0px' }}>
-            <BaseButton customType="primaryActive" type="default" htmlType="submit" block loading={isLoading}>
+            <BaseButton
+              customType="primaryActive"
+              type="default"
+              htmlType="submit"
+              block
+              loading={isLoading}
+            >
               Sign Up
             </BaseButton>
           </Form.Item>

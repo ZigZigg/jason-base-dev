@@ -17,7 +17,7 @@ const SearchFiltering = ({ initialParams }: SearchFilteringProps) => {
   const [openFilterMobile, setOpenFilterMobile] = useState(false);
 
   return (
-    <div className='w-full md:w-[1416px] px-[16px] md:px-[0px] pb-[24px] md:pb-[0px]'>
+    <div className='w-full xl:w-[1416px] px-[16px] xl:px-[0px] pb-[24px] md:pb-[0px]'>
       <Popover 
           styles={{
             root: {

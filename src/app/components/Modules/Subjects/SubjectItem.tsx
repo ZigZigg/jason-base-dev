@@ -28,10 +28,10 @@ const SubjectItem = ({ id, item }: Props) => {
           loading="lazy"
         />
         <div className="mt-[12px] flex flex-col gap-[4px]">
-          <span className="text-[16px] font-[600] text-[#333333] truncate whitespace-nowrap overflow-hidden">
+          <span className="text-[14px] xl:text-[16px] font-[600] text-[#333333] line-clamp-2">
             {subjectItem.label}
           </span>
-          <div className="flex flex-row gap-[4px] items-center">
+          {/* <div className="flex flex-row gap-[4px] items-center">
             <Image
               src="/assets/icon/video.svg"
               alt="Subject Icon"
@@ -42,7 +42,7 @@ const SubjectItem = ({ id, item }: Props) => {
             <span className="text-[14px] font-[400] text-[#667085]">
               {subjectItem.moduleCounts} modules - {subjectItem.videoCounts} videos
             </span>
-          </div>
+          </div> */}
         </div>
       </div>
     </Link>

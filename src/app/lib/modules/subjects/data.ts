@@ -56,6 +56,7 @@ export interface ResourceCollectionResponse {
   results: ResourceCollection[];
   total: number;
   current_page: number;
+  last_page: number;
 }
 
 export async function getSubjectData(): Promise<SubjectData[]> {
@@ -78,7 +79,10 @@ export async function getSubjectById(subjectId: number): Promise<SubjectData | n
   return subjects.find(subject => subject.id === subjectId) || null;
 }
 
-export async function getSubjectResources(subjectId: number): Promise<{ subjects: SubjectData[], resources: ResourceCollection[] }> {
+export async function getSubjectResources(
+  subjectId: number, 
+  sortBy: string = 'created_at:desc'
+): Promise<{ subjects: SubjectData[], resources: ResourceCollection[], pagination: { currentPage: number, lastPage: number, total: number } }> {
   try {
     // First get the subject to obtain its name
     const subjects = await getSubjectData();
@@ -90,6 +94,11 @@ export async function getSubjectResources(subjectId: number): Promise<{ subjects
       return {
         subjects: [],
         resources: [],
+        pagination: {
+          currentPage: 1,
+          lastPage: 1,
+          total: 0,
+        },
       };
     }
 
@@ -97,10 +106,13 @@ export async function getSubjectResources(subjectId: number): Promise<{ subjects
     const session = await getServerSession(authOptions);
     const apiClient = new ApiClient(session?.accessToken);
     
-    // For GET requests with query parameters, we should format the URL correctly
-    // Since this is an array parameter, make sure it's handled properly
-    const url = `/v2/search_resource_collections?subjects[]=${encodeURIComponent(subject.name)}`;
+    // Build URL with subject and sort parameters
+    let url = `/v2/search_resource_collections?subjects[]=${encodeURIComponent(subject.name)}&page=1&per_page=12`;
     
+    // Add sort parameter if provided
+    if (sortBy) {
+      url += `&sort_by=${encodeURIComponent(sortBy)}`;
+    }
 
     const resources = await apiClient.get<ResourceCollectionResponse>(url, {
       next: { revalidate: 1800 }, // Cache for 30 minutes
@@ -110,12 +122,22 @@ export async function getSubjectResources(subjectId: number): Promise<{ subjects
     return {
       subjects,
       resources: result,
+      pagination: {
+        currentPage: resources?.current_page || 1,
+        lastPage: resources?.last_page || 1,
+        total: resources?.total || 0,
+      }
     };
   } catch (error) {
     console.error("Error fetching subject resources:", error);
     return {
       subjects: [],
       resources: [],
+      pagination: {
+        currentPage: 1,
+        lastPage: 1,
+        total: 0,
+      },
     };
   }
 }

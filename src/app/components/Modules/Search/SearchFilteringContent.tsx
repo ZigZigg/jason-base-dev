@@ -72,7 +72,7 @@ const SearchFilteringContent = ({ onSearch, initialParams }: SearchFilteringCont
   const getActiveFilters = (): FilterItem[] => {
     const filters: FilterItem[] = [];
 
-    if (searchQuery) {
+    if (searchQuery && searchParams.get('search_text')) {
       filters.push({
         key: 'search_text',
         label: 'Search',
@@ -80,7 +80,7 @@ const SearchFilteringContent = ({ onSearch, initialParams }: SearchFilteringCont
       });
     }
 
-    if (selectedGrade) {
+    if (selectedGrade && searchParams.get('grades[]')) {
       filters.push({
         key: 'grades[]',
         label: 'Grade',
@@ -88,7 +88,7 @@ const SearchFilteringContent = ({ onSearch, initialParams }: SearchFilteringCont
       });
     }
 
-    if (selectedSubject) {
+    if (selectedSubject && searchParams.get('subjects[]')) {
       filters.push({
         key: 'subjects[]',
         label: 'Subject',
@@ -169,12 +169,12 @@ const SearchFilteringContent = ({ onSearch, initialParams }: SearchFilteringCont
         />
       )}
       <div className='pb-[14px] md:pb-[0px]'>
-        <div className="flex flex-col md:flex-row md:w-[1416px] gap-[20px] mb-[24px] px-[16px] md:px-[0px] pb-[24px] md:pb-[0px]">
+        <div className="flex flex-col md:flex-row xl:w-[1416px] gap-[20px] mb-[24px] px-[16px] md:px-[0px] pb-[24px] md:pb-[0px]">
           <div className="flex flex-col gap-[4px] flex-1">
             <span className="text-[#667085] text-[16px] font-[500]">Text Search</span>
             <BaseSearchBar value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
           </div>
-          <div className="flex flex-col gap-[4px] w-full md:w-[250px] flex-shrink-0">
+          <div className="flex flex-col gap-[4px] w-full md:w-[180px] xl:w-[250px] flex-shrink-0">
             <span className="text-[#667085] text-[16px] font-[500]">Grades</span>
             {isLoadingGrades ? (
               <Skeleton.Input active size="large" className="w-full h-[56px]!" />
@@ -187,7 +187,7 @@ const SearchFilteringContent = ({ onSearch, initialParams }: SearchFilteringCont
               />
             )}
           </div>
-          <div className="flex flex-col gap-[4px] w-full md:w-[250px] flex-shrink-0">
+          <div className="flex flex-col gap-[4px] w-full  md:w-[180px] xl:w-[250px] flex-shrink-0">
             <span className="text-[#667085] text-[16px] font-[500]">Subjects</span>
             {isLoadingSubjects ? (
               <Skeleton.Input active size="large" className="w-full h-[56px]!" />

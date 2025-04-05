@@ -5,11 +5,13 @@ import React from 'react'
 import { getSubjectById, getSubjectResources } from '@/app/lib/modules/subjects/data'
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
+import { mockThumbnail } from '../page'
 
 type Props = {
   params: Promise<{
     subjectId: string
-  }>
+  }>,
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
 // Generate dynamic metadata based on subject name
@@ -33,9 +35,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-const SubjectModulePage = async ({ params }: Props) => {
+const SubjectModulePage = async ({ params, searchParams }: Props) => {
   // Get the subject ID from params
   const { subjectId } = await params;
+  const currentSearchParams = await searchParams;
   const id = parseInt(subjectId);
   
   // Fetch the subject data
@@ -46,8 +49,18 @@ const SubjectModulePage = async ({ params }: Props) => {
     notFound();
   }
   
-  // Fetch subject resources
-  const { resources, subjects } = await getSubjectResources(id);
+  // Get sort parameter from URL or use default
+  const sortBy = currentSearchParams.sort_by as string || 'created_at:desc';
+  
+  // Fetch subject resources with sort parameter
+  const { resources, subjects, pagination } = await getSubjectResources(id, sortBy);
+  
+  // Create initial pagination info from the response
+  const initialPagination = {
+    currentPage: 1,
+    lastPage: pagination.lastPage, // Estimate based on 12 per page if not provided
+    total: pagination.total
+  };
   
   return (
     <div className='w-full flex flex-col flex-1 min-w-0'>
@@ -55,19 +68,24 @@ const SubjectModulePage = async ({ params }: Props) => {
       <div 
         className="aspect-[343/100] md:aspect-[1200/150] rounded-[16px] my-[24px] w-full relative"
         style={{
-          backgroundImage: "url('https://i.pinimg.com/originals/02/ba/86/02ba867e545f953631148c89629412b1.jpg')",
+          backgroundImage: `url(${mockThumbnail[id as keyof typeof mockThumbnail]?.banner || '/assets/subjects/default-banner.jpg'})`,
           backgroundSize: "cover",
           backgroundPosition: "center"
         }}
       >
         <div className="absolute inset-0 flex items-center">
-          <span className="font-[700] text-[20px] md:text-[40px] leading-[120%] text-white ml-[16px] md:ml-[64px]">
+          <span className="font-[700] text-[20px] xl:text-[40px] leading-[120%] text-white ml-[16px] md:ml-[64px]">
             Explore {subject.name}
           </span>
         </div>
       </div>
-      <FilteringSubject count={resources.length} />
-      <SubjectModuleContent resources={resources} />
+      <FilteringSubject count={pagination.total} />
+      <SubjectModuleContent 
+        resources={resources} 
+        subjectName={subject.name}
+        initialPagination={initialPagination}
+        sortBy={sortBy}
+      />
     </div>
   )
 }

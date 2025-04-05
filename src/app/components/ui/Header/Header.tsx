@@ -128,7 +128,7 @@ export default function AppHeader() {
 
   return (
     <header className="h-[60px] md:h-[78px] bg-[var(--primary-color)] flex justify-center items-center px-[16px]">
-      <div className="flex justify-between items-center h-[100%] w-[100%] md:w-[1344px]">
+      <div className="flex justify-between items-center h-[100%] w-[100%] xl:w-[1344px] relative">
         <div>
           {status === 'authenticated' && (
             <div className="flex items-center gap-4 hidden md:flex">
@@ -138,7 +138,7 @@ export default function AppHeader() {
             </div>
           )}
         </div>
-        <div className="flex justify-start md:justify-center flex-1">
+        <div className="absolute left-0 -translate-x-0 md:left-1/2 md:-translate-x-1/2">
           <Image
             src="/assets/logo.webp" // Path to your logo file in the public folder
             alt="Logo"

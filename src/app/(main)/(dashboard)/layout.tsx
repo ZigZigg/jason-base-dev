@@ -19,13 +19,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         backgroundColor: 'transparent',
       }}
     >
-      <div className="w-full md:w-[1416px] h-auto flex flex-col md:flex-row gap-6 md:gap-8 py-4 px-4 md:px-0">
+      <div className="w-full xl:w-[1416px] h-auto flex flex-col md:flex-row gap-6 md:gap-8 py-4 px-4 xl:px-0">
         {/* Sidebar - hidden on mobile for subject detail pages */}
-        <div className={`${isSubjectDetailPage ? 'hidden md:block' : 'block'}`}>
+        <div className={`flex-shrink-0 ${isSubjectDetailPage ? 'hidden md:block' : 'block'}`}>
           <Sidebar />
         </div>
-        
-        <div className="flex flex-col w-full">
+        <div className="flex flex-col w-full flex-1 min-w-0">
           {/* Back link - shown only on mobile for subject detail pages */}
           {isSubjectDetailPage && (
             <div id="back-to-main" className="flex items-center gap-1.5 mb-[14px] md:hidden">

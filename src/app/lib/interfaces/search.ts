@@ -28,6 +28,7 @@ export interface SearchResponse {
   per_page: number;
   to: number;
   total: number;
+  initial_search?: boolean;
 }
 
 // Search parameters for use in URLs and filters
@@ -37,4 +38,5 @@ export interface SearchParams {
   subjects?: string[];
   page?: number;
   limit?: number;
+  sort_by?: string;
 } 

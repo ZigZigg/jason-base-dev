@@ -20,7 +20,7 @@ const CategoryTabs = ({ activeId, onTabChange, subjects }: Props) => {
   // Check if device is mobile
   useEffect(() => {
     const checkIsMobile = () => {
-      setIsMobile(window.innerWidth < 768)
+      setIsMobile(window.innerWidth < 940)
     }
     
     // Check on initial load
