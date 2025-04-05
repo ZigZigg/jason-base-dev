@@ -16,6 +16,7 @@ export default function BaseInput({
   // Combine Ant Design's Input classes with custom styles
   const inputClasses = classNames(
     styles.baseInput, // Base styles from CSS Module
+    'text-base!',
     className // Allow additional classes from props
   );
 
