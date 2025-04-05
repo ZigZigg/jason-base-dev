@@ -142,7 +142,7 @@ const SubjectModuleContent = ({
 
   return (
     <div className="flex flex-col w-full">
-      <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 md:gap-x-[32px] gap-y-[24px] md:gap-y-[24px]">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-[16px] md:gap-x-[32px] gap-y-[24px] md:gap-y-[24px]">
         {allResources.map((resource) => (
           <SubjectItem 
             key={resource.id} 
