@@ -50,8 +50,29 @@ async function getSearchResults(searchParams: SearchParams): Promise<SearchRespo
     const result = await apiClient.get<SearchResponse>(`/v2/search_resources?exclude_collections=true&${queryParams.toString()}`, {
       next: { revalidate: 120 } // Cache for 60 seconds
     });
-    
-    return result;
+    const {results: currentResult} = result
+    const baseImageUrl = process.env.NEXT_PUBLIC_ASSETS_BASE_URL || ''; // Fallback URL
+    // Process resources to extract thumbnails
+    const processedResources = currentResult.map(resource => {
+      // Find the ThumbnailMedium asset if it exists
+      const thumbnailAsset = resource.assets?.find(asset => 
+        asset.type?.name === 'ThumbnailMedium'
+      );
+      
+      // Extract the thumbnail URL
+      const thumbnail = thumbnailAsset?.file_uri ? `${baseImageUrl}${thumbnailAsset?.file_uri}` : undefined;
+      
+      // Return the resource with the extracted thumbnail
+      return {
+        ...resource,
+        thumbnail
+      };
+    });
+    const data = {
+      ...result,
+      results: processedResources
+    }
+    return data;
   } catch (error) {
     console.error('Error fetching search results:', error);
     // Return empty response with error status

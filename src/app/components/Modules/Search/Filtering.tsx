@@ -1,11 +1,15 @@
 'use client'
 import dynamic from 'next/dynamic'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { Popover } from 'antd'
 import { SearchParams } from '@/app/lib/interfaces/search'
+import { useOrientation } from '@/app/providers/OrientationProvider'
 
 const SearchFilteringContent = dynamic(() => import('./SearchFilteringContent'), {
+  ssr: false,
+})
+const SearchFilteringContentMobile = dynamic(() => import('./SearchFilteringContentMobile'), {
   ssr: false,
 })
 
@@ -15,7 +19,12 @@ interface SearchFilteringProps {
 
 const SearchFiltering = ({ initialParams }: SearchFilteringProps) => {
   const [openFilterMobile, setOpenFilterMobile] = useState(false);
-
+  const orientation = useOrientation();
+  useEffect(() => {
+    if(orientation.isLandscape) {
+      setOpenFilterMobile(false);
+    }
+  },[orientation])
   return (
     <div className='w-full xl:w-[1416px] px-[16px] xl:px-[0px] pb-[24px] md:pb-[0px]'>
       <Popover 
@@ -33,7 +42,7 @@ const SearchFiltering = ({ initialParams }: SearchFilteringProps) => {
           }}
           className="block md:hidden"
           placement="bottom"
-          content={<SearchFilteringContent initialParams={initialParams} onSearch={() => {setOpenFilterMobile(false)}} />}
+          content={<SearchFilteringContentMobile initialParams={initialParams} onSearch={() => {setOpenFilterMobile(false)}} />}
           trigger="click"
           arrow={false}
           open={openFilterMobile}

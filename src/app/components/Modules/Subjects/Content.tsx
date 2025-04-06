@@ -54,8 +54,25 @@ const SubjectModuleContent = ({
       }
       
       const data = await response.json();
-      
-      setAllResources(prev => [...prev, ...data.results]);
+      const {results}: {results: ResourceCollection[]} = data;
+      const baseImageUrl = process.env.NEXT_PUBLIC_ASSETS_BASE_URL || ''; // Fallback URL
+      // Process resources to extract thumbnails
+      const processedResources = results.map(resource => {
+        // Find the ThumbnailMedium asset if it exists
+        const thumbnailAsset = resource.assets?.find(asset => 
+          asset.type?.name === 'ThumbnailMedium'
+        );
+        
+        // Extract the thumbnail URL
+        const thumbnail = thumbnailAsset?.file_uri ? `${baseImageUrl}${thumbnailAsset?.file_uri}`  : undefined;
+        
+        // Return the resource with the extracted thumbnail
+        return {
+          ...resource,
+          thumbnail
+        };
+      });
+      setAllResources(prev => [...prev, ...processedResources]);
       setPagination({
         currentPage: data.current_page,
         lastPage: data.last_page,
@@ -148,7 +165,7 @@ const SubjectModuleContent = ({
             key={resource.id} 
             item={{
               id: parseInt(resource.id) || 0,
-              imageUrl: '/assets/subject-category.webp',
+              imageUrl: resource.thumbnail || '/assets/subject-category.webp',
               label: resource.title,
               moduleCounts: resource.subjects.length || 0,
               videoCounts: resource.assets.length || 0

@@ -1,3 +1,5 @@
+import { ResourceAsset } from "../modules/subjects/data";
+
 // Base types used across the search interfaces
 export interface GradeOption {
   id: number;
@@ -17,6 +19,7 @@ export interface SearchResource {
   thumbnail?: string;
   grades: GradeOption[];
   subjects: SubjectOption[];
+  assets: ResourceAsset[]
 }
 
 // Paginated response structure

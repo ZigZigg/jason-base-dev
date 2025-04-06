@@ -54,7 +54,7 @@ const SubjectModulePage = async ({ params, searchParams }: Props) => {
   
   // Fetch subject resources with sort parameter
   const { resources, subjects, pagination } = await getSubjectResources(id, sortBy);
-  
+    
   // Create initial pagination info from the response
   const initialPagination = {
     currentPage: 1,

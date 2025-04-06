@@ -11,7 +11,7 @@ const nextConfig = withLess({
     },
   },
   images: {
-    domains: ["img.freepik.com", "codetheweb.blog", "assets.jason.org", "i.pinimg.com"], // Allow external images from Freepik
+    domains: ["img.freepik.com", "codetheweb.blog", "assets.jason.org", "i.pinimg.com", "assetsdev.jason.org"], // Allow external images from Freepik
   },
 });
 

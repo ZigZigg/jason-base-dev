@@ -31,6 +31,7 @@ export default function LoginPage() {
       const result = await signIn('login', {
         redirect: false,
         ...values,
+        email: values.email.trim(), // Trim spaces from the email
       });
 
       if (result?.error) {
@@ -64,15 +65,29 @@ export default function LoginPage() {
             label="Email"
             name="email"
             rules={[
-              { required: true, message: 'Please input your email!' },
-              { type: 'email', message: 'The input is not valid E-mail!' },
+              { required: true, message: 'The input is not valid E-mail!' },
               { 
-                transform: (value) => value?.trim(), 
-                message: 'Email cannot contain leading or trailing spaces' 
+                validator: (_, value) => {
+                  if (!value) return Promise.resolve();
+                  
+                  // Trim spaces from start and end before checking
+                  const trimmedEmail = value.trim();
+                  
+                  // Check if there are any spaces in the middle
+                  if (trimmedEmail.includes(' ')) {
+                    return Promise.reject('The input is not valid E-mail!');
+                  }
+                  
+                  // Validate as standard email
+                  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                  if (emailRegex.test(trimmedEmail)) {
+                    return Promise.resolve();
+                  }
+                  
+                  return Promise.reject('The input is not valid E-mail!');
+                }
               }
             ]}
-            normalize={(value) => value?.trim()}
-            getValueFromEvent={(e) => e.target.value.trim()}
           >
             <BaseInput />
           </Form.Item>

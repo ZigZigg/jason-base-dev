@@ -3,6 +3,7 @@ import { Popover } from 'antd';
 import Image from 'next/image';
 import React, { useEffect, useRef, useState, startTransition, useCallback, useMemo } from 'react';
 import BaseSearchBar from '../input/BaseSearchBar';
+import { useOrientation } from '@/app/providers/OrientationProvider';
 
 const mockData = [
   { title: 'Option 1', value: 'option1' },
@@ -27,6 +28,7 @@ type Props = {
   options?: { title: string; value: string }[];
   onChange?: (value: string) => void;
   value?: string;
+  isModalOpen?: boolean;
 };
 
 interface OptionsProps {
@@ -48,7 +50,7 @@ const OptionsComponent = (props: OptionsProps) => {
 
   return (
     <div className="flex flex-col py-[12px] px-[8px]">
-      <BaseSearchBar onChange={(e) => setSearchKeyword(e.target.value)} />
+      <BaseSearchBar value={searchKeyword} onChange={(e) => setSearchKeyword(e.target.value)} />
       <div className="flex flex-col h-[200px] overflow-y-auto">
         {filteredData.length > 0 ? (
           filteredData.map((item, index) => (
@@ -57,6 +59,7 @@ const OptionsComponent = (props: OptionsProps) => {
               className="py-[6px] px-[16px] hover:bg-[#2867DC33] cursor-pointer"
               onClick={() => {
                 setSelectedValue(item.value);
+                setSearchKeyword('');
               }}
             >
               <span className="text-[#475467] font-[400] text-[14px]">{item.title}</span>
@@ -80,10 +83,13 @@ const OptionsComponent = (props: OptionsProps) => {
 
 const SelectBox = (props: Props) => {
   const { placeholder, options = mockData, onChange, value: externalValue } = props;
+
   const selectBoxRef = useRef<HTMLDivElement>(null);
   const [popoverWidth, setPopoverWidth] = useState(0);
   const [selectedValue, setSelectedValue] = useState(externalValue || '');
   const [openSelectModal, setOpenSelectModal] = useState(false);
+  const orientation = useOrientation();
+
 
   const handleChangedValue = useCallback(
     (value: string) => {
@@ -111,7 +117,13 @@ const SelectBox = (props: Props) => {
     if (selectBoxRef.current) {
       setPopoverWidth(selectBoxRef.current.offsetWidth);
     }
-  }, []);
+  }, [orientation]);
+
+  useEffect(() => {
+
+    setOpenSelectModal(false);
+  }, [orientation]);
+
   return (
     <Popover
       styles={{

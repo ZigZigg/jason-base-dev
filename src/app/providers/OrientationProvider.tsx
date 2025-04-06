@@ -28,7 +28,7 @@ export const OrientationProvider = ({ children }: { children: ReactNode }) => {
       const isLandscapeMode = window.innerWidth > window.innerHeight;
       
       setOrientation({
-        isLandscape: isMobileDevice && isLandscapeMode,
+        isLandscape: isLandscapeMode,
         isPortrait: !isLandscapeMode,
         isMobile: isMobileDevice,
       });

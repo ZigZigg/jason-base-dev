@@ -13,6 +13,11 @@ export interface ResourceAsset {
   type_id: number;
   name: string;
   path: string;
+  file_uri: string;
+  type: {
+    id: number;
+    name: string;
+  }
 }
 
 export interface ResourceKeyword {
@@ -47,6 +52,7 @@ export interface ResourceCollection {
   type: ResourceType;
   status: ResourceStatus;
   assets: ResourceAsset[];
+  thumbnail?: string;
   keywords: ResourceKeyword[];
   grades: ResourceGrade[];
   subjects: ResourceSubject[];
@@ -119,9 +125,27 @@ export async function getSubjectResources(
     });
 
     const result = resources?.results || [] ;
+    const baseImageUrl = process.env.NEXT_PUBLIC_ASSETS_BASE_URL || ''; // Fallback URL
+    // Process resources to extract thumbnails
+    const processedResources = result.map(resource => {
+      // Find the ThumbnailMedium asset if it exists
+      const thumbnailAsset = resource.assets?.find(asset => 
+        asset.type?.name === 'ThumbnailMedium'
+      );
+      
+      // Extract the thumbnail URL
+      const thumbnail = thumbnailAsset?.file_uri ? `${baseImageUrl}${thumbnailAsset?.file_uri}` : undefined;
+      
+      // Return the resource with the extracted thumbnail
+      return {
+        ...resource,
+        thumbnail
+      };
+    });
+
     return {
       subjects,
-      resources: result,
+      resources: processedResources,
       pagination: {
         currentPage: resources?.current_page || 1,
         lastPage: resources?.last_page || 1,

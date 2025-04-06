@@ -23,7 +23,7 @@ interface FilterItem {
   value: string;
 }
 
-const SearchFilteringContent = ({ onSearch, initialParams }: SearchFilteringContentProps) => {
+const SearchFilteringContentMobile = ({ onSearch, initialParams }: SearchFilteringContentProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -254,4 +254,4 @@ const SearchFilteringContent = ({ onSearch, initialParams }: SearchFilteringCont
   );
 };
 
-export default SearchFilteringContent;
+export default SearchFilteringContentMobile;

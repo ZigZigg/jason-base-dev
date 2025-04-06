@@ -19,7 +19,7 @@ const SearchContentItem = (props: Props) => {
             <div className="w-full md:w-[232px] md:h-[132px] md:flex-none flex-shrink-0">
                 <Image
                     id='resource-image'
-                    src={'/assets/resource-default.webp'} // Replace with your image path
+                    src={item.thumbnail || '/assets/resource-default.webp'} // Replace with your image path
                     alt="Video Image"
                     width={232}
                     height={132}
