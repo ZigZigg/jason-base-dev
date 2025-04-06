@@ -38,7 +38,7 @@ export default function LoginPage() {
         onNotification(result?.error, 'error');
       } else {
         message.success('Login successful!');
-        router.push('/subjects');
+        router.push('/');
       }
     } catch (error) {
       console.error('Login error:', error);
@@ -57,7 +57,7 @@ export default function LoginPage() {
           onFinish={onFinish}
           autoComplete="off"
           layout="vertical"
-          className="w-full"
+          className="w-full auth-form"
         >
           <p className="text-black text-[32px] font-[700] text-center leading-[130%]">Log In</p>
           <Form.Item
@@ -121,8 +121,8 @@ export default function LoginPage() {
         </Form>
       </div>
       <div className="mt-[24px] flex justify-center items-center">
-        <span>Don’t have an account?</span>
-        <Link style={{ textDecoration: 'underline' }} className="mx-[5px]" href="/signup">
+        <span className='text-[16px]'>Don’t have an account?</span>
+        <Link style={{ textDecoration: 'underline' }} className="mx-[5px] " href="/signup">
           Sign Up
         </Link>
       </div>

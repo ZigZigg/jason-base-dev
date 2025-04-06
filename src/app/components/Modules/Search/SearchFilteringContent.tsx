@@ -8,7 +8,7 @@ import { useSubjects } from '@/app/lib/hooks/useSubjects';
 import { SearchParams } from '@/app/lib/interfaces/search';
 
 import { Alert, Skeleton } from 'antd';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 interface SearchFilteringContentProps {
@@ -69,36 +69,6 @@ const SearchFilteringContent = ({ onSearch, initialParams }: SearchFilteringCont
     })),
   ];
 
-  // Get active filters
-  const getActiveFilters = (): FilterItem[] => {
-    const filters: FilterItem[] = [];
-
-    if (searchQuery && searchParams.get('search_text')) {
-      filters.push({
-        key: 'search_text',
-        label: 'Search',
-        value: searchQuery
-      });
-    }
-
-    if (selectedGrade && searchParams.get('grades[]')) {
-      filters.push({
-        key: 'grades[]',
-        label: 'Grade',
-        value: selectedGrade
-      });
-    }
-
-    if (selectedSubject && searchParams.get('subjects[]')) {
-      filters.push({
-        key: 'subjects[]',
-        label: 'Subject',
-        value: selectedSubject
-      });
-    }
-
-    return filters;
-  };
 
   // Remove a specific filter
   const removeFilter = (filter: FilterItem) => {
@@ -129,6 +99,7 @@ const SearchFilteringContent = ({ onSearch, initialParams }: SearchFilteringCont
     // Create a new URLSearchParams object
     const params = new URLSearchParams();
 
+
     // Add search parameters if they exist
     if (searchQuery) params.set('search_text', searchQuery);
     if (selectedGrade) params.set('grades[]', selectedGrade);
@@ -155,7 +126,35 @@ const SearchFilteringContent = ({ onSearch, initialParams }: SearchFilteringCont
   };
 
   // Get the list of active filters
-  const activeFilters = getActiveFilters();
+  const activeFilters = useMemo(() => {
+    const filters: FilterItem[] = [];
+
+    if (searchParams.get('search_text')) {
+      filters.push({
+        key: 'search_text',
+        label: 'Search',
+        value: searchQuery
+      });
+    }
+
+    if (searchParams.get('grades[]')) {
+      filters.push({
+        key: 'grades[]',
+        label: 'Grade',
+        value: selectedGrade
+      });
+    }
+
+    if (searchParams.get('subjects[]')) {
+      filters.push({
+        key: 'subjects[]',
+        label: 'Subject',
+        value: selectedSubject
+      });
+    }
+
+    return filters;
+  },[searchParams]) 
 
   return (
     <>
@@ -197,6 +196,7 @@ const SearchFilteringContent = ({ onSearch, initialParams }: SearchFilteringCont
                 placeholder="Select Subject(s)"
                 options={subjectOptions}
                 value={selectedSubject}
+                onChange={setSelectedSubject}
               />
             )}
           </div>

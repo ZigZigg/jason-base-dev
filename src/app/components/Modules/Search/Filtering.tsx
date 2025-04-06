@@ -9,9 +9,6 @@ import { useOrientation } from '@/app/providers/OrientationProvider'
 const SearchFilteringContent = dynamic(() => import('./SearchFilteringContent'), {
   ssr: false,
 })
-const SearchFilteringContentMobile = dynamic(() => import('./SearchFilteringContentMobile'), {
-  ssr: false,
-})
 
 interface SearchFilteringProps {
   initialParams?: SearchParams;
@@ -42,7 +39,7 @@ const SearchFiltering = ({ initialParams }: SearchFilteringProps) => {
           }}
           className="block md:hidden"
           placement="bottom"
-          content={<SearchFilteringContentMobile initialParams={initialParams} onSearch={() => {setOpenFilterMobile(false)}} />}
+          content={<SearchFilteringContent initialParams={initialParams} onSearch={() => {setOpenFilterMobile(false)}} />}
           trigger="click"
           arrow={false}
           open={openFilterMobile}

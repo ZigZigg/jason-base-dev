@@ -89,7 +89,7 @@ const SearchSorting = ({ total = 0 }: SearchSortingProps) => {
             <div className="flex items-center gap-[8px]">
               <Image src="/assets/icon/filter.svg" alt="Sort Icon" width={19} height={17} />
               <span className="text-[16px] md:text-[16px] font-[400] text-[#666666]">Sort by:</span>
-              <span id="sort-by" className="text-[16px] font-[700] text-[#0F72F3] hidden md:block">
+              <span id="sort-by" className="text-[16px] font-[500] text-[#0F72F3] hidden md:block">
                 {sortLabels[currentSort]}
               </span>
               <Image className='rotate-180' src="/assets/icon/up-icon.svg" alt="Up Icon" width={10} height={6} />

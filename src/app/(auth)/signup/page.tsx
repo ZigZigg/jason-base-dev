@@ -42,7 +42,7 @@ export default function SignUpPage() {
         onNotification(result?.error, 'error');
       } else {
         message.success('SignUp successful!');
-        router.push('/subjects');
+        router.push('/');
       }
     } catch (error) {
       console.error('SignUp error:', error);
@@ -59,9 +59,8 @@ export default function SignUpPage() {
           name="login"
           initialValues={{ remember: true }}
           onFinish={onFinish}
-          autoComplete="off"
           layout="vertical"
-          className="w-full"
+          className="w-full auth-form"
         >
           <p className="text-black text-[32px] font-[700] text-center leading-[130%]">Sign Up</p>
           <Form.Item
@@ -78,27 +77,27 @@ export default function SignUpPage() {
             name="email"
             rules={[
               { required: true, message: 'The input is not valid E-mail!' },
-              { 
+              {
                 validator: (_, value) => {
                   if (!value) return Promise.resolve();
-                  
+
                   // Trim spaces from start and end before checking
                   const trimmedEmail = value.trim();
-                  
+
                   // Check if there are any spaces in the middle
                   if (trimmedEmail.includes(' ')) {
                     return Promise.reject('The input is not valid E-mail!');
                   }
-                  
+
                   // Validate as standard email
                   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                   if (emailRegex.test(trimmedEmail)) {
                     return Promise.resolve();
                   }
-                  
+
                   return Promise.reject('The input is not valid E-mail!');
-                }
-              }
+                },
+              },
             ]}
           >
             <BaseInput />
@@ -119,6 +118,18 @@ export default function SignUpPage() {
           >
             <BaseInput type="password" />
           </Form.Item>
+          <input
+            type="password"
+            name="password"
+            autoComplete="new-password"
+            style={{ position: 'absolute' }}
+          />
+          <input
+            type="password"
+            name="confirmPassword"
+            autoComplete="new-password2"
+            style={{ position: 'absolute' }}
+          />
           <Form.Item
             style={{ marginTop: '16px', marginBottom: '32px' }}
             label="Confirm Password"
@@ -155,7 +166,7 @@ export default function SignUpPage() {
         </Form>
       </div>
       <div className="mt-[24px] flex justify-center items-center">
-        <span>Already have an account?</span>
+        <span className="text-[16px]">Already have an account?</span>
         <Link style={{ textDecoration: 'underline' }} className="mx-[5px]" href="/login">
           Log In
         </Link>

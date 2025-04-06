@@ -11,42 +11,6 @@
   --color-foreground: var(--foreground);
 }
 
-
-/* Portrait lock for mobile devices */
-/* @media screen and (max-width: 767px) and (orientation: landscape) {
-  html, body {
-    height: 100vh;
-    overflow: hidden;
-  }
-  
-  body::after {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
-    z-index: 10000;
-    backdrop-filter: blur(5px);
-  }
-  
-  body::before {
-    content: "Please rotate your device to portrait mode";
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) rotate(90deg);
-    color: white;
-    font-size: 1.2rem;
-    font-weight: 600;
-    text-align: center;
-    z-index: 10001;
-    width: 100%;
-    padding: 1rem;
-  }
-} */
-
 .custom-height-subject {
   height: calc(100dvh - 100px);
 }
@@ -70,4 +34,15 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #555; /* Handle color on hover */
+}
+
+#main-body .auth-form .ant-form-item-required{
+  font-size: 16px;
+}
+
+input[type="password"] {
+  -webkit-text-security: disc!important;
+}
+.ant-btn-variant-text:not(:disabled):not(.ant-btn-disabled):active{
+  background-color: transparent!important;
 }
