@@ -65,7 +65,7 @@ export default function LoginPage() {
             label="Email"
             name="email"
             rules={[
-              { required: true, message: 'The input is not valid E-mail!' },
+              { required: true, message: 'Please input your email!' },
               { 
                 validator: (_, value) => {
                   if (!value) return Promise.resolve();
@@ -75,7 +75,7 @@ export default function LoginPage() {
                   
                   // Check if there are any spaces in the middle
                   if (trimmedEmail.includes(' ')) {
-                    return Promise.reject('The input is not valid E-mail!');
+                    return Promise.reject('The input is not valid email!');
                   }
                   
                   // Validate as standard email
@@ -84,7 +84,7 @@ export default function LoginPage() {
                     return Promise.resolve();
                   }
                   
-                  return Promise.reject('The input is not valid E-mail!');
+                  return Promise.reject('The input is not valid email!');
                 }
               }
             ]}
