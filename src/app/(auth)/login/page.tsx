@@ -38,7 +38,7 @@ export default function LoginPage() {
         onNotification(result?.error, 'error');
       } else {
         message.success('Login successful!');
-        router.push('/');
+        router.push('/subjects');
       }
     } catch (error) {
       console.error('Login error:', error);
@@ -122,7 +122,7 @@ export default function LoginPage() {
       </div>
       <div className="mt-[24px] flex justify-center items-center">
         <span className='text-[16px]'>Don’t have an account?</span>
-        <Link style={{ textDecoration: 'underline' }} className="mx-[5px] " href="/signup">
+        <Link style={{ textDecoration: 'underline' }} className="mx-[5px] text-[16px]!" href="/signup">
           Sign Up
         </Link>
       </div>

@@ -42,7 +42,7 @@ export default function SignUpPage() {
         onNotification(result?.error, 'error');
       } else {
         message.success('SignUp successful!');
-        router.push('/');
+        router.push('/subjects');
       }
     } catch (error) {
       console.error('SignUp error:', error);
@@ -67,7 +67,16 @@ export default function SignUpPage() {
             style={{ marginTop: '16px', marginBottom: '16px' }}
             label="Name"
             name="name"
-            rules={[{ required: true, message: 'Please input your name!' }]}
+            rules={[
+              {
+                validator: (_, value) => {
+                  if (!value || value.trim() === '') {
+                    return Promise.reject('Please input your name!');
+                  }
+                  return Promise.resolve();
+                },
+              },
+            ]}
           >
             <BaseInput />
           </Form.Item>
@@ -167,7 +176,7 @@ export default function SignUpPage() {
       </div>
       <div className="mt-[24px] flex justify-center items-center">
         <span className="text-[16px]">Already have an account?</span>
-        <Link style={{ textDecoration: 'underline' }} className="mx-[5px]" href="/login">
+        <Link style={{ textDecoration: 'underline' }} className="mx-[5px] text-[16px]!" href="/login">
           Log In
         </Link>
       </div>
