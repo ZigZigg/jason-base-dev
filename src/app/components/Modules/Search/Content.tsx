@@ -1,17 +1,19 @@
-'use client';
+
 import React from 'react';
 import SearchSorting from './Sorting';
 import SearchContentItem from './ContentItem';
 import SearchPagination from './Pagination';
-import { SearchResponse } from '@/app/lib/interfaces/search';
+import { SearchParams } from '@/app/lib/interfaces/search';
 import InitialResult from './Commons/InitialResult';
 import EmptyResult from './Commons/EmptyResult';
+import { getSearchResults } from '@/app/lib/modules/search/data';
 
 interface SearchContentProps {
-  searchResults: SearchResponse;
+  searchParams: SearchParams
 }
 
-const SearchContent = ({ searchResults }: SearchContentProps) => {
+const SearchContent = async ({ searchParams }: SearchContentProps) => {
+  const searchResults = await getSearchResults(searchParams);
   const { results, current_page, per_page, total, initial_search } = searchResults;
   const hasResults = results && results.length > 0;
 

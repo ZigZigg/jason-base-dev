@@ -69,7 +69,6 @@ const SearchFilteringContent = ({ onSearch, initialParams }: SearchFilteringCont
     })),
   ];
 
-
   // Remove a specific filter
   const removeFilter = (filter: FilterItem) => {
     // Create a new URLSearchParams object
@@ -95,10 +94,10 @@ const SearchFilteringContent = ({ onSearch, initialParams }: SearchFilteringCont
   };
 
   // Handle search form submission by updating URL parameters
-  const handleSubmit = () => {
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
     // Create a new URLSearchParams object
     const params = new URLSearchParams();
-
 
     // Add search parameters if they exist
     if (searchQuery) params.set('search_text', searchQuery);
@@ -120,9 +119,8 @@ const SearchFilteringContent = ({ onSearch, initialParams }: SearchFilteringCont
         page: 1,
       });
     }
-
-    // Navigate to the new URL
-    router.push(url);
+    // Navigate to the new URL using window.location
+    window.location.href = url;
   };
 
   // Get the list of active filters

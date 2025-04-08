@@ -1,13 +1,12 @@
 'use client';
 
 import Image from 'next/image';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useCallback } from 'react';
 
 export default function Sidebar() {
   // Get route path from client
   const pathname = usePathname();
-  const router = useRouter()
   const menuItems = [
     {
       id: 1,
@@ -63,7 +62,7 @@ export default function Sidebar() {
   ];
 
   const onChangePath = useCallback((path: string) => {
-    router.push(path)
+    window.location.href = path
   },[])
 
   return (
