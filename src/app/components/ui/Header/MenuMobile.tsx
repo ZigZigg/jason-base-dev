@@ -14,14 +14,21 @@ const MenuMobile = (props: Props) => {
   const router = useRouter();
   return (
     <div className="w-[100%]">
-      <div className="flex flex-col border-b-[1px] border-[#EAECF0] p-[16px]">
-        <BaseButton
-          variant="text"
-          className="bg-transparent! justify-start! shadow-none! h-[48px] text-[#101828]!"
-        >
-          Homepage
-        </BaseButton>
-      </div>
+      {authStatus === 'authenticated' && (
+        <div className="flex flex-col border-b-[1px] border-[#EAECF0] p-[16px]">
+          <BaseButton
+            variant="text"
+            className="bg-transparent! justify-start! shadow-none! h-[48px] text-[#101828]!"
+            onClick={() => {
+              setOpenMenuMobile(false);
+              router.push('/');
+            }}
+          >
+            Homepage
+          </BaseButton>
+        </div>
+      )}
+
       <div className="flex flex-col gap-[16px] py-[24px] px-[16px]">
         {authStatus === 'authenticated' ? (
           <BaseButton
@@ -31,7 +38,7 @@ const MenuMobile = (props: Props) => {
             customType={pathname === '/signup' ? 'primaryActive' : undefined}
             onClick={() => {
               setOpenMenuMobile(false);
-              handleSignOut()
+              handleSignOut();
             }}
           >
             Log out

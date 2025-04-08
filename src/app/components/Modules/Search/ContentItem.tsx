@@ -1,6 +1,7 @@
+'use client'
 import { SearchResource } from '@/app/lib/interfaces/search'
 import Image from 'next/image'
-import React from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 
 
 type Props = {
@@ -9,6 +10,30 @@ type Props = {
 
 const SearchContentItem = (props: Props) => {
     const {item} = props
+    const [isExpanded, setIsExpanded] = useState(false)
+    const [isOverflowing, setIsOverflowing] = useState(false)
+    const descriptionRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        const checkOverflow = () => {
+            const element = descriptionRef.current
+            if (element) {
+                // Check if the content is overflowing by comparing scrollHeight to clientHeight
+                const isTextOverflowing = element.scrollHeight > element.clientHeight
+                setIsOverflowing(isTextOverflowing)
+            }
+        }
+        
+        checkOverflow()
+        
+        // Add resize listener to recheck when window resizes
+        window.addEventListener('resize', checkOverflow)
+        return () => window.removeEventListener('resize', checkOverflow)
+    }, [])
+
+    const toggleDescription = () => {
+        setIsExpanded(!isExpanded)
+    }
 
   return (
     <div className='w-full h-auto rounded-[8px] bg-[#FFFFFF] flex flex-col'>
@@ -29,7 +54,23 @@ const SearchContentItem = (props: Props) => {
                 />
             </div>
             <div className='flex flex-1 flex-col gap-[12px] min-w-0'>
-                <span className='text-[14px] md:text-[16px] font-[400] text-[#667085]'>{item.description}</span>
+                <div className='relative'>
+                    <div 
+                        id='description' 
+                        ref={descriptionRef}
+                        className={`text-[14px] md:text-[16px] font-[400] text-[#667085] ${!isExpanded ? 'line-clamp-2' : ''}`}
+                    >
+                        {item.description}
+                    </div>
+                    {(isOverflowing || isExpanded) && (
+                        <button 
+                            onClick={toggleDescription} 
+                            className="text-[#0F72F3] font-[500] text-[14px] ml-1 mt-1 hover:underline"
+                        >
+                            {isExpanded ? 'Show less' : 'Show more'}
+                        </button>
+                    )}
+                </div>
                 <div className='w-full h-[1px] bg-[#EAECF0]'></div>
                 <div className='flex flex-row gap-[12px] items-center flex-wrap'>
                     <Image src='/assets/icon/group.svg' alt='Grade Icon' width={18} height={18} className="flex-shrink-0" />

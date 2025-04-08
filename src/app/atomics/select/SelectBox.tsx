@@ -57,7 +57,7 @@ const OptionsComponent = (props: OptionsProps) => {
   }
   return (
     <div className="flex flex-col py-[12px] px-[8px]">
-      <BaseSearchBar value={searchKeyword} onChange={(e) => setSearchKeyword(e.target.value)} />
+      <BaseSearchBar placeholder='Search' value={searchKeyword} onChange={(e) => setSearchKeyword(e.target.value)} />
       <div className="flex flex-col h-[200px] overflow-y-auto">
         {filteredData.length > 0 ? (
           filteredData.map((item, index) => {

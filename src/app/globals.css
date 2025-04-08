@@ -23,6 +23,7 @@ body {
 
 ::-webkit-scrollbar {
   width: 6px; /* vertical scrollbar */
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
