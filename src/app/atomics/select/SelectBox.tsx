@@ -34,11 +34,13 @@ type Props = {
 interface OptionsProps {
   data: { title: string; value: string }[];
   setSelectedValue: (value: string) => void;
+  selectedValue: string;
 }
 
 const OptionsComponent = (props: OptionsProps) => {
-  const { data, setSelectedValue } = props;
+  const { data, setSelectedValue, selectedValue } = props;
   const [searchKeyword, setSearchKeyword] = useState('');
+  const [currentSelectedValue, setCurrentSelectedValue] = useState(selectedValue);
   const [filteredData, setFilteredData] = useState(data);
   useEffect(() => {
     startTransition(() => {
@@ -48,23 +50,30 @@ const OptionsComponent = (props: OptionsProps) => {
     });
   }, [searchKeyword, data]);
 
+  const handleSelectedValue = (value: string) => {
+    setCurrentSelectedValue(value);
+    setSelectedValue(value);
+    setSearchKeyword('');
+  }
   return (
     <div className="flex flex-col py-[12px] px-[8px]">
       <BaseSearchBar value={searchKeyword} onChange={(e) => setSearchKeyword(e.target.value)} />
       <div className="flex flex-col h-[200px] overflow-y-auto">
         {filteredData.length > 0 ? (
-          filteredData.map((item, index) => (
-            <div
-              key={index}
-              className="py-[6px] px-[16px] hover:bg-[#2867DC33] cursor-pointer"
-              onClick={() => {
-                setSelectedValue(item.value);
-                setSearchKeyword('');
-              }}
-            >
-              <span className="text-[#475467] font-[400] text-[14px]">{item.title}</span>
-            </div>
-          ))
+          filteredData.map((item, index) => {
+            const selectedItem = currentSelectedValue && currentSelectedValue === item.value;
+            return (
+              <div
+                key={index}
+                className={`py-[6px] px-[16px] hover:bg-[#919EAB14] cursor-pointer rounded-[6px] ${selectedItem ? 'bg-[#2867DC33]' : ''}`}
+                onClick={() => {
+                  handleSelectedValue(item.value);
+                }}
+              >
+                <span className="text-[#475467] font-[400] text-[14px]">{item.title}</span>
+              </div>
+            )
+          } )
         ) : (
           <div className="flex items-center justify-center h-full">
             <div className="flex flex-col items-center py-6">
@@ -137,7 +146,7 @@ const SelectBox = (props: Props) => {
       }}
       trigger="click"
       placement="bottom"
-      content={<OptionsComponent data={options} setSelectedValue={handleChangedValue} />}
+      content={<OptionsComponent data={options} setSelectedValue={handleChangedValue} selectedValue={selectedValue} />}
       arrow={false}
       open={openSelectModal}
       onOpenChange={(visible) => {
