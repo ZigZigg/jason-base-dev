@@ -89,13 +89,14 @@ export async function getSubjectResources(
   subjectId: number, 
   sortBy: string = 'created_at:desc'
 ): Promise<{ subjects: SubjectData[], resources: ResourceCollection[], pagination: { currentPage: number, lastPage: number, total: number } }> {
+
   try {
     // First get the subject to obtain its name
     const subjects = await getSubjectData();
     const subject = subjects.find(subject => subject.id === subjectId);
     
     // If subject not found, return empty array
-    if (!subject) {
+    if (!subject && subjectId !== 0) {
       console.error(`Subject with ID ${subjectId} not found`);
       return {
         subjects: [],
@@ -111,9 +112,11 @@ export async function getSubjectResources(
     // Now use the subject name to fetch resources
     const session = await getServerSession(authOptions);
     const apiClient = new ApiClient(session?.accessToken);
-    
+    const grades = ['PreK', 'K', '1', '2'];
+    const urlWithAll = `/v2/search_resource_collections?search_text=Playwatch${grades.map(g => `&grades[]=${g}`).join('')}&page=1&per_page=12`;
+    const urlWithSubjects = `/v2/search_resource_collections?search_text=Playwatch&subjects[]=${encodeURIComponent(subject?.name || '')}&page=1&per_page=12`;
     // Build URL with subject and sort parameters
-    let url = `/v2/search_resource_collections?subjects[]=${encodeURIComponent(subject.name)}&page=1&per_page=12`;
+    let url = subjectId === 0 ? urlWithAll : urlWithSubjects;
     
     // Add sort parameter if provided
     if (sortBy) {

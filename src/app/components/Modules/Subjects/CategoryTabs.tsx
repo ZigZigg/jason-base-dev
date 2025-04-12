@@ -1,6 +1,6 @@
 "use client"
 import BaseButton from '@/app/atomics/button/BaseButton'
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, useMemo } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import { SubjectData } from '@/app/lib/modules/subjects/data'
 type Props = {
@@ -17,6 +17,19 @@ const CategoryTabs = ({ activeId, onTabChange, subjects }: Props) => {
   const buttonRefs = useRef<Map<number, HTMLElement>>(new Map())
   const [isMobile, setIsMobile] = useState(false)
   
+  const allSubjects = useMemo(() => {
+    const currentSubject = subjects.filter((subject) => subject.name !== 'CTE')
+    return [
+      {
+        id: 0,
+        name: 'All Playwatch',
+        is_top_level: true
+      },
+      ...currentSubject
+    ]
+
+  },[subjects])
+
   // Check if device is mobile
   useEffect(() => {
     const checkIsMobile = () => {
@@ -42,6 +55,7 @@ const CategoryTabs = ({ activeId, onTabChange, subjects }: Props) => {
       }
     }
   }, [pathname])
+  
   
   // Scroll to active tab when ID changes (only on mobile)
   useEffect(() => {
@@ -83,8 +97,8 @@ const CategoryTabs = ({ activeId, onTabChange, subjects }: Props) => {
       className='w-full flex flex-row items-center overflow-x-auto h-fit scrollbar-hide'
     >
         {
-            subjects.map((subject) => {
-                const isActive = subject.id === (activeId || currentActiveId)
+            allSubjects.map((subject) => {
+                const isActive = subject.id === (activeId === 0 ? 0 : activeId || currentActiveId)
                 
                 return (
                     <div 

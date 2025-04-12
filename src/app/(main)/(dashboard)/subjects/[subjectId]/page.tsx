@@ -40,9 +40,12 @@ const SubjectModulePage = async ({ params, searchParams }: Props) => {
   const { subjectId } = await params;
   const currentSearchParams = await searchParams;
   const id = parseInt(subjectId);
-  
+
   // Fetch the subject data
-  const subject = await getSubjectById(id);
+  const subject = id === 0 ? {
+    name: 'All',
+    id: 0
+  } : await getSubjectById(id);
   
   // If subject doesn't exist, return 404
   if (!subject) {
@@ -75,7 +78,7 @@ const SubjectModulePage = async ({ params, searchParams }: Props) => {
       >
         <div className="absolute inset-0 flex items-center">
           <span className="font-[700] text-[20px] xl:text-[40px] leading-[120%] text-white ml-[16px] md:ml-[64px]">
-            Explore {subject.name}
+            Explore {subject.id === 0 ? 'All Playwatch Resources' : subject.name}
           </span>
         </div>
       </div>
