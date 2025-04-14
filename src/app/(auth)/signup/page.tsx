@@ -42,7 +42,7 @@ export default function SignUpPage() {
         onNotification(result?.error, 'error');
       } else {
         message.success('SignUp successful!');
-        router.push('/subjects');
+        router.push('/subjects/0');
       }
     } catch (error) {
       console.error('SignUp error:', error);

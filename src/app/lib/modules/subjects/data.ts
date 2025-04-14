@@ -17,6 +17,8 @@ export interface ResourceAsset {
   type: {
     id: number;
     name: string;
+    extension: string;
+    mime_type: string;
   }
 }
 
@@ -56,6 +58,9 @@ export interface ResourceCollection {
   keywords: ResourceKeyword[];
   grades: ResourceGrade[];
   subjects: ResourceSubject[];
+  links: {
+    resource_collection: string;
+};
 }
 
 export interface ResourceCollectionResponse {
@@ -113,8 +118,8 @@ export async function getSubjectResources(
     const session = await getServerSession(authOptions);
     const apiClient = new ApiClient(session?.accessToken);
     const grades = ['PreK', 'K', '1', '2'];
-    const urlWithAll = `/v2/search_resource_collections?search_text=Playwatch${grades.map(g => `&grades[]=${g}`).join('')}&page=1&per_page=12`;
-    const urlWithSubjects = `/v2/search_resource_collections?search_text=Playwatch&subjects[]=${encodeURIComponent(subject?.name || '')}&page=1&per_page=12`;
+    const urlWithAll = `/v2/search_resource_collections?page=1&per_page=12${grades.map(g => `&grades[]=${g}`).join('')}`;
+    const urlWithSubjects = `/v2/search_resource_collections?subjects[]=${encodeURIComponent(subject?.name || '')}&page=1&per_page=12`;
     // Build URL with subject and sort parameters
     let url = subjectId === 0 ? urlWithAll : urlWithSubjects;
     
@@ -144,7 +149,7 @@ export async function getSubjectResources(
         ...resource,
         thumbnail
       };
-    });
+    }).filter(resource => !['33159','32466','37816'].includes(resource.id.toString()));
 
     return {
       subjects,

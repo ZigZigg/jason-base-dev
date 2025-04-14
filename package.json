@@ -15,6 +15,7 @@
     "axios": "^1.8.4",
     "less": "^4.2.2",
     "less-loader": "^12.2.0",
+    "lodash": "^4.17.21",
     "next": "15.2.1",
     "next-auth": "^4.24.11",
     "next-with-less": "^3.0.1",
@@ -28,6 +29,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
+    "@types/lodash": "^4.17.16",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

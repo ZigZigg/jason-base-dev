@@ -7,6 +7,7 @@ import { useCallback } from 'react';
 export default function Sidebar() {
   // Get route path from client
   const pathname = usePathname();
+
   const menuItems = [
     {
       id: 1,
@@ -24,41 +25,41 @@ export default function Sidebar() {
         <Image src="/assets/category/search-menu.svg" alt="subject-icon" width={48} height={48} />
       ),
     },
-    {
-      id: 2,
-      title: 'Grades',
-      path: '/grade',
-      icon: (
-        <Image src="/assets/category/grade-menu.svg" alt="subject-icon" width={48} height={48} />
-      ),
-    },
-    {
-      id: 3,
-      title: 'Curriculum',
-      path: '/curriculum',
-      icon: (
-        <Image
-          src="/assets/category/curriculum-menu.svg"
-          alt="subject-icon"
-          width={48}
-          height={48}
-        />
-      ),
-    },
-    {
-      id: 4,
-      title: 'Learning Path',
-      path: '/learning-path',
-      icon: (
-        <Image src="/assets/category/learning-menu.svg" alt="subject-icon" width={48} height={48} />
-      ),
-    },
-    {
-      id: 5,
-      title: 'For Fun',
-      path: '/for-fun',
-      icon: <Image src="/assets/category/fun-menu.svg" alt="subject-icon" width={48} height={48} />,
-    },
+    // {
+    //   id: 2,
+    //   title: 'Grades',
+    //   path: '/grade',
+    //   icon: (
+    //     <Image src="/assets/category/grade-menu.svg" alt="subject-icon" width={48} height={48} />
+    //   ),
+    // },
+    // {
+    //   id: 3,
+    //   title: 'Curriculum',
+    //   path: '/curriculum',
+    //   icon: (
+    //     <Image
+    //       src="/assets/category/curriculum-menu.svg"
+    //       alt="subject-icon"
+    //       width={48}
+    //       height={48}
+    //     />
+    //   ),
+    // },
+    // {
+    //   id: 4,
+    //   title: 'Learning Path',
+    //   path: '/learning-path',
+    //   icon: (
+    //     <Image src="/assets/category/learning-menu.svg" alt="subject-icon" width={48} height={48} />
+    //   ),
+    // },
+    // {
+    //   id: 5,
+    //   title: 'For Fun',
+    //   path: '/for-fun',
+    //   icon: <Image src="/assets/category/fun-menu.svg" alt="subject-icon" width={48} height={48} />,
+    // },
   ];
 
   const onChangePath = useCallback((path: string) => {

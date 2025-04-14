@@ -4,12 +4,14 @@ import { useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { IRoute, systemRoutes } from '@/app/utils/helpers';
 import Image from 'next/image';
+import { useBreadcrumb } from '@/app/providers/BreadcrumbProvider';
 const BreadcrumbComponent = () => {
   const router = useRouter();
   const pathName = usePathname();
   const navigate = (path: string) => {
     router.push(path);
   };
+  const {items: breadcrumbItems} = useBreadcrumb()
 
   const [items, setItems] = useState([
     {
@@ -20,9 +22,13 @@ const BreadcrumbComponent = () => {
   useEffect(() => {
     const addItems: any = [];
     const paths = pathName.split('/').filter((path) => path);
+
     if (!paths?.length) return;
     const getMatchPaths = (routes: IRoute[], pathIndex: number) => {
-      const route = routes.find((route) => route.path && route.path.includes(paths[pathIndex]));
+      const route = routes.find((route) => {
+        return route.path && route.path.includes(paths[pathIndex])
+      })
+
       if (!route) return;
 
       addItems.push({
@@ -42,6 +48,22 @@ const BreadcrumbComponent = () => {
 
     getMatchPaths(systemRoutes, 0);
 
+    if(breadcrumbItems?.length) {
+      breadcrumbItems.forEach((item) => {
+        addItems.push({
+          title: (
+            <span
+              onClick={() => {
+                navigate(item.path!);
+              }}
+              className='text-[#0F72F3] font-[600]'
+            >
+              {item.title}
+            </span>
+          ),
+        })
+      })
+    }
     setItems([
       {
         title: (
@@ -61,7 +83,7 @@ const BreadcrumbComponent = () => {
       },
       ...addItems,
     ]);
-  }, [pathName]);
+  }, [pathName, breadcrumbItems]);
 
   return (
     <Breadcrumb

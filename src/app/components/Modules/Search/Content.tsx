@@ -18,7 +18,7 @@ const SearchContent = async ({ searchParams }: SearchContentProps) => {
   const hasResults = results && results.length > 0;
 
   return (
-    <div className="xl:w-[1416px] h-auto flex flex-col justify-center items-center py-[32px] px-[16px] xl:px-[0px]">
+    <div className="xl:w-[1280px] h-auto flex flex-col justify-center items-center py-[32px] px-[16px] xl:px-[0px]">
       {hasResults && <SearchSorting total={total} />}
 
       {hasResults ? (

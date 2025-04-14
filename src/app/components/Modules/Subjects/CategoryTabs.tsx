@@ -22,7 +22,7 @@ const CategoryTabs = ({ activeId, onTabChange, subjects }: Props) => {
     return [
       {
         id: 0,
-        name: 'All Playwatch',
+        name: 'All',
         is_top_level: true
       },
       ...currentSubject

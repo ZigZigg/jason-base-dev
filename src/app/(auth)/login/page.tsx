@@ -38,7 +38,7 @@ export default function LoginPage() {
         onNotification(result?.error, 'error');
       } else {
         message.success('Login successful!');
-        router.push('/subjects');
+        router.push('/subjects/0');
       }
     } catch (error) {
       console.error('Login error:', error);

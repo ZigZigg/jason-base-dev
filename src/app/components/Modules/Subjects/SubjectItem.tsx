@@ -17,7 +17,7 @@ const SubjectItem = ({ id, item }: Props) => {
     : item || subjectItemData[0];
 
   return (
-    <Link href={`/subjects/items/${subjectItem.id}`} className="block">
+    <Link href={`/resource/${subjectItem.id}`} className="block">
       <div className="w-full rounded-[16px] md:rounded-[24px] flex flex-col transition-transform hover:scale-[1.02] cursor-pointer">
         <Image
           src={subjectItem.imageUrl}

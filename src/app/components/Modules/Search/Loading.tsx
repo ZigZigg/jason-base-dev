@@ -6,7 +6,7 @@ import { Skeleton } from 'antd';
 
 const LoadingSearch = () => {
   return (
-    <div className="xl:w-[1416px] h-auto flex flex-col justify-center items-center py-[32px] px-[16px] xl:px-[0px]">
+    <div className="xl:w-[1280px] h-auto flex flex-col justify-center items-center py-[32px] px-[16px] xl:px-[0px]">
       {/* Generate 4 skeleton items */}
       <div className="flex flex-col py-[24px] gap-[24px] w-full">
         {[...Array(4)].map((_, index) => (

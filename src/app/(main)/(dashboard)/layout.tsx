@@ -37,7 +37,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               />
               <Link 
                 className="text-[#667085]! font-[400] text-sm" 
-                href="/subjects"
+                href="/subjects/0"
               >
                 Back to Subjects
               </Link>

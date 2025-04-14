@@ -71,7 +71,7 @@ const SubjectModuleContent = ({
           ...resource,
           thumbnail
         };
-      });
+      }).filter(resource => !['33159','32466','37816'].includes(resource.id.toString()));
       setAllResources(prev => [...prev, ...processedResources]);
       setPagination({
         currentPage: data.current_page,

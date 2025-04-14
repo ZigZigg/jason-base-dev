@@ -1,6 +1,7 @@
 'use client'
 import { SearchResource } from '@/app/lib/interfaces/search'
 import Image from 'next/image'
+import Link from 'next/link'
 import React, { useState, useRef, useEffect } from 'react'
 
 
@@ -36,7 +37,7 @@ const SearchContentItem = (props: Props) => {
     }
 
   return (
-    <div className='w-full h-auto rounded-[8px] bg-[#FFFFFF] flex flex-col'>
+    <Link href={`/resource/${item.id}`} className='w-full h-auto rounded-[8px] bg-[#FFFFFF] flex flex-col'>
         <div className='block w-full bg-[#DDE7F9] py-[10px] px-[16px] rounded-t-[8px]'>
             <span className='text-[16px] md:text-[18px] font-[600] text-[#0F72F3]'>{item.title}</span>
         </div>
@@ -84,7 +85,7 @@ const SearchContentItem = (props: Props) => {
                 </div>
             </div>
         </div>
-    </div>
+    </Link>
   )
 }
 
