@@ -11,14 +11,18 @@ interface VideoSidebarItemProps {
   video: VideoResourceCollection;
   isSelected: boolean;
   onSelect: () => void;
+  shouldLoadMetadata?: boolean;
 }
 
-const VideoSidebarItem = ({ video, isSelected, onSelect }: VideoSidebarItemProps) => {
+const VideoSidebarItem = ({ video, isSelected, onSelect, shouldLoadMetadata = true }: VideoSidebarItemProps) => {
   const [duration, setDuration] = useState<number | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   // Get video duration when component mounts or video url changes
   useEffect(() => {
+    // Only load metadata if shouldLoadMetadata is true
+    if (!shouldLoadMetadata) return;
+
     const videoSrc = video.videoObject?.file_uri;
     if (!videoSrc) return;
 
@@ -45,7 +49,6 @@ const VideoSidebarItem = ({ video, isSelected, onSelect }: VideoSidebarItemProps
     videoElement.addEventListener('error', handleError);
     
     // Set crossOrigin to allow loading from different domains
-    videoElement.crossOrigin = 'anonymous';
     videoElement.src = videoSrc;
     videoElement.preload = 'metadata';
     videoElement.load();
@@ -57,11 +60,11 @@ const VideoSidebarItem = ({ video, isSelected, onSelect }: VideoSidebarItemProps
       videoElement.removeAttribute('src');
       videoElement.load();
     };
-  }, [video.videoObject?.file_uri]);
+  }, [video.videoObject?.file_uri, shouldLoadMetadata]);
 
   // Format duration from seconds to MM:SS
   const formatDuration = (seconds: number | null): string => {
-    if (!seconds || isNaN(seconds)) return "0:00";
+    if (!seconds || isNaN(seconds)) return "--:--";
     
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = Math.floor(seconds % 60);

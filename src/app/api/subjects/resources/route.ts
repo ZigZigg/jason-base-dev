@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
     // Build the URL for the external API
     const grades = ['PreK', 'K', '1', '2'];
     const urlWithAll = `/v2/search_resource_collections?${grades.map(g => `&grades[]=${g}`).join('')}`;
-    const urlWithSubjects = `/v2/search_resource_collections?subjects[]=${encodeURIComponent(subjectName)}`;
+    const urlWithSubjects = `/v2/search_resource_collections?subjects[]=${encodeURIComponent(subjectName)}${grades.map(g => `&grades[]=${g}`).join('')}`;
     let url = subjectName === 'All' ? urlWithAll : urlWithSubjects;
     
     url += `&page=${page}&per_page=${perPage}`

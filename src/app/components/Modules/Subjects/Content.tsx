@@ -14,6 +14,7 @@ interface PaginationInfo {
 interface SubjectModuleContentProps {
   resources: ResourceCollection[];
   subjectName: string;
+  subjectId: number;
   initialPagination?: PaginationInfo;
   sortBy?: string;
 }
@@ -21,6 +22,7 @@ interface SubjectModuleContentProps {
 const SubjectModuleContent = ({ 
   resources = [], 
   subjectName,
+  subjectId,
   initialPagination = { currentPage: 1, lastPage: 1, total: 0 },
   sortBy = 'created_at:desc'
 }: SubjectModuleContentProps) => {
@@ -163,6 +165,10 @@ const SubjectModuleContent = ({
         {allResources.map((resource) => (
           <SubjectItem 
             key={resource.id} 
+            parentSubject={{
+              id: subjectId,
+              name: subjectName
+            }}
             item={{
               id: parseInt(resource.id) || 0,
               imageUrl: resource.thumbnail || '/assets/subject-category.webp',
@@ -178,6 +184,10 @@ const SubjectModuleContent = ({
       {hasMore && (
         <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 md:gap-x-[32px] gap-y-[24px] md:gap-y-[24px] opacity-0">
           <SubjectItem 
+            parentSubject={{
+              id: subjectId,
+              name: subjectName
+            }}
             item={{
               id: 0,
               imageUrl: '/assets/subject-category.webp',

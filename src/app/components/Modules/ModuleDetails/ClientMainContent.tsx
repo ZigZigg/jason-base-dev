@@ -13,37 +13,51 @@ type Props = {
     results: VideoResourceCollection[];
     resource: ResourceCollection | null;
   };
-}
+  parentSubject: {
+    id: number;
+    name: string;
+  };
+};
 
-const ClientMainContent = ({ initialData }: Props) => {
+const ClientMainContent = ({ initialData, parentSubject }: Props) => {
   const [videos] = useState<VideoResourceCollection[]>(initialData?.results || []);
-  const {setItems} = useBreadcrumb()
+  const { setItems } = useBreadcrumb();
   const [selectedVideo, setSelectedVideo] = useState<VideoResourceCollection | null>(
     videos.length > 0 ? videos[0] : null
   );
 
-
   const handleSelectVideo = (video: VideoResourceCollection) => {
     // Find the matching video collection
-    const matchingVideo = videos.find(v => 
-      v.id === video.id
-    );
+    const matchingVideo = videos.find((v) => v.id === video.id);
     if (matchingVideo) {
       setSelectedVideo(matchingVideo);
     }
   };
 
   useEffect(() => {
+    let levelObject = null;
+    if (parentSubject.name === 'Search') {
+      levelObject = {
+        title: 'Search',
+        path: `/search`,
+      };
+    } else {
+      levelObject = {
+        title: parentSubject.name,
+        path: `/subjects/${parentSubject.id}`,
+      };
+    }
     setItems([
+      levelObject,
       {
         title: initialData.resource?.title || '',
         path: `/resource/${initialData.resource?.id}`,
       },
     ]);
     return () => {
-      setItems([])
-    }
-  }, [initialData.resource]);
+      setItems([]);
+    };
+  }, [initialData.resource, parentSubject]);
 
   if (videos.length === 0) {
     return (
@@ -53,14 +67,13 @@ const ClientMainContent = ({ initialData }: Props) => {
     );
   }
 
-
   return (
     <>
-      <div id='video-sidebar' className="w-full md:w-[320px] order-1 md:order-2 z-10">
-        <VideoSidebar 
-          videos={videos} 
-          selectedVideoId={selectedVideo?.id} 
-          onSelectVideo={handleSelectVideo} 
+      <div id="video-sidebar" className="w-full md:w-[320px] order-1 md:order-2 z-10">
+        <VideoSidebar
+          videos={videos}
+          selectedVideoId={selectedVideo?.id}
+          onSelectVideo={handleSelectVideo}
         />
       </div>
 
@@ -76,4 +89,4 @@ const ClientMainContent = ({ initialData }: Props) => {
   );
 };
 
-export default ClientMainContent; 
+export default ClientMainContent;

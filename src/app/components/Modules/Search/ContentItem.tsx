@@ -32,12 +32,14 @@ const SearchContentItem = (props: Props) => {
         return () => window.removeEventListener('resize', checkOverflow)
     }, [])
 
-    const toggleDescription = () => {
+    const toggleDescription = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault()
+        e.stopPropagation()
         setIsExpanded(!isExpanded)
     }
 
   return (
-    <Link href={`/resource/${item.id}`} className='w-full h-auto rounded-[8px] bg-[#FFFFFF] flex flex-col'>
+    <Link href={`/resource/${item.id}?parentSubjectId=0&parentSubjectName=Search`} className='w-full h-auto rounded-[8px] bg-[#FFFFFF] flex flex-col'>
         <div className='block w-full bg-[#DDE7F9] py-[10px] px-[16px] rounded-t-[8px]'>
             <span className='text-[16px] md:text-[18px] font-[600] text-[#0F72F3]'>{item.title}</span>
         </div>
@@ -65,6 +67,7 @@ const SearchContentItem = (props: Props) => {
                     </div>
                     {(isOverflowing || isExpanded) && (
                         <button 
+                            id='show-more-button'
                             onClick={toggleDescription} 
                             className="text-[#0F72F3] font-[500] text-[14px] ml-1 mt-1 hover:underline"
                         >

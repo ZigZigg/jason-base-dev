@@ -119,7 +119,7 @@ export async function getSubjectResources(
     const apiClient = new ApiClient(session?.accessToken);
     const grades = ['PreK', 'K', '1', '2'];
     const urlWithAll = `/v2/search_resource_collections?page=1&per_page=12${grades.map(g => `&grades[]=${g}`).join('')}`;
-    const urlWithSubjects = `/v2/search_resource_collections?subjects[]=${encodeURIComponent(subject?.name || '')}&page=1&per_page=12`;
+    const urlWithSubjects = `/v2/search_resource_collections?subjects[]=${encodeURIComponent(subject?.name || '')}${grades.map(g => `&grades[]=${g}`).join('')}&page=1&per_page=12`;
     // Build URL with subject and sort parameters
     let url = subjectId === 0 ? urlWithAll : urlWithSubjects;
     
@@ -131,6 +131,7 @@ export async function getSubjectResources(
     const resources = await apiClient.get<ResourceCollectionResponse>(url, {
       next: { revalidate: 1800 }, // Cache for 30 minutes
     });
+
 
     const result = resources?.results || [] ;
     const baseImageUrl = process.env.NEXT_PUBLIC_ASSETS_BASE_URL || ''; // Fallback URL

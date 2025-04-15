@@ -72,7 +72,7 @@ export default function Sidebar() {
         return (
           <div
             key={item.id}
-            className={`w-fit md:w-full md:aspect-[126/100] rounded-[16px] bg-white ${pathname.includes(item.path) ? 'border-[1px] border-[#0F72F3] opacity-100' : 'opacity-50'}  cursor-pointer flex flex-row md:flex-col items-center justify-center gap-[8px]  md:gap-[4px] py-[9px] px-[12px]`}
+            className={`flex-1 md:flex-none w-fit md:w-full md:aspect-[126/100] rounded-[16px] bg-white ${pathname.includes(item.path) ? 'border-[1px] border-[#0F72F3] opacity-100' : 'opacity-50'}  cursor-pointer flex flex-row md:flex-col items-center justify-center gap-[8px]  md:gap-[4px] py-[9px] px-[12px]`}
             onClick={() => onChangePath(item.path)}
           >
             <div className="w-[20px] h-[20px] md:w-[48px] md:h-[48px]">{item.icon}</div>

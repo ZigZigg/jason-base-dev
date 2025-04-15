@@ -37,7 +37,7 @@ const BreadcrumbComponent = () => {
             onClick={() => {
               if (!route.children?.length) navigate(route.path!);
             }}
-            className='text-[#0F72F3] font-[600]'
+            className='text-[#0F72F3] font-[600] cursor-pointer'
           >
             {route.breadcrumbName}
           </span>
@@ -56,7 +56,7 @@ const BreadcrumbComponent = () => {
               onClick={() => {
                 navigate(item.path!);
               }}
-              className='text-[#0F72F3] font-[600]'
+              className='text-[#0F72F3] font-[600] cursor-pointer'
             >
               {item.title}
             </span>

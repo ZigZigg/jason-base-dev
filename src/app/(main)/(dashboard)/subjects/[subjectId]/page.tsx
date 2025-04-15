@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   
   if (!subject) {
     return {
-      title: 'Subject Not Found',
+      title: id === 0 ? 'All Resources' : 'Subject Not Found',
     };
   }
   
@@ -86,6 +86,7 @@ const SubjectModulePage = async ({ params, searchParams }: Props) => {
       <SubjectModuleContent 
         resources={resources} 
         subjectName={subject.name}
+        subjectId={id}
         initialPagination={initialPagination}
         sortBy={sortBy}
       />

@@ -5,9 +5,14 @@ import { Empty } from 'antd';
 
 type Props = {
   id: string;
+  parentSubject:{
+    id: number;
+    name: string;
+  }
 }
 
-const MainContentResource = async ({ id }: Props) => {
+const MainContentResource = async ({ id, parentSubject }: Props) => {
+
   // Get allowed IDs from environment variable
   const allowedIds = process.env.NEXT_PUBLIC_FIX_PLAYWATCH_IDS?.split(',') || [];
   const allowedIds2ndLayer = process.env.NEXT_PUBLIC_FIX_2ND_LAYER_PLAYWATCH_IDS?.split(',') || [];
@@ -24,7 +29,7 @@ const MainContentResource = async ({ id }: Props) => {
   const resource = await getListVideosByResourceId(id);
   
   return (
-    <ClientMainContent initialData={resource} />
+    <ClientMainContent initialData={resource} parentSubject={parentSubject} />
   );
 };
 

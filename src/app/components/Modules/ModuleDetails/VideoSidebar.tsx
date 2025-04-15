@@ -59,6 +59,11 @@ const VideoSidebar = ({ videos, selectedVideoId, onSelectVideo }: VideoSidebarPr
     setIsExpanded(!isExpanded);
   };
 
+  // Determine if we should load metadata based on device and expanded state
+  // On desktop, always load metadata
+  // On mobile, only load when expanded
+  const shouldLoadMetadata = !isMobile || isExpanded;
+
   return (
     <div
       id="video-sidebar-container"
@@ -97,6 +102,7 @@ const VideoSidebar = ({ videos, selectedVideoId, onSelectVideo }: VideoSidebarPr
             key={video.id}
             video={video}
             isSelected={video.id === selectedVideoId}
+            shouldLoadMetadata={shouldLoadMetadata}
             onSelect={() => {
               onSelectVideo(video);
               setIsExpanded(false);

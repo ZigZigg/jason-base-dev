@@ -8,16 +8,20 @@ import Link from 'next/link';
 type Props = {
   id?: number;
   item?: (typeof subjectItemData)[0];
+  parentSubject:{
+    id: number;
+    name: string;
+  }
 };
 
-const SubjectItem = ({ id, item }: Props) => {
+const SubjectItem = ({ id, item, parentSubject }: Props) => {
   // If an id is provided, find the item in mock data, otherwise use provided item or first item
   const subjectItem = id
     ? subjectItemData.find((item) => item.id === id) || subjectItemData[0]
     : item || subjectItemData[0];
 
   return (
-    <Link href={`/resource/${subjectItem.id}`} className="block">
+    <Link href={`/resource/${subjectItem.id}?parentSubjectId=${parentSubject.id}&parentSubjectName=${parentSubject.name}`} className="block">
       <div className="w-full rounded-[16px] md:rounded-[24px] flex flex-col transition-transform hover:scale-[1.02] cursor-pointer">
         <Image
           src={subjectItem.imageUrl}
