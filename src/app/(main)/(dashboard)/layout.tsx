@@ -2,13 +2,8 @@
 
 import { Layout } from 'antd';
 import Sidebar from '@/app/components/ui/Sidebar';
-import Image from 'next/image';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname();
-  const isSubjectDetailPage = pathname?.match(/\/subjects\/[^/]+$/);
   
   return (
     <Layout
@@ -25,25 +20,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <Sidebar />
         </div>
         <div className="flex flex-col w-full flex-1 min-w-0">
-          {/* Back link - shown only on mobile for subject detail pages */}
-          {/* {isSubjectDetailPage && (
-            <div id="back-to-main" className="flex items-center gap-1.5 mb-[14px] md:hidden">
-              <Image 
-                className="rotate-270" 
-                src="/assets/icon/up-icon.svg" 
-                alt="Back Icon" 
-                width={14} 
-                height={6} 
-              />
-              <Link 
-                className="text-[#667085]! font-[400] text-sm" 
-                href="/subjects/0"
-              >
-                Back to Subjects
-              </Link>
-            </div>
-          )} */}
-          
           {children}
         </div>
       </div>

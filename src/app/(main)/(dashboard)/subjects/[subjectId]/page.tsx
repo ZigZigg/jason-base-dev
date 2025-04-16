@@ -5,7 +5,8 @@ import React from 'react'
 import { getSubjectById, getSubjectResources } from '@/app/lib/modules/subjects/data'
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { mockThumbnail } from '../page'
+import { mockThumbnail } from '@/app/components/Modules/Subjects/subjectData'
+
 
 type Props = {
   params: Promise<{

@@ -1,11 +1,30 @@
-export const subjectData = [
-  { id: 1, label: "Physical Science", url: "https://assets.jason.org/resource_assets/53704/32740/LEVL_Playwatch_Thumb.png" },
-  { id: 2, label: "Earth & Space", url: "https://assets.jason.org/resource_assets/53704/32740/LEVL_Playwatch_Thumb.png" },
-  { id: 3, label: "Life Science", url: "https://assets.jason.org/resource_assets/53704/32740/LEVL_Playwatch_Thumb.png" },
-  { id: 4, label: "Engineering & Design", url: "https://assets.jason.org/resource_assets/53704/32740/LEVL_Playwatch_Thumb.png" },
-  { id: 5, label: "Entrepreneuship", url: "https://assets.jason.org/resource_assets/53704/32740/LEVL_Playwatch_Thumb.png" },
-  { id: 6, label: "Inter-discriplinary", url: "https://assets.jason.org/resource_assets/53704/32740/LEVL_Playwatch_Thumb.png" },
-  { id: 7, label: "Math", url: "https://assets.jason.org/resource_assets/53704/32740/LEVL_Playwatch_Thumb.png" },
-  { id: 8, label: "Technology", url: "https://assets.jason.org/resource_assets/53704/32740/LEVL_Playwatch_Thumb.png" },
-  { id: 9, label: "Share Best Practices", url: "https://assets.jason.org/resource_assets/53704/32740/LEVL_Playwatch_Thumb.png" }
-]; 
+export const mockThumbnail = {
+  1:{
+    image: '/assets/subjects/earth-science.jpg',
+    banner: '/assets/subjects/earth-science-banner.jpg',
+  },
+  87:{
+    image: '/assets/subjects/life-science.jpg',
+    banner: '/assets/subjects/life-science-banner.jpg',
+  },
+  188:{
+    image: '/assets/subjects/physical-science.jpg',
+    banner: '/assets/subjects/physical-science-banner.jpg',
+  },
+  317:{
+    image: '/assets/subjects/math.jpg',
+    banner: '/assets/subjects/math-banner.jpg',
+  },
+  323:{
+    image: '/assets/subjects/cte.jpg',
+    banner: '/assets/subjects/cte-banner.jpg',
+  },
+  343:{
+    image: '/assets/subjects/social-geography.jpg',
+    banner: '/assets/subjects/social-geography-banner.jpg',
+  },
+  344:{
+    image: '/assets/subjects/technology.jpg',
+    banner: '/assets/subjects/technology-banner.jpg',
+  }
+}
