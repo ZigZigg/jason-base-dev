@@ -1,7 +1,7 @@
 import React from 'react';
-import { getListVideosByResourceId } from '@/app/lib/modules/resource/data';
+import { getListSubCollectionsByResourceId, getListVideosByResourceId } from '@/app/lib/modules/resource/data';
 import ClientMainContent from './ClientMainContent';
-import { Empty } from 'antd';
+import SubCollection from '../SubCollection/SubCollection';
 
 type Props = {
   id: string;
@@ -18,10 +18,10 @@ const MainContentResource = async ({ id, parentSubject }: Props) => {
   const allowedIds2ndLayer = process.env.NEXT_PUBLIC_FIX_2ND_LAYER_PLAYWATCH_IDS?.split(',') || [];
   // Check if current ID is in the allowed list
   if (!allowedIds.includes(id) && !allowedIds2ndLayer.includes(id)) {
+    const result = await getListSubCollectionsByResourceId(id);
+
     return (
-      <div className="flex justify-center items-center h-[400px] w-full">
-        <Empty description="Navigation design in-progress" />
-      </div>
+      <SubCollection module={result} parentSubject={parentSubject} />
     );
   }
   

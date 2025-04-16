@@ -36,6 +36,9 @@ const ClientMainContent = ({ initialData, parentSubject }: Props) => {
 
   useEffect(() => {
     let levelObject = null;
+    // get search path from url
+    const searchPath = window.location.search
+
     if (parentSubject.name === 'Search') {
       levelObject = {
         title: 'Search',
@@ -51,7 +54,7 @@ const ClientMainContent = ({ initialData, parentSubject }: Props) => {
       levelObject,
       {
         title: initialData.resource?.title || '',
-        path: `/resource/${initialData.resource?.id}`,
+        path: `/resource/${initialData.resource?.id}${searchPath}`,
       },
     ]);
     return () => {

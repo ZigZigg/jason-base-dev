@@ -2,23 +2,28 @@
 
 import Image from 'next/image';
 import React from 'react';
-import { subjectItemData } from './subjectItemData';
 import Link from 'next/link';
+
+interface SubjectItemData {
+  id: number;
+  imageUrl: string;
+  label: string;
+  moduleCounts: number;
+  videoCounts: number;
+}
 
 type Props = {
   id?: number;
-  item?: (typeof subjectItemData)[0];
+  item: SubjectItemData;
   parentSubject:{
     id: number;
     name: string;
   }
 };
 
-const SubjectItem = ({ id, item, parentSubject }: Props) => {
+const SubjectItem = ({ item, parentSubject }: Props) => {
   // If an id is provided, find the item in mock data, otherwise use provided item or first item
-  const subjectItem = id
-    ? subjectItemData.find((item) => item.id === id) || subjectItemData[0]
-    : item || subjectItemData[0];
+  const subjectItem = item;
 
   return (
     <Link href={`/resource/${subjectItem.id}?parentSubjectId=${parentSubject.id}&parentSubjectName=${parentSubject.name}`} className="block">

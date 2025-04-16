@@ -2,6 +2,8 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../../auth";
 import ApiClient from "../../api";
 
+
+
 export interface SubjectData {
   id: number;
   name: string;
@@ -76,8 +78,8 @@ export async function getSubjectData(): Promise<SubjectData[]> {
 
   try {
     const data = await apiClient.get<SubjectData[]>("/v2/subjects", { next: { revalidate: 1800 } });
-    
-    return data;
+    const currentData = data.filter(subject => subject.name !== 'CTE');
+    return currentData;
   } catch (error) {
     console.error("Error fetching subject data:", error);
     // Return empty array instead of throwing to handle gracefully in UI
