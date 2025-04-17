@@ -211,11 +211,6 @@ const SubjectModuleContent = ({
         {!loading && hasMore && (
           <div className="text-gray-400 text-sm">Scroll to load more</div>
         )}
-        {!loading && !hasMore && allResources.length > 0 && (
-          <div className="text-gray-500 text-sm">
-            Showing all {pagination.total} resources
-          </div>
-        )}
         {error && (
           <div className="text-red-500 text-sm">{error}</div>
         )}

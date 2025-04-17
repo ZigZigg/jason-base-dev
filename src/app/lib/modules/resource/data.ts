@@ -45,6 +45,7 @@ interface ExtendedResourceAsset extends ResourceAsset {
 interface ChildCollection {
   id: string;
   title?: string;
+  title_prefix?: string;
   description?: string;
   type?: ResourceType;
   resource?: ResourceCollection;
@@ -141,6 +142,8 @@ export async function getListSubCollectionsByResourceId(
 
         return {
           ...child,
+          title: child.title_prefix ? `${child.title_prefix} - ${child.title}` : child.title,
+          description: child.description || child.resource?.description || '',
           thumbnail,
         };
       });

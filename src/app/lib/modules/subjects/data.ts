@@ -138,6 +138,13 @@ export async function getSubjectResources(
     const result = resources?.results || [] ;
     const baseImageUrl = process.env.NEXT_PUBLIC_ASSETS_BASE_URL || ''; // Fallback URL
     // Process resources to extract thumbnails
+    const idsToRemove = ['33159', '32466', '37816'];
+    
+    // Count how many items will be removed
+    const removedItemsCount = result.filter(resource => 
+      idsToRemove.includes(resource.id.toString())
+    ).length;
+    
     const processedResources = result.map(resource => {
       // Find the ThumbnailMedium asset if it exists
       const thumbnailAsset = resource.assets?.find(asset => 
@@ -152,7 +159,7 @@ export async function getSubjectResources(
         ...resource,
         thumbnail
       };
-    }).filter(resource => !['33159','32466','37816'].includes(resource.id.toString()));
+    }).filter(resource => !idsToRemove.includes(resource.id.toString()));
 
     return {
       subjects,
@@ -160,7 +167,7 @@ export async function getSubjectResources(
       pagination: {
         currentPage: resources?.current_page || 1,
         lastPage: resources?.last_page || 1,
-        total: resources?.total || 0,
+        total: (resources?.total || 0) - removedItemsCount,
       }
     };
   } catch (error) {

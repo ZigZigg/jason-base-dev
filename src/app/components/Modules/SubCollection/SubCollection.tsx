@@ -31,19 +31,25 @@ const SubCollection = ({
         title: 'Search',
         path: `/search`,
       };
-    } else {
+    } else if(searchPath) {
       levelObject = {
         title: parentSubject.name,
         path: `/subjects/${parentSubject.id}`,
       };
     }
-    setItems([
-      levelObject,
-      {
-        title: title || '',
-        path: `/resource/${module?.id}${searchPath}`,
-      },
-    ]);
+    
+    const breadcrumbItems = [];
+    
+    if (levelObject) {
+      breadcrumbItems.push(levelObject);
+    }
+    
+    breadcrumbItems.push({
+      title: module.title || '',
+      path: `/resource/${module.id}${searchPath}`,
+    });
+    
+    setItems(breadcrumbItems);
     return () => {
       setItems([]);
     };
