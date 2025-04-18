@@ -8,216 +8,216 @@ export const terminalTypes: Record<string, TerminalType> = {
     "Activity": {
         "id": 1,
         "name": "Activity",
-        "description": "Interactive exercises for student engagement and hands-on learning"
+        "description": "Hands-on learning exercises designed to reinforce concepts through student engagement and participation."
     },
     "Animation": {
         "id": 2,
         "name": "Animation",
-        "description": "Visual motion graphics that illustrate concepts and processes"
+        "description": "Short visual explanations that simplify complex topics and enhance student understanding through movement and storytelling."
     },
     "AnswerKey": {
         "id": 3,
         "name": "AnswerKey",
-        "description": "Solutions and explanations for assessments and activities"
+        "description": "Provides correct responses to exercises and assessments, supporting educators in grading and lesson follow-up."
     },
     "Article": {
         "id": 4,
         "name": "Article",
-        "description": "Informative text content covering educational topics"
+        "description": "Informational texts that offer background knowledge, real-world context, or extended learning opportunities."
     },
     "Assessment": {
         "id": 5,
         "name": "Assessment",
-        "description": "Evaluative tools to measure student understanding and progress"
+        "description": "Tools to measure student understanding and track progress across learning objectives."
     },
     "Diagram": {
         "id": 6,
         "name": "Diagram",
-        "description": "Visual representations of concepts, processes, or relationships"
+        "description": "Visual representations that break down processes, relationships, or systems to aid student comprehension."
     },
     "FastFact": {
         "id": 7,
         "name": "FastFact",
-        "description": "Quick, concise information snippets for rapid learning"
+        "description": "Bite-sized pieces of information perfect for reinforcing key ideas or sparking curiosity."
     },
     "FieldAssignment": {
         "id": 8,
         "name": "FieldAssignment",
-        "description": "Outdoor or real-world tasks for experiential learning"
+        "description": "Structured tasks encouraging students to explore and apply learning beyond the classroom."
     },
     "Gallery": {
         "id": 9,
         "name": "Gallery",
-        "description": "Collection of images or visual resources on a specific topic"
+        "description": "Curated collections of images or resources that offer visual context and enhance thematic exploration."
     },
     "Game": {
         "id": 10,
         "name": "Game",
-        "description": "Educational games that make learning interactive and fun"
+        "description": "Interactive learning tools that build skills and knowledge through play and challenge."
     },
     "InterdisciplinaryConnection": {
         "id": 11,
         "name": "InterdisciplinaryConnection",
-        "description": "Content that connects multiple subject areas or disciplines"
+        "description": "Highlights how concepts relate across subjects to support holistic learning and planning."
     },
     "JournalQuestion": {
         "id": 12,
         "name": "JournalQuestion",
-        "description": "Reflective prompts for student writing and critical thinking"
+        "description": "Prompts to encourage student reflection, critical thinking, and personal connection to the material."
     },
     "Laboratory": {
         "id": 13,
         "name": "Laboratory",
-        "description": "Experimental activities for scientific exploration and discovery"
+        "description": "Experiments and investigations that promote inquiry and application of scientific methods."
     },
     "LessonPlan": {
         "id": 14,
         "name": "LessonPlan",
-        "description": "Structured teaching guides with objectives, activities, and assessments"
+        "description": "Comprehensive guides for delivering content with defined objectives, activities, and materials."
     },
     "Photo": {
         "id": 15,
         "name": "Photo",
-        "description": "Photographic images for visual learning and reference"
+        "description": "Real-world images that provide visual support and deepen engagement with content."
     },
     "SupportingMaterial": {
         "id": 16,
         "name": "SupportingMaterial",
-        "description": "Supplementary resources that enhance primary learning content"
+        "description": "Additional content and tools that complement core lessons and enrich instruction."
     },
     "TeachersGuide": {
         "id": 17,
         "name": "TeachersGuide",
-        "description": "Instructional materials designed to assist educators"
+        "description": "Instructional overviews and suggestions designed to help educators implement content effectively."
     },
     "TechnologyTool": {
         "id": 18,
         "name": "TechnologyTool",
-        "description": "Digital applications or software for educational purposes"
+        "description": "Digital platforms or applications that enhance learning and streamline classroom management."
     },
     "Tool": {
         "id": 19,
         "name": "Tool",
-        "description": "Resources or instruments that facilitate learning or teaching"
+        "description": "Practical resources that assist in instruction, assessment, or classroom facilitation."
     },
     "Video": {
         "id": 20,
         "name": "Video",
-        "description": "Audiovisual content for dynamic learning experiences"
+        "description": "Engaging visual content that illustrates topics, tells stories, or explains concepts dynamically."
     },
     "VocabularyTerm": {
         "id": 21,
         "name": "VocabularyTerm",
-        "description": "Key terms and definitions essential to subject understanding"
+        "description": "Key words and definitions critical for building subject-area literacy."
     },
     "WebLink": {
         "id": 22,
         "name": "WebLink",
-        "description": "External online resources that complement learning materials"
+        "description": "Curated external resources that extend learning and offer further exploration opportunities."
     },
     "LessonPlanItem": {
         "id": 23,
         "name": "LessonPlanItem",
-        "description": "Individual component or activity within a lesson plan"
+        "description": "Individual components of a lesson plan, such as objectives or procedures, for customizable planning."
     },
     "LessonPlanSection": {
         "id": 24,
         "name": "LessonPlanSection",
-        "description": "Major division or segment within a comprehensive lesson plan"
+        "description": "Segmented parts of a lesson plan, like warm-ups or wrap-ups, to support structured teaching."
     },
     "LessonPlanSectionItem": {
         "id": 25,
         "name": "LessonPlanSectionItem",
-        "description": "Specific element within a lesson plan section"
+        "description": "Detailed elements within a lesson section that guide pacing and instructional flow."
     },
     "ResourceCollection": {
         "id": 26,
         "name": "ResourceCollection",
-        "description": "Curated group of related educational materials and resources"
+        "description": "Bundled sets of resources around a theme or topic for comprehensive lesson planning."
     },
     "AssessmentQuestion": {
         "id": 27,
         "name": "AssessmentQuestion",
-        "description": "Individual test items designed to evaluate specific knowledge"
+        "description": "Standalone questions to check understanding, build quizzes, or prompt class discussion."
     },
     "Curriculum": {
         "id": 28,
         "name": "Curriculum",
-        "description": "Comprehensive educational program with sequenced learning objectives"
+        "description": "Structured sequence of learning content aligned to educational standards and outcomes."
     },
     "CurriculumSection": {
         "id": 29,
         "name": "CurriculumSection",
-        "description": "Distinct unit or module within a broader curriculum"
+        "description": "Subdivisions within a curriculum that organize content into manageable units."
     },
     "InternationalConnection": {
         "id": 30,
         "name": "InternationalConnection",
-        "description": "Content that provides global context or cross-cultural perspectives"
+        "description": "Content that highlights global perspectives and encourages cultural understanding."
     },
     "MathConnection": {
         "id": 31,
         "name": "MathConnection",
-        "description": "Materials that integrate mathematical concepts with other subjects"
+        "description": "Resources linking math concepts to broader subject areas or real-life applications."
     },
     "ParentEngagement": {
         "id": 32,
         "name": "ParentEngagement",
-        "description": "Resources designed to involve families in student learning"
+        "description": "Tools and communication strategies to involve families in the learning process."
     },
     "DataSheet": {
         "id": 33,
         "name": "DataSheet",
-        "description": "Organized collections of facts, figures, or information for analysis"
+        "description": "Organized charts or tables presenting information for analysis, reference, or activity support."
     },
     "TeacherResourceCollection": {
         "id": 34,
         "name": "TeacherResourceCollection",
-        "description": "Compiled materials specifically for educator use and planning"
+        "description": "Curated materials tailored for educator use to enhance planning and instruction."
     },
     "HostResearcher": {
         "id": 35,
         "name": "HostResearcher",
-        "description": "Expert profiles or content from subject matter specialists"
+        "description": "Profiles and insights from subject-matter experts to inspire deeper learning and authenticity."
     },
     "Audio": {
         "id": 36,
         "name": "Audio",
-        "description": "Sound-based learning materials for auditory learners"
+        "description": "Sound-based content including stories, interviews, or instructions to support auditory learners."
     },
     "CurriculumSectionStage": {
         "id": 37,
         "name": "CurriculumSectionStage",
-        "description": "Progressive phase within a curriculum section's learning sequence"
+        "description": "Specific stages within a curriculum section to guide teaching progression."
     },
     "CurriculumLesson": {
         "id": 38,
         "name": "CurriculumLesson",
-        "description": "Individual instructional unit within a curriculum framework"
+        "description": "Individual lessons within the curriculum aligned to goals and learning objectives."
     },
     "CurriculumLessonStage": {
         "id": 39,
         "name": "CurriculumLessonStage",
-        "description": "Specific phase or component within a curriculum lesson"
+        "description": "Phases of a lesson (e.g., introduction, practice) for clear instructional scaffolding."
     },
     "CurriculumSectionIntroduction": {
         "id": 40,
         "name": "CurriculumSectionIntroduction",
-        "description": "Opening materials that prepare students for a curriculum section"
+        "description": "An overview that sets the stage for learning within a new curriculum section."
     },
     "CurriculumSectionConclusion": {
         "id": 41,
         "name": "CurriculumSectionConclusion",
-        "description": "Closing materials that summarize and assess a curriculum section"
+        "description": "A wrap-up that reviews key ideas and helps transition between sections."
     },
     "Image": {
         "id": 42,
         "name": "Image",
-        "description": "Visual representations including diagrams, charts, and illustrations"
+        "description": "Visuals that support content delivery, spark discussion, or illustrate core ideas."
     },
     "ContentCollection": {
         "id": 43,
         "name": "ContentCollection",
-        "description": "Organized compilation of related educational content and media"
+        "description": "Grouped resources that offer a cohesive approach to teaching specific topics."
     }
 };
