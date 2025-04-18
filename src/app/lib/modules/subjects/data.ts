@@ -21,6 +21,7 @@ export interface ResourceAsset {
     name: string;
     extension: string;
     mime_type: string;
+    friendly_name: string;
   }
 }
 

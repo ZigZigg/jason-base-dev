@@ -170,8 +170,8 @@ export async function getListSubCollectionsByResourceId(
       );
 
       // Convert to array of types with their resources
-      const resourceTypes = Object.entries(groupedByType).map(([typeName]) => ({
-        title: typeName,
+      const resourceTypes = Object.entries(groupedByType).map(([typeName, resources]) => ({
+        title: resources[0]?.type?.friendly_name || typeName,
         description: terminalTypes[typeName].description || '',
       }));
 
