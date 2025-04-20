@@ -68,6 +68,21 @@ function extractCollectionId(url: string): string {
   return match ? match[1] : '';
 }
 
+export async function getResourceById(resourceId: string): Promise<ResourceCollection> {
+  try {
+    const session = await getServerSession(authOptions);
+    const apiClient = new ApiClient(session?.accessToken);
+    const resourceUrl = `/v2/resources/${resourceId}`;
+    const resourceResponse = await apiClient.get<ResourceCollection>(resourceUrl, {
+      next: { revalidate: 1800 },
+    });
+    return resourceResponse;
+  } catch (error) {
+    console.error(`Error fetching resource with ID ${resourceId}:`, error);
+    throw error;
+  }
+}
+
 export async function getListSubCollectionsByResourceId(
   resourceId: string
 ): Promise<SubCollectionObjectResponse> {

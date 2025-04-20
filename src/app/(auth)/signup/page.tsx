@@ -5,14 +5,20 @@ import BaseInput from '@/app/atomics/input/BaseInput';
 import NotificationContext from '@/app/context/NotificationContext';
 import { Form, message } from 'antd';
 import { IconType } from 'antd/es/notification/interface';
+import { Metadata } from 'next';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useContext, useState } from 'react';
+export const metadata: Metadata = {
+    title: `Sign Up | Jason Learning`,
+    description: 'Create an account to access Jason Learning and start your learning journey.'
+};
 export default function SignUpPage() {
   const router = useRouter();
   const { api } = useContext(NotificationContext);
   const [isLoading, setIsLoading] = useState(false);
+
   const onNotification = (description: string, type: IconType = 'error') => {
     api!.open({
       message: '',

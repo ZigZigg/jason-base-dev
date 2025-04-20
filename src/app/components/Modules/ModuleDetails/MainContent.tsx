@@ -11,6 +11,8 @@ type Props = {
   }
 }
 
+
+
 const MainContentResource = async ({ id, parentSubject }: Props) => {
 
   // Get allowed IDs from environment variable

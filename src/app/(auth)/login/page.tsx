@@ -10,6 +10,11 @@ import Link from 'next/link';
 import { useContext, useState } from 'react';
 import NotificationContext from '@/app/context/NotificationContext';
 import { IconType } from 'antd/es/notification/interface';
+import { Metadata } from 'next';
+export const metadata: Metadata = {
+    title: `Log In | Jason Learning`,
+    description: 'Log in to your Jason Learning account to access your resources and continue learning.'
+};
 export default function LoginPage() {
   const router = useRouter();
   const { api } = useContext(NotificationContext);
