@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/lib/auth';
 import ApiClient from '@/app/lib/api';
+import { getSubjectData } from '@/app/lib/modules/subjects/data';
 
 export async function GET(request: NextRequest) {
   try {
@@ -22,11 +23,15 @@ export async function GET(request: NextRequest) {
         { status: 400 }
       );
     }
-    
+    const subjectList = await getSubjectData();
+    const subject = subjectList.find(subject => {
+      return subject.name === subjectName
+    })
+
     // Build the URL for the external API
     const grades = ['PreK', 'K', '1', '2'];
     const urlWithAll = `/v2/search_resource_collections?${grades.map(g => `&grades[]=${g}`).join('')}`;
-    const urlWithSubjects = `/v2/search_resource_collections?subjects[]=${encodeURIComponent(subjectName)}${grades.map(g => `&grades[]=${g}`).join('')}`;
+    const urlWithSubjects = `/v2/search_resource_collections?${subject?.filters.map(filter => `subjects[]=${encodeURIComponent(filter)}`).join('&')}${grades.map(g => `&grades[]=${g}`).join('')}`;
     let url = subjectName === 'All' ? urlWithAll : urlWithSubjects;
     
     url += `&page=${page}&per_page=${perPage}`

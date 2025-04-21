@@ -7,7 +7,8 @@ import ApiClient from "../../api";
 export interface SubjectData {
   id: number;
   name: string;
-  is_top_level: boolean;
+  filters: string[];
+  is_top_level?: boolean;
 }
 
 export interface ResourceAsset {
@@ -74,12 +75,38 @@ export interface ResourceCollectionResponse {
 }
 
 export async function getSubjectData(): Promise<SubjectData[]> {
-  const session = await getServerSession(authOptions);
-  const apiClient = new ApiClient(session?.accessToken);
+  // const session = await getServerSession(authOptions);
+  // const apiClient = new ApiClient(session?.accessToken);
 
   try {
-    const data = await apiClient.get<SubjectData[]>("/v2/subjects", { next: { revalidate: 1800 } });
-    const currentData = data.filter(subject => subject.name !== 'CTE');
+    // const data = await apiClient.get<SubjectData[]>("/v2/subjects", { next: { revalidate: 1800 } });
+    const currentData: SubjectData[] = [
+      {
+        id: 1,
+        name: "Literacy",
+        filters: ["Reading", "Writing"]
+      },{
+        id: 2,
+        name: "Math",
+        filters: ["Math"]
+      },{
+        id: 3,
+        name: "Skills and Strategies",
+        filters: ["Skills and Strategies"]
+      },{
+        id: 4,
+        name: "Science",
+        filters: ["Earth and Space Sciences", "Life Science", "Physical Science"]
+      },{
+        id: 5,
+        name: "Social Studies and Geography",
+        filters: ["Social Studies and Geography"]
+      },{
+        id: 6,
+        name: "Technology",
+        filters: ["Technology"]
+      }
+    ]
     return currentData;
   } catch (error) {
     console.error("Error fetching subject data:", error);
@@ -122,7 +149,7 @@ export async function getSubjectResources(
     const apiClient = new ApiClient(session?.accessToken);
     const grades = ['PreK', 'K', '1', '2'];
     const urlWithAll = `/v2/search_resource_collections?page=1&per_page=12${grades.map(g => `&grades[]=${g}`).join('')}`;
-    const urlWithSubjects = `/v2/search_resource_collections?subjects[]=${encodeURIComponent(subject?.name || '')}${grades.map(g => `&grades[]=${g}`).join('')}&page=1&per_page=12`;
+    const urlWithSubjects = `/v2/search_resource_collections?${subject?.filters.map(filter => `subjects[]=${encodeURIComponent(filter)}`).join('&')}${grades.map(g => `&grades[]=${g}`).join('')}&page=1&per_page=12`;
     // Build URL with subject and sort parameters
     let url = subjectId === 0 ? urlWithAll : urlWithSubjects;
     
