@@ -15,10 +15,10 @@ interface SubjectItemData {
 type Props = {
   id?: number;
   item: SubjectItemData;
-  parentSubject:{
+  parentSubject: {
     id: number;
     name: string;
-  }
+  };
 };
 
 const SubjectItem = ({ item, parentSubject }: Props) => {
@@ -26,7 +26,10 @@ const SubjectItem = ({ item, parentSubject }: Props) => {
   const subjectItem = item;
 
   return (
-    <Link href={`/resource/${subjectItem.id}?parentSubjectId=${parentSubject.id}&parentSubjectName=${parentSubject.name}`} className="block">
+    <Link
+      href={`/resource/${subjectItem.id}?parentSubjectId=${parentSubject.id}&parentSubjectName=${parentSubject.name}`}
+      className="block"
+    >
       <div className="w-full rounded-[16px] md:rounded-[24px] flex flex-col transition-transform hover:scale-[1.02] cursor-pointer">
         <Image
           src={subjectItem.imageUrl}

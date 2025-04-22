@@ -1,7 +1,7 @@
 'use client';
 
 import { Layout } from 'antd';
-import Sidebar from '@/app/components/ui/Sidebar';
+import Sidebar from '@/app/components/UI/Sidebar';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   

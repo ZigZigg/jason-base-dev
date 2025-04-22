@@ -21,13 +21,13 @@ const VideoSidebar = ({ videos, selectedVideoId, onSelectVideo }: VideoSidebarPr
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     // Initial check
     checkMobile();
-    
+
     // Add event listener for window resize
     window.addEventListener('resize', checkMobile);
-    
+
     // Clean up
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
@@ -40,7 +40,12 @@ const VideoSidebar = ({ videos, selectedVideoId, onSelectVideo }: VideoSidebarPr
   // Handle click outside to close sidebar
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (isMobile && isExpanded && sidebarRef.current && !sidebarRef.current.contains(event.target as Node)) {
+      if (
+        isMobile &&
+        isExpanded &&
+        sidebarRef.current &&
+        !sidebarRef.current.contains(event.target as Node)
+      ) {
         setIsExpanded(false);
       }
     };
@@ -68,11 +73,15 @@ const VideoSidebar = ({ videos, selectedVideoId, onSelectVideo }: VideoSidebarPr
     <div
       id="video-sidebar-container"
       ref={sidebarRef}
-      className={`w-full md:w-[320px] md:h-fit border-[#0F72F3] md:border-[#F2F4F7] border rounded-[12px] flex flex-col px-[16px] pt-[0px] gap-[4px] md:relative ${isExpanded && 'rounded-b-[0px]'} md:rounded-b-[12px]`}
+      className={`w-full md:w-[320px] md:h-fit border-[#0F72F3] md:border-[#F2F4F7] border rounded-[12px] flex flex-col px-[16px] pt-[0px] gap-[4px] md:relative ${
+        isExpanded && 'rounded-b-[0px]'
+      } md:rounded-b-[12px]`}
     >
       <div
         id="video-sidebar-header"
-        className={`w-full h-[66px] border-b-[#fff] ${isExpanded && '!border-b-[#EAECF0]'} md:border-b-[#EAECF0] border-b-[2px] flex flex-row items-center justify-between cursor-pointer bg-white rounded-t-[12px] z-10`}
+        className={`w-full h-[66px] border-b-[#fff] ${
+          isExpanded && '!border-b-[#EAECF0]'
+        } md:border-b-[#EAECF0] border-b-[2px] flex flex-row items-center justify-between cursor-pointer bg-white rounded-t-[12px] z-10`}
         onClick={toggleExpanded}
       >
         <span className="text-[16px] font-[700] text-[#475467]">Playwatch Videos</span>
@@ -86,7 +95,7 @@ const VideoSidebar = ({ videos, selectedVideoId, onSelectVideo }: VideoSidebarPr
           height={16}
         />
       </div>
-      
+
       <div
         id="video-sidebar-content"
         className={`flex flex-col overflow-y-auto transition-all duration-300 ease-in-out max-h-0 opacity-0 invisible md:max-h-[532px] md:opacity-100 md:visible ${

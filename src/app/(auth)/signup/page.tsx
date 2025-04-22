@@ -1,4 +1,4 @@
-import SignUpMain from '@/app/components/Modules/signup/SignUpMain';
+import SignUpMain from '@/app/components/Modules/SignUp/SignUpMain';
 import { Metadata } from 'next';
 export const metadata: Metadata = {
     title: `Sign Up | Jason Learning`,

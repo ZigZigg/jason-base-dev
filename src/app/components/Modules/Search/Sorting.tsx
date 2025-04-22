@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import { MenuProps } from 'antd';
 import Dropdown from 'antd/es/dropdown/dropdown';
 import Image from 'next/image';
@@ -43,7 +43,7 @@ const SearchSorting = ({ total = 0 }: SearchSortingProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [currentSort, setCurrentSort] = useState<string>(DEFAULT_SORT);
-  
+
   // Initialize sort from URL params or use default
   useEffect(() => {
     const sortParam = searchParams.get('sort_by');
@@ -57,11 +57,11 @@ const SearchSorting = ({ total = 0 }: SearchSortingProps) => {
   // Handle sort change
   const handleSortChange = ({ key }: { key: string }) => {
     if (key === currentSort) return;
-    
+
     // Create new URL with updated sort parameter
     const params = new URLSearchParams(searchParams.toString());
     params.set('sort_by', key);
-    
+
     // Update the URL
     router.push(`/search?${params.toString()}`);
   };
@@ -77,13 +77,13 @@ const SearchSorting = ({ total = 0 }: SearchSortingProps) => {
 
       <div className="flex flex-row gap-[12px] md:gap-[40px] items-center">
         <div className="flex flex-row gap-[8px] items-center">
-          <Dropdown 
-            menu={{ 
-              items: itemSortBy, 
+          <Dropdown
+            menu={{
+              items: itemSortBy,
               selectedKeys: [currentSort],
-              onClick: handleSortChange 
-            }} 
-            trigger={['click']} 
+              onClick: handleSortChange,
+            }}
+            trigger={['click']}
             className="cursor-pointer"
           >
             <div className="flex items-center gap-[8px]">
@@ -92,7 +92,13 @@ const SearchSorting = ({ total = 0 }: SearchSortingProps) => {
               <span id="sort-by" className="text-[16px] font-[700] text-[#000000] hidden md:block">
                 {sortLabels[currentSort]}
               </span>
-              <Image className='rotate-180' src="/assets/icon/up-icon.svg" alt="Up Icon" width={10} height={6} />
+              <Image
+                className="rotate-180"
+                src="/assets/icon/up-icon.svg"
+                alt="Up Icon"
+                width={10}
+                height={6}
+              />
             </div>
           </Dropdown>
         </div>

@@ -42,9 +42,7 @@ const ModuleItem = ({ item, type }: ModuleItemProps) => {
           <div className="flex flex-col">
             <h3 className="text-[18px] font-medium text-black">{title}</h3>
             {type === 'SUB_COLLECTION' ? (
-              <span className="text-[#0F72F3] text-[14px] font-medium">
-                Module
-              </span>
+              <span className="text-[#0F72F3] text-[14px] font-medium">Module</span>
             ) : (
               <div className="flex flex-row gap-[4px] rounded-[4px] p-[4px] bg-[#EAF0FC] w-fit">
                 <Image

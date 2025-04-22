@@ -37,13 +37,13 @@ const DEFAULT_SORT = 'created_at:desc';
 
 type Props = {
   count: number;
-}
+};
 
 const FilteringSubject = ({ count }: Props) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [currentSort, setCurrentSort] = useState<string>(DEFAULT_SORT);
-  
+
   // Initialize sort from URL params or use default
   useEffect(() => {
     const sortParam = searchParams.get('sort_by');
@@ -57,11 +57,11 @@ const FilteringSubject = ({ count }: Props) => {
   // Handle sort change
   const handleSortChange = ({ key }: { key: string }) => {
     if (key === currentSort) return;
-    
+
     // Create new URL with updated sort parameter
     const params = new URLSearchParams(searchParams.toString());
     params.set('sort_by', key);
-    
+
     // Update the URL
     router.push(`?${params.toString()}`);
     setCurrentSort(key);
@@ -74,13 +74,13 @@ const FilteringSubject = ({ count }: Props) => {
       </span>
       <div className="flex flex-row gap-[12px] md:gap-[40px] items-center">
         <div className="flex flex-row gap-[4px] items-center">
-          <Dropdown 
-            menu={{ 
-              items: itemSortBy, 
+          <Dropdown
+            menu={{
+              items: itemSortBy,
               selectedKeys: [currentSort],
-              onClick: handleSortChange 
-            }} 
-            trigger={['click']} 
+              onClick: handleSortChange,
+            }}
+            trigger={['click']}
             className="cursor-pointer"
           >
             <div className="flex items-center gap-[4px]">

@@ -23,12 +23,7 @@ export function useOrientationHandler(
     
     // Example of component-specific handling for landscape mode
     if (orientation.isLandscape && orientation.isMobile) {
-      // You could do component-specific handling here:
-      // - Adjust layout
-      // - Pause video or animations
-      // - Save user input
-      // - etc.
-      
+
       console.log('Component detected landscape mode on mobile');
     }
   }, [orientation, onOrientationChange]);

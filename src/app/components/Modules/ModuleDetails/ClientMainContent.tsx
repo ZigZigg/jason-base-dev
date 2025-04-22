@@ -37,30 +37,30 @@ const ClientMainContent = ({ initialData, parentSubject }: Props) => {
   useEffect(() => {
     let levelObject = null;
     // get search path from url
-    const searchPath = window.location.search
+    const searchPath = window.location.search;
     if (parentSubject.name === 'Search') {
       levelObject = {
         title: 'Search',
         path: `/search`,
       };
-    } else if(searchPath) {
+    } else if (searchPath) {
       levelObject = {
         title: parentSubject.name,
         path: `/subjects/${parentSubject.id}`,
       };
     }
-    
+
     const breadcrumbItems = [];
-    
+
     if (levelObject) {
       breadcrumbItems.push(levelObject);
     }
-    
+
     breadcrumbItems.push({
       title: initialData.resource?.title || '',
       path: `/resource/${initialData.resource?.id}${searchPath}`,
     });
-    
+
     setItems(breadcrumbItems);
     return () => {
       setItems([]);

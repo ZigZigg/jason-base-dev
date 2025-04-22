@@ -1,4 +1,3 @@
-
 import React from 'react';
 import SearchSorting from './Sorting';
 import SearchContentItem from './ContentItem';
@@ -9,7 +8,7 @@ import EmptyResult from './Commons/EmptyResult';
 import { getSearchResults } from '@/app/lib/modules/search/data';
 
 interface SearchContentProps {
-  searchParams: SearchParams
+  searchParams: SearchParams;
 }
 
 const SearchContent = async ({ searchParams }: SearchContentProps) => {

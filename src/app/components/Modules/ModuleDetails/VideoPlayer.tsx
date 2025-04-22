@@ -13,25 +13,24 @@ interface VideoPlayerProps {
 }
 
 const VideoPlayer = ({ videoObject, resource }: VideoPlayerProps) => {
-
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [showThumbnail, setShowThumbnail] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const thumbnailUrl = useMemo(() => {
-    if(videoObject.thumbnailObject?.file_uri){
-      return videoObject.thumbnailObject?.file_uri
+    if (videoObject.thumbnailObject?.file_uri) {
+      return videoObject.thumbnailObject?.file_uri;
     }
-    return null
-  }, [videoObject])
+    return null;
+  }, [videoObject]);
 
   // Reset states when video changes
   useEffect(() => {
     setShowThumbnail(true);
     setIsLoading(true);
     setIsPlaying(false);
-    
+
     // If video was already loaded, force a reload
     if (videoRef.current) {
       videoRef.current.load();
@@ -52,24 +51,24 @@ const VideoPlayer = ({ videoObject, resource }: VideoPlayerProps) => {
 
   useEffect(() => {
     const videoElement = videoRef.current;
-    
+
     if (videoElement) {
       const handleLoadStart = () => {
         setIsLoading(true);
       };
-      
+
       const handleCanPlay = () => {
         setIsLoading(false);
       };
-      
+
       const handlePlay = () => {
         setShowThumbnail(false);
       };
-      
+
       videoElement.addEventListener('loadstart', handleLoadStart);
       videoElement.addEventListener('canplay', handleCanPlay);
       videoElement.addEventListener('play', handlePlay);
-      
+
       return () => {
         videoElement.removeEventListener('loadstart', handleLoadStart);
         videoElement.removeEventListener('canplay', handleCanPlay);
@@ -83,7 +82,7 @@ const VideoPlayer = ({ videoObject, resource }: VideoPlayerProps) => {
       <div className="mb-[16px]">
         <div className="relative w-full aspect-video rounded-2xl overflow-hidden">
           {showThumbnail && thumbnailUrl && (
-            <div 
+            <div
               className="absolute inset-0 z-10 flex items-center justify-center bg-black"
               onClick={!isLoading ? handlePlayPause : undefined}
               style={!isLoading ? { cursor: 'pointer' } : undefined}
@@ -99,9 +98,7 @@ const VideoPlayer = ({ videoObject, resource }: VideoPlayerProps) => {
                 {isLoading ? (
                   <Spin size="large" />
                 ) : (
-                  <PlayCircleFilled 
-                    className="text-white text-6xl opacity-80 hover:opacity-100 transition-opacity pointer-events-none" 
-                  />
+                  <PlayCircleFilled className="text-white text-6xl opacity-80 hover:opacity-100 transition-opacity pointer-events-none" />
                 )}
               </div>
             </div>
