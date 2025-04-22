@@ -70,7 +70,7 @@ const FilteringSubject = ({ count }: Props) => {
   return (
     <div className="flex flex-row items-center justify-between w-full mb-[24px]">
       <span className="text-[14px] md:text-[16px] font-[400] text-[#667085]">
-        {`${count} videos about this topic`}
+        {`${count} ${count === 1 ? 'collection' : 'collections'} about this topic`}
       </span>
       <div className="flex flex-row gap-[12px] md:gap-[40px] items-center">
         <div className="flex flex-row gap-[4px] items-center">
