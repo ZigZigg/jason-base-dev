@@ -1,4 +1,4 @@
-import BreadcrumbComponent from '@/app/components/UI/Breadcrumb';
+import BreadcrumbComponent from '@/app/components/UIRoot/Breadcrumb';
 import React from 'react';
 
 const NoneDashboardLayout = ({ children }: { children: React.ReactNode }) => {

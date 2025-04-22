@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Providers } from "./providers";
-import AppLayout from "./components/UI/AppLayout";
+import AppLayout from "./components/UIRoot/AppLayout";
 import { AntdRegistry } from '@ant-design/nextjs-registry';
 
 export const metadata: Metadata = {
