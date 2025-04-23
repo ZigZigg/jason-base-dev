@@ -1,26 +1,26 @@
 export const mockThumbnail = {
   1:{
-    image: '/assets/subjects/earth-science.jpg',
-    banner: '/assets/subjects/earth-science-banner.jpg',
+    image: '/assets/subjects/literacy.png',
+    banner: '/assets/subjects/literacy-banner.png',
   },
   4:{
-    image: '/assets/subjects/physical-science.jpg',
-    banner: '/assets/subjects/physical-science-banner.jpg',
+    image: '/assets/subjects/science.png',
+    banner: '/assets/subjects/science-banner.png',
   },
   2:{
-    image: '/assets/subjects/math.jpg',
-    banner: '/assets/subjects/math-banner.jpg',
+    image: '/assets/subjects/math.png',
+    banner: '/assets/subjects/math-banner.png',
   },
   3:{
-    image: '/assets/subjects/cte.jpg',
-    banner: '/assets/subjects/cte-banner.jpg',
+    image: '/assets/subjects/skill.png',
+    banner: '/assets/subjects/skill-banner.png',
   },
   5:{
-    image: '/assets/subjects/social-geography.jpg',
-    banner: '/assets/subjects/social-geography-banner.jpg',
+    image: '/assets/subjects/social.png',
+    banner: '/assets/subjects/social-banner.png',
   },
   6:{
-    image: '/assets/subjects/technology.jpg',
-    banner: '/assets/subjects/technology-banner.jpg',
+    image: '/assets/subjects/technology.png',
+    banner: '/assets/subjects/technology-banner.png',
   }
 }

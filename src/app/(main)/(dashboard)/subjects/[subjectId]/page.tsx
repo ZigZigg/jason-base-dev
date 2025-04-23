@@ -70,11 +70,12 @@ const SubjectModulePage = async ({ params, searchParams }: Props) => {
     <div className='w-full flex flex-col flex-1 min-w-0'>
       <CategoryTabs activeId={id} subjects={subjects} />
       <div 
-        className="aspect-[343/100] md:aspect-[1200/150] rounded-[16px] my-[24px] w-full relative"
+        className="aspect-[343/100] md:aspect-[1200/300] rounded-[16px] my-[24px] w-full relative"
         style={{
-          backgroundImage: `url(${mockThumbnail[id as keyof typeof mockThumbnail]?.banner || '/assets/subjects/default-banner.jpg'})`,
+          backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0.3), transparent), url(${mockThumbnail[id as keyof typeof mockThumbnail]?.banner || '/assets/subjects/default-banner.jpg'})`,
           backgroundSize: "cover",
-          backgroundPosition: "center"
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat"
         }}
       >
         <div className="absolute inset-0 flex items-center">
