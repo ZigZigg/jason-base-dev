@@ -22,7 +22,7 @@ export async function GET() {
 
     if (!response.ok) {
       return NextResponse.json(
-        { error: `API responded with status: ${response.status}` },
+        { error: `API responded with status: ${response.status}`, resp_headers: response.headers, resp_body: await response.json() },
         { status: response.status }
       );
     }
@@ -36,4 +36,4 @@ export async function GET() {
       { status: 500 }
     );
   }
-} 
+}
