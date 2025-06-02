@@ -22,7 +22,15 @@ export async function GET() {
 
     if (!response.ok) {
       return NextResponse.json(
-        { error: `API responded with status: ${response.status}`, resp_headers: response.headers, resp_body: await response.text() },
+        {
+          error: `API responded with status: ${response.status}`,
+          req_url: `${baseUrl}/v2/grades`,
+          req_headers: {
+            'x-api-key': apiKey
+          },
+          resp_headers: response.headers,
+          resp_body: await response.text()
+        },
         { status: response.status }
       );
     }
