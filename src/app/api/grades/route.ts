@@ -22,7 +22,7 @@ export async function GET() {
 
     if (!response.ok) {
       return NextResponse.json(
-        { error: `API responded with status: ${response.status}`, resp_headers: response.headers, resp_body: await response.json() },
+        { error: `API responded with status: ${response.status}`, resp_headers: response.headers, resp_body: await response.text() },
         { status: response.status }
       );
     }
@@ -32,7 +32,7 @@ export async function GET() {
   } catch (error) {
     console.error('Error fetching grades:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch grades' },
+      { error: 'Failed to fetch grades', original_error: error },
       { status: 500 }
     );
   }
