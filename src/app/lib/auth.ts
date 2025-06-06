@@ -1,50 +1,68 @@
 import { Session } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-
+import CognitoProvider from "next-auth/providers/cognito";
 
 export const authOptions = {
   providers: [
+    CognitoProvider({
+      clientId: process.env.COGNITO_CLIENT_ID!,
+      clientSecret: process.env.COGNITO_CLIENT_SECRET!,
+      issuer: process.env.COGNITO_ISSUER!,
+      checks: ["pkce", "state"],
+    }),
     Credentials({
       id: "login", // Unique ID for login provider
       name: "Login",
       credentials: {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
+        cognitoTokens: { label: "Cognito Tokens", type: "text" },
       },
-      async authorize() {
-        // const baseUrl = process.env.API_ENDPOINT;
+      async authorize(credentials) {
+        if (!credentials?.email) {
+          throw new Error("Email is required");
+        }
 
         try {
-          // const response = await fetch(`${baseUrl}/admin/auth/login`, {
-          //   method: "POST",
-          //   headers: {
-          //     "Content-Type": "application/json",
-          //   },
-          //   body: JSON.stringify(credentials),
-          // });
+         // If Cognito tokens are provided, use them to create session
+         if (credentials.cognitoTokens) {
+          const tokens = JSON.parse(credentials.cognitoTokens);
+          
+          // Parse the ID token to get user info
+          if (tokens.idToken) {
+            const payload = parseJwt(tokens.idToken);
+            
+            return {
+              user: {
+                id: payload.sub,
+                name: payload.name || payload.given_name || payload.email,
+                email: payload.email,
+                role: payload["custom:role"] || "user",
+                fullName: payload.name || `${payload.given_name || ""} ${payload.family_name || ""}`.trim(),
+                avatar: payload.picture,
+              },
+              token: tokens.accessToken,
+              idToken: tokens.idToken,
+              refreshToken: tokens.refreshToken,
+            };
+          }
+        }
 
-          // if (response.ok) {
-          //   const result = await response.json();
-          //   if(result.code !== 200 || !result.data) {
-          //     return Promise.reject(new Error(result.message || "Login failed"));
-          //   }
-
-          //   return result.data; // Return user data
-          // }
-          return {
-            user:{
-              id: "1",
-              name: "Test User",
-              email: "john.doe@example.com",
-              role: "admin",
-              avatar: "https://img.freepik.com/free-vector/smiling-young-man-illustration_1308-173524.jpg",
-              fullName: "John Doe",
-            },
-            token: process.env.JASON_PARTNER_API_KEY,
-          } as any
+        // Fallback to mock user (you can remove this later)
+        return {
+          user: {
+            id: "1",
+            name: "Test User",
+            email: credentials.email,
+            role: "admin",
+            avatar: "https://img.freepik.com/free-vector/smiling-young-man-illustration_1308-173524.jpg",
+            fullName: "John Doe",
+          },
+          token: process.env.JASON_PARTNER_API_KEY,
+        } as any;
         } catch (error) {
           console.error("Login error:", error);
-          return null;
+          throw new Error("Invalid credentials");
         }
       },
     }),
@@ -90,10 +108,30 @@ export const authOptions = {
   ],
   session: { strategy: "jwt" as const },
   callbacks: {
-    async jwt({ token, user }: { token: any; user: any }) {
-      if (user) {
-        token.user = user?.user; // Store user data in the token
-        token.accessToken = user?.token; // Store the token from the API response
+    async jwt({ token, user, account }: { token: any; user: any; account: any }) {
+      // Handle Cognito provider
+      if (account?.provider === "cognito") {
+        token.accessToken = account.access_token;
+        token.idToken = account.id_token;
+        token.refreshToken = account.refresh_token;
+        
+        // Extract user info from Cognito token
+        if (account.id_token) {
+          const payload = parseJwt(account.id_token);
+          token.user = {
+            id: payload.sub,
+            name: payload.name || payload.given_name || payload.email,
+            email: payload.email,
+            role: payload["custom:role"] || "user",
+            fullName: payload.name || `${payload.given_name || ""} ${payload.family_name || ""}`.trim(),
+            avatar: payload.picture,
+          };
+        }
+      }
+      // Handle credentials provider
+      else if (user?.user) {
+        token.user = user.user;
+        token.accessToken = user.token;
       }
       return token;
     },
@@ -103,6 +141,13 @@ export const authOptions = {
       session.accessToken = token.accessToken; // Include the token in the session
       return session;
     },
+    // async redirect({ url, baseUrl }: { url: string; baseUrl: string }) {
+    //   console.log("🚀 ~ redirect ~ url: ->>>", url)
+    //   // Handle post-login redirects
+    //   if (url.startsWith("/")) return `${baseUrl}${url}`;
+    //   else if (new URL(url).origin === baseUrl) return url;
+    //   return baseUrl + "/subjects";
+    // },
   },
   pages: {
     signIn: "/login", // Custom login page
@@ -110,3 +155,16 @@ export const authOptions = {
   },
   secret: process.env.NEXTAUTH_SECRET,
 };
+
+// Helper function to parse JWT
+function parseJwt(token: string) {
+  try {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = Buffer.from(base64, 'base64').toString('utf8');
+    return JSON.parse(jsonPayload);
+  } catch (error) {
+    console.error('Error parsing JWT:', error);
+    return {};
+  }
+}
