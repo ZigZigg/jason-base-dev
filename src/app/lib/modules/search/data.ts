@@ -58,9 +58,11 @@ export async function getSearchResults(searchParams: SearchParams): Promise<Sear
         );
   
         // Extract the thumbnail URL
-        const thumbnail = thumbnailAsset?.file_uri
-          ? `${baseImageUrl}${thumbnailAsset?.file_uri}`
-          : undefined;
+          const thumbnail = thumbnailAsset?.file_uri
+            ? thumbnailAsset.file_uri.startsWith('http')
+              ? thumbnailAsset.file_uri
+              : `${baseImageUrl}${thumbnailAsset.file_uri}`
+            : undefined;
   
         // Return the resource with the extracted thumbnail
         return {

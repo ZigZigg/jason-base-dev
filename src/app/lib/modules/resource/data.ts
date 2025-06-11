@@ -105,8 +105,12 @@ export async function getListSubCollectionsByResourceId(
         );
     
         if (bannerAsset && bannerAsset.file_uri) {
-            bannerLink = `${baseImageUrl}${bannerAsset.file_uri}`;
+            bannerLink = bannerAsset.file_uri.startsWith('http')
+              ? bannerAsset.file_uri
+              : `${baseImageUrl}${bannerAsset.file_uri}`;
+
         }
+
 
         return {
             id: resourceId,
@@ -136,7 +140,9 @@ export async function getListSubCollectionsByResourceId(
     );
 
     if (bannerAsset && bannerAsset.file_uri) {
-      banner = `${baseImageUrl}${bannerAsset.file_uri}`;
+      banner = bannerAsset.file_uri.startsWith('http')
+        ? bannerAsset.file_uri
+        : `${baseImageUrl}${bannerAsset.file_uri}`;
     }
     // Check if collection has child collections
     if (collectionResponse.child_collections && collectionResponse.child_collections.length > 0) {
@@ -151,7 +157,9 @@ export async function getListSubCollectionsByResourceId(
           );
 
           if (thumbnailAsset && thumbnailAsset.file_uri) {
-            thumbnail = `${baseImageUrl}${thumbnailAsset.file_uri}`;
+            thumbnail = thumbnailAsset.file_uri.startsWith('http')
+              ? thumbnailAsset.file_uri
+              : `${baseImageUrl}${thumbnailAsset.file_uri}`;
           }
         }
 
@@ -306,6 +314,8 @@ export async function getListVideosByResourceId(
         const videoObject = resource.assets?.find(
           (asset: ResourceAsset) => asset.type?.mime_type === 'video/mp4'
         );
+
+
         const thumbnailObject = resource.assets?.find(
           (asset: ResourceAsset) => asset.type?.name === 'VideoPreviewImage'
         );
@@ -314,11 +324,15 @@ export async function getListVideosByResourceId(
           ...resource,
           videoObject: {
             ...videoObject,
-            file_uri: `${baseImageUrl}${videoObject?.file_uri}`,
+            file_uri: videoObject?.file_uri.startsWith('http')
+              ? videoObject?.file_uri
+              : `${baseImageUrl}${videoObject?.file_uri}`,
           },
           thumbnailObject: {
             ...thumbnailObject,
-            file_uri: `${baseImageUrl}${thumbnailObject?.file_uri}`,
+            file_uri: thumbnailObject?.file_uri.startsWith('http')
+              ? thumbnailObject?.file_uri
+              : `${baseImageUrl}${thumbnailObject?.file_uri}`,
           },
         };
       });
