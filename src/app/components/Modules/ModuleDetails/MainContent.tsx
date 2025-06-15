@@ -1,7 +1,7 @@
 import React from 'react';
 import {
+  getGroupListVideosByResourceId,
   getListSubCollectionsByResourceId,
-  getListVideosByResourceId,
 } from '@/app/lib/modules/resource/data';
 import ClientMainContent from './ClientMainContent';
 import SubCollection from '../SubCollection/SubCollection';
@@ -26,7 +26,7 @@ const MainContentResource = async ({ id, parentSubject }: Props) => {
   }
 
   // If ID is allowed, fetch data on the server
-  const resource = await getListVideosByResourceId(id);
+  const resource = await getGroupListVideosByResourceId(id);
 
   return <ClientMainContent initialData={resource} parentSubject={parentSubject} />;
 };
