@@ -1,11 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import { Spin } from 'antd';
 
-export default function GoogleSignInPage() {
+function GoogleSignInContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [status, setStatus] = useState<'loading' | 'error' | 'success'>('loading');
@@ -73,5 +73,22 @@ export default function GoogleSignInPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function GoogleSignInPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-[#F4F9FF]">
+        <div className="bg-white p-8 rounded-lg shadow-lg text-center">
+          <Spin size="large" />
+          <div className="mt-4">
+            <p className="text-gray-600">Loading...</p>
+          </div>
+        </div>
+      </div>
+    }>
+      <GoogleSignInContent />
+    </Suspense>
   );
 } 
