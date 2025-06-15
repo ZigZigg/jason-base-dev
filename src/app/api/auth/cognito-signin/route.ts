@@ -1,37 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { 
-  CognitoIdentityProviderClient, 
   InitiateAuthCommand,
   AuthFlowType 
 } from '@aws-sdk/client-cognito-identity-provider';
-import { createHmac } from 'crypto';
-
-const client = new CognitoIdentityProviderClient({
-  region: process.env.AWS_REGION,
-  credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
-  },
-});
-
-// Helper function to calculate SECRET_HASH if client secret is provided
-function calculateSecretHash(username: string, clientId: string, clientSecret: string): string {
-  return createHmac('sha256', clientSecret)
-    .update(username + clientId)
-    .digest('base64');
-}
+import { 
+  cognitoClient, 
+  calculateSecretHash, 
+  handleCognitoError, 
+  validateInput 
+} from '@/app/lib/auth-utils';
 
 export async function POST(request: NextRequest) {
   try {
     const { email, password } = await request.json();
 
-    // Validate input
-    if (!email || !password) {
-      return NextResponse.json(
-        { error: 'Email and password are required' },
-        { status: 400 }
-      );
-    }
+    // Validate input using common function
+    validateInput({ email, password }, ['email', 'password']);
 
     // Prepare authentication parameters
     const authParams: Record<string, string> = {
@@ -55,7 +39,7 @@ export async function POST(request: NextRequest) {
       AuthParameters: authParams,
     });
 
-    const response = await client.send(command);
+    const response = await cognitoClient.send(command);
 
     // Check if authentication was successful
     if (response.AuthenticationResult) {
@@ -90,40 +74,15 @@ export async function POST(request: NextRequest) {
     );
 
   } catch (error: any) {
-    console.error('Cognito signin error:', error);
-    
-    // Handle specific Cognito errors
-    if (error.name === 'NotAuthorizedException') {
+    // Handle validation errors
+    if (error.message.includes('Missing required fields')) {
       return NextResponse.json(
-        { error: 'Invalid email or password' },
-        { status: 401 }
+        { error: error.message },
+        { status: 400 }
       );
     }
     
-    if (error.name === 'UserNotConfirmedException') {
-      return NextResponse.json(
-        { error: 'Please verify your email before signing in' },
-        { status: 403 }
-      );
-    }
-    
-    if (error.name === 'UserNotFoundException') {
-      return NextResponse.json(
-        { error: 'No account found with this email' },
-        { status: 404 }
-      );
-    }
-
-    if (error.name === 'TooManyRequestsException') {
-      return NextResponse.json(
-        { error: 'Too many attempts. Please try again later' },
-        { status: 429 }
-      );
-    }
-
-    return NextResponse.json(
-      { error: error.message || 'Authentication failed' },
-      { status: 500 }
-    );
+    // Use common error handler for Cognito errors
+    return handleCognitoError(error, 'signin');
   }
 } 

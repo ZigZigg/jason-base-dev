@@ -1,23 +1,23 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
+import { buildOAuthUrl } from '@/app/lib/auth-utils';
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
-    // Microsoft OAuth 2.0 authorization endpoint - use 'common' for multi-tenant
-    const microsoftAuthUrl = new URL(`https://login.microsoftonline.com/${process.env.MICROSOFT_TENANT_ID}/oauth2/v2.0/authorize`);
+    // Build Microsoft OAuth URL using common utility
+    const authUrl = buildOAuthUrl(
+      `https://login.microsoftonline.com/${process.env.MICROSOFT_TENANT_ID}/oauth2/v2.0/authorize`,
+      process.env.MICROSOFT_CLIENT_ID!,
+      `${process.env.NEXTAUTH_URL}/api/auth/microsoft-callback`,
+      'openid email profile User.Read',
+      { response_mode: 'query' }
+    );
     
-    // Generate state for CSRF protection
-    const state = generateState();
-    
-    // Add required parameters
-    microsoftAuthUrl.searchParams.append('client_id', process.env.MICROSOFT_CLIENT_ID!);
-    microsoftAuthUrl.searchParams.append('response_type', 'code');
-    microsoftAuthUrl.searchParams.append('redirect_uri', `${process.env.NEXTAUTH_URL}/api/auth/microsoft-callback`);
-    microsoftAuthUrl.searchParams.append('scope', 'openid email profile User.Read');
-    microsoftAuthUrl.searchParams.append('response_mode', 'query');
-    microsoftAuthUrl.searchParams.append('state', state);
+    // Extract state from the URL for response
+    const urlObj = new URL(authUrl);
+    const state = urlObj.searchParams.get('state');
     
     return NextResponse.json({
-      authUrl: microsoftAuthUrl.toString(),
+      authUrl: authUrl,
       state: state // Return state for validation if needed
     });
     
@@ -30,7 +30,4 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// Generate a random state parameter for CSRF protection
-function generateState(): string {
-  return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-} 
+ 

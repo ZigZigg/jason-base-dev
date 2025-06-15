@@ -232,7 +232,7 @@ export default function SignInMain() {
         </BaseButton>
       </div>
       <div className="mt-[24px] flex justify-center items-center">
-        <span className="text-[16px]">Don't have an account?</span>
+        <span className="text-[16px]">Don&apos;t have an account?</span>
         <Link
           style={{ textDecoration: 'underline' }}
           className="mx-[5px] text-[16px]!"

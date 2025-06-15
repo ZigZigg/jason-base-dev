@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { parseSessionToken, createSessionToken } from '@/app/lib/auth-utils';
 
 export async function GET(request: NextRequest) {
   try {
@@ -9,8 +10,8 @@ export async function GET(request: NextRequest) {
       return NextResponse.redirect(`${process.env.NEXTAUTH_URL}/login?error=missing_session_token`);
     }
 
-    // Decode the session data
-    const sessionData = JSON.parse(Buffer.from(token, 'base64').toString('utf8'));
+    // Decode the session data using common utility
+    const sessionData = parseSessionToken(token);
     const { userInfo, googleTokens } = sessionData;
 
     // Create a mock Cognito token structure for NextAuth
@@ -23,8 +24,8 @@ export async function GET(request: NextRequest) {
     // Redirect to a client-side page that will handle the NextAuth sign-in
     const redirectUrl = new URL('/auth/google-signin', process.env.NEXTAUTH_URL!);
     redirectUrl.searchParams.append('email', userInfo.email);
-    redirectUrl.searchParams.append('tokens', Buffer.from(JSON.stringify(mockCognitoTokens)).toString('base64'));
-    redirectUrl.searchParams.append('userInfo', Buffer.from(JSON.stringify(userInfo)).toString('base64'));
+    redirectUrl.searchParams.append('tokens', createSessionToken(mockCognitoTokens));
+    redirectUrl.searchParams.append('userInfo', createSessionToken(userInfo));
 
     return NextResponse.redirect(redirectUrl.toString());
     

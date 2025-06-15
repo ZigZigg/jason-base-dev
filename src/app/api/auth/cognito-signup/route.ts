@@ -1,45 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { 
-  CognitoIdentityProviderClient, 
   SignUpCommand,
   AdminConfirmSignUpCommand
 } from '@aws-sdk/client-cognito-identity-provider';
-
-const client = new CognitoIdentityProviderClient({
-  region: process.env.AWS_REGION,
-  credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
-  },
-});
+import { 
+  cognitoClient, 
+  handleCognitoError, 
+  validateInput, 
+  validatePassword 
+} from '@/app/lib/auth-utils';
 
 export async function POST(request: NextRequest) {
   try {
     const { name, email, password, confirmPassword } = await request.json();
 
-    // Validate input
-    if (!name || !email || !password || !confirmPassword) {
-      return NextResponse.json(
-        { error: 'All fields are required' },
-        { status: 400 }
-      );
-    }
-
-    if (password !== confirmPassword) {
-      return NextResponse.json(
-        { error: 'Passwords do not match' },
-        { status: 400 }
-      );
-    }
-
-    // Password validation
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
-    if (!passwordRegex.test(password)) {
-      return NextResponse.json(
-        { error: 'Password must be at least 6 characters, contain at least one uppercase and one lowercase letter' },
-        { status: 400 }
-      );
-    }
+    // Validate input using common functions
+    validateInput({ name, email, password, confirmPassword }, ['name', 'email', 'password', 'confirmPassword']);
+    validatePassword(password, confirmPassword);
 
     // Sign up user in Cognito
     const signUpParams = {
@@ -63,10 +40,10 @@ export async function POST(request: NextRequest) {
     };
 
     const signUpCommand = new SignUpCommand(signUpParams);
-    const result = await client.send(signUpCommand);
+    const result = await cognitoClient.send(signUpCommand);
     console.log("🚀 ~ POST ~ result:", result)
 
-    const result2 = await client.send(
+    const result2 = await cognitoClient.send(
       new AdminConfirmSignUpCommand({
         UserPoolId: 'ap-southeast-1_tCICVsRRZ',
         Username: email.trim()
@@ -82,33 +59,17 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error: any) {
-    console.error('Cognito signup error:', error);
-    
-    // Handle specific Cognito errors
-    if (error.name === 'UsernameExistsException') {
+    // Handle validation errors
+    if (error.message.includes('Missing required fields') || 
+        error.message.includes('Passwords do not match') || 
+        error.message.includes('Password must be')) {
       return NextResponse.json(
-        { error: 'User with this email already exists' },
-        { status: 409 }
-      );
-    }
-    
-    if (error.name === 'InvalidPasswordException') {
-      return NextResponse.json(
-        { error: 'Password does not meet requirements' },
+        { error: error.message },
         { status: 400 }
       );
     }
     
-    if (error.name === 'InvalidParameterException') {
-      return NextResponse.json(
-        { error: 'Invalid email format' },
-        { status: 400 }
-      );
-    }
-
-    return NextResponse.json(
-      { error: error.message || 'Registration failed' },
-      { status: 500 }
-    );
+    // Use common error handler for Cognito errors
+    return handleCognitoError(error, 'signup');
   }
 } 

@@ -1,23 +1,23 @@
 import { NextResponse } from 'next/server';
+import { buildOAuthUrl } from '@/app/lib/auth-utils';
 
 export async function GET() {
   try {
-    // Google OAuth 2.0 authorization endpoint
-    const googleAuthUrl = new URL('https://accounts.google.com/o/oauth2/v2/auth');
+    // Build Google OAuth URL using common utility
+    const authUrl = buildOAuthUrl(
+      'https://accounts.google.com/o/oauth2/v2/auth',
+      process.env.GOOGLE_CLIENT_ID!,
+      `${process.env.NEXTAUTH_URL}/api/auth/google-callback`,
+      'openid email profile',
+      { access_type: 'offline' }
+    );
     
-    // Generate state for CSRF protection
-    const state = generateState();
-    
-    // Add required parameters
-    googleAuthUrl.searchParams.append('client_id', process.env.GOOGLE_CLIENT_ID!);
-    googleAuthUrl.searchParams.append('response_type', 'code');
-    googleAuthUrl.searchParams.append('redirect_uri', `${process.env.NEXTAUTH_URL}/api/auth/google-callback`);
-    googleAuthUrl.searchParams.append('scope', 'openid email profile');
-    googleAuthUrl.searchParams.append('access_type', 'offline');
-    googleAuthUrl.searchParams.append('state', state);
+    // Extract state from the URL for response
+    const urlObj = new URL(authUrl);
+    const state = urlObj.searchParams.get('state');
     
     return NextResponse.json({
-      authUrl: googleAuthUrl.toString(),
+      authUrl: authUrl,
       state: state // Return state for validation if needed
     });
     
@@ -30,7 +30,4 @@ export async function GET() {
   }
 }
 
-// Generate a random state parameter for CSRF protection
-function generateState(): string {
-  return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-} 
+ 
