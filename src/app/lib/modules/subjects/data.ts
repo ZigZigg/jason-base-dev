@@ -51,6 +51,15 @@ export interface ResourceStatus {
   name: string;
 }
 
+export interface ResourceHtmlFragment {
+  id: number;
+  resource_id: string;
+  title: string;
+  description: string;
+  content: string;
+  type: ResourceType;
+}
+
 export interface ResourceCollection {
   id: string;
   title: string;
@@ -64,7 +73,9 @@ export interface ResourceCollection {
   subjects: ResourceSubject[];
   links: {
     resource_collection: string;
-};
+  };
+  educator_resource?: ResourceCollection | null;
+  html_fragments?: ResourceHtmlFragment[];
 }
 
 export interface ResourceCollectionResponse {
@@ -85,23 +96,23 @@ export async function getSubjectData(): Promise<SubjectData[]> {
         id: 1,
         name: "Literacy",
         filters: ["Reading", "Writing"]
-      },{
+      }, {
         id: 2,
         name: "Math",
         filters: ["Math"]
-      },{
+      }, {
         id: 3,
         name: "Skills and Strategies",
         filters: ["Skills and Strategies"]
-      },{
+      }, {
         id: 4,
         name: "Science",
         filters: ["Earth and Space Sciences", "Life Science", "Physical Science"]
-      },{
+      }, {
         id: 5,
         name: "Social Studies and Geography",
         filters: ["Social Studies and Geography"]
-      },{
+      }, {
         id: 6,
         name: "Technology",
         filters: ["Technology"]
@@ -121,7 +132,7 @@ export async function getSubjectById(subjectId: number): Promise<SubjectData | n
 }
 
 export async function getSubjectResources(
-  subjectId: number, 
+  subjectId: number,
   sortBy: string = 'created_at:desc'
 ): Promise<{ subjects: SubjectData[], resources: ResourceCollection[], pagination: { currentPage: number, lastPage: number, total: number } }> {
 
@@ -129,7 +140,7 @@ export async function getSubjectResources(
     // First get the subject to obtain its name
     const subjects = await getSubjectData();
     const subject = subjects.find(subject => subject.id === subjectId);
-    
+
     // If subject not found, return empty array
     if (!subject && subjectId !== 0) {
       console.error(`Subject with ID ${subjectId} not found`);
@@ -152,7 +163,7 @@ export async function getSubjectResources(
     const urlWithSubjects = `/v2/search_resource_collections?${subject?.filters.map(filter => `subjects[]=${encodeURIComponent(filter)}`).join('&')}${grades.map(g => `&grades[]=${g}`).join('')}&page=1&per_page=12`;
     // Build URL with subject and sort parameters
     let url = subjectId === 0 ? urlWithAll : urlWithSubjects;
-    
+
     // Add sort parameter if provided
     if (sortBy) {
       url += `&sort_by=${encodeURIComponent(sortBy)}`;
@@ -163,27 +174,27 @@ export async function getSubjectResources(
     });
 
 
-    const result = resources?.results || [] ;
+    const result = resources?.results || [];
     const baseImageUrl = process.env.NEXT_PUBLIC_ASSETS_BASE_URL || ''; // Fallback URL
     // Process resources to extract thumbnails
     const idsToRemove = ['33159', '32466', '37816'];
-    
+
     // Count how many items will be removed
-    const removedItemsCount = result.filter(resource => 
+    const removedItemsCount = result.filter(resource =>
       idsToRemove.includes(resource.id.toString())
     ).length;
-    
+
     const processedResources = result.map(resource => {
       // Find the ThumbnailMedium asset if it exists
-      const thumbnailAsset = resource.assets?.find(asset => 
+      const thumbnailAsset = resource.assets?.find(asset =>
         asset.type?.name === 'ThumbnailMedium'
       );
-      
+
       // Extract the thumbnail URL
       const thumbnail = thumbnailAsset?.file_uri ? thumbnailAsset.file_uri.startsWith('http')
-      ? thumbnailAsset.file_uri
-      : `${baseImageUrl}${thumbnailAsset.file_uri}` : undefined;
-      
+        ? thumbnailAsset.file_uri
+        : `${baseImageUrl}${thumbnailAsset.file_uri}` : undefined;
+
       // Return the resource with the extracted thumbnail
       return {
         ...resource,
