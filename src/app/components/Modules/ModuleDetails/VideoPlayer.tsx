@@ -6,6 +6,8 @@ import { ResourceCollection } from '@/app/lib/modules/subjects/data';
 import { VideoResourceCollection } from '@/app/lib/modules/resource/data';
 import { Spin } from 'antd';
 import { PlayCircleFilled } from '@ant-design/icons';
+import BaseButton from '@/app/atomics/button/BaseButton';
+import { useRouter } from 'next/navigation';
 
 interface VideoPlayerProps {
   videoObject: VideoResourceCollection;
@@ -13,11 +15,12 @@ interface VideoPlayerProps {
 }
 
 const VideoPlayer = ({ videoObject, resource }: VideoPlayerProps) => {
+
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [showThumbnail, setShowThumbnail] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
-
+  const router = useRouter();
   const thumbnailUrl = useMemo(() => {
     if (videoObject.thumbnailObject?.file_uri) {
       return videoObject.thumbnailObject?.file_uri;
@@ -47,6 +50,10 @@ const VideoPlayer = ({ videoObject, resource }: VideoPlayerProps) => {
       }
       setIsPlaying(!isPlaying);
     }
+  };
+
+  const goToTeacherGuide = () => {
+    router.push(`/resource/${resource?.id}/content/${videoObject.teacherGuide?.id}`);
   };
 
   useEffect(() => {
@@ -115,22 +122,37 @@ const VideoPlayer = ({ videoObject, resource }: VideoPlayerProps) => {
       </div>
 
       <div className="flex-grow">
-        <div className="flex items-center mb-[4px]">
-          <h4 className="!mb-0 text-[24px] font-[700] text-[#333333]">{videoObject.title}</h4>
-        </div>
+        <div className="flex flex-col md:flex-row items-start justify-between gap-[8px]">
+          {videoObject.teacherGuide && (
+            <BaseButton
+              onClick={goToTeacherGuide}
+              className="!px-[16px] !py-[8px] !border-1 !border-[#000000] !gap-[0px] !rounded-[8px] !bg-[#00ABBD] flex flex-col !items-start order-1 md:order-2"
+            >
+              <span className="text-white text-[14px] font-[700]">
+                Discover this content’s Teacher Guide
+              </span>
+            </BaseButton>
+          )}
 
-        <div className="flex items-center gap-1 mb-4">
-          <Image
-            src="/assets/icon/group.svg"
-            alt="Grade Icon"
-            width={18}
-            height={18}
-            className="flex-shrink-0"
-          />
-          <span className="!text-[#475467] font-[600] text-[16px]">Grades:</span>
-          <span className="!text-[#667085] font-[400] text-[16px]">
-            {resource?.grades.map((grade) => grade.name).join(', ')}
-          </span>
+          <div className="order-2 md:order-1">
+            <div className="flex items-center mb-[4px]">
+              <h4 className="!mb-0 text-[24px] font-[700] text-[#333333]">{videoObject.title}</h4>
+            </div>
+
+            <div className="flex items-center gap-1 mb-4">
+              <Image
+                src="/assets/icon/group.svg"
+                alt="Grade Icon"
+                width={18}
+                height={18}
+                className="flex-shrink-0"
+              />
+              <span className="!text-[#475467] font-[600] text-[16px]">Grades:</span>
+              <span className="!text-[#667085] font-[400] text-[16px]">
+                {resource?.grades.map((grade) => grade.name).join(', ')}
+              </span>
+            </div>
+          </div>
         </div>
 
         <div className="border-t border-gray-100 pt-5">

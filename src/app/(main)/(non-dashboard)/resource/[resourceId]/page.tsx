@@ -6,22 +6,22 @@ import { getResourceById } from '@/app/lib/modules/resource/data';
 
 type Props = {
   params: Promise<{
-    id: string;
+    resourceId: string;
   }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
 type PropMeta = {
   params: Promise<{
-    id: string
+    resourceId: string
   }>,
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
-// Generate dynamic metadata based on subject name
+// Generate dynamic metadata based on resource name
 export async function generateMetadata({ params }: PropMeta): Promise<Metadata> {
-  // Get the subject ID from params
-  const { id:resourceId } = await params;
+  // Get the resource ID from params
+  const { resourceId } = await params;
 
   const resource = await getResourceById(resourceId);
   if(!resource) {
@@ -37,8 +37,8 @@ export async function generateMetadata({ params }: PropMeta): Promise<Metadata> 
   };
 }
 
-export default async function SubjectDetailsPage({ params, searchParams }: Props) {
-  const { id } = await params;
+export default async function ResourceDetailsPage({ params, searchParams }: Props) {
+  const { resourceId } = await params;
   const { parentSubjectId, parentSubjectName } = await searchParams;
 
   const parentSubjectIdNumber = parseInt(parentSubjectId as string) || 0;
@@ -46,17 +46,12 @@ export default async function SubjectDetailsPage({ params, searchParams }: Props
 
   return (
     <div className="w-full xl:w-[1280px]">
-      <div
-        id="resource-container"
-        className="flex flex-col md:flex-row gap-[40px] relative px-[16px] xl:px-[0px]"
-      >
         <Suspense fallback={<LoadingResourceDetail />}>
           <MainContentResource
-            id={id}
+            id={resourceId}
             parentSubject={{ id: parentSubjectIdNumber, name: parentSubjectNameString }}
           />
         </Suspense>
-      </div>
     </div>
   );
 }

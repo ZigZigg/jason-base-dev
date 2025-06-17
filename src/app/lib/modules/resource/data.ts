@@ -35,6 +35,15 @@ export interface VideoResourceCollection {
   associated_resources?: ResourceAsset[];
   videoObject?: ResourceAsset;
   thumbnailObject?: ResourceAsset;
+  parent_object?: {
+    id: string;
+    title: string;
+    title_prefix?: string;
+  }
+  teacherGuide?: {
+    id: string;
+    title: string;
+  }
 }
 
 // Extended ResourceAsset with optional assets property for nested resources
@@ -55,11 +64,13 @@ interface ChildCollection {
 interface ResourceCollectionResponse {
   id: string;
   title?: string;
+  title_prefix?: string;
   description?: string;
   type?: ResourceType;
   child_collections?: ChildCollection[];
   associated_resources?: ExtendedResourceAsset[];
   resource?: ResourceCollection;
+  educator_resources?: ResourceCollection[];
 }
 
 // Extract collection ID from URL string
@@ -224,7 +235,7 @@ export async function getListSubCollectionsByResourceId(
   }
 }
 
-export async function getListVideosByResourceId(
+export async function getGroupListVideosByResourceId(
   resourceId: string
 ): Promise<{ results: VideoResourceCollection[]; resource: ResourceCollection | null }> {
   try {
@@ -239,6 +250,7 @@ export async function getListVideosByResourceId(
     const resourceResponse = await apiClient.get<ResourceCollection>(resourceUrl, {
       next: { revalidate: 1800 },
     });
+
 
     if (!resourceResponse.links?.resource_collection) {
       throw new Error('Resource collection link not found');
@@ -276,6 +288,8 @@ export async function getListVideosByResourceId(
       }
     }
 
+
+
     // 4th layer: Get associated resources from all child collections in parallel
     const childIds = isSecondLayer
       ? collectionResponse.child_collections.map((child) => child.id)
@@ -293,16 +307,29 @@ export async function getListVideosByResourceId(
     // Transform into the expected result format
     const results = childCollections
       .filter((collection) => collection.title && collection.type) // Filter out invalid collections
-      .map((collection) => ({
-        id: collection.id,
-        title: collection.title || '',
-        description: collection.description || '',
-        type: collection.type as ResourceType,
-        associated_resources: collection.associated_resources || [],
-      }));
+      .map((collection) => {
+        const associated_resources = collection.associated_resources?.map((resource) => {
+          return {
+            ...resource,
+            parent_object:{
+              id: collection.id,
+              title: collection.title,
+              title_prefix: collection.title_prefix,
+            }
+          }
+        })
+        return {
+          id: collection.id,
+          title: collection.title || '',
+          description: collection.description || '',
+          type: collection.type as ResourceType,
+          associated_resources: associated_resources || [],
+        }
+      });
     const baseImageUrl = process.env.NEXT_PUBLIC_ASSETS_BASE_URL || ''; // Fallback URL
     // Flat all associated_resources data using Lodash
     const videoResults = _.flatMap(results, 'associated_resources');
+
 
     const cleanVideoResults = videoResults
       .filter(
@@ -315,9 +342,15 @@ export async function getListVideosByResourceId(
           (asset: ResourceAsset) => asset.type?.mime_type === 'video/mp4'
         );
 
-
         const thumbnailObject = resource.assets?.find(
           (asset: ResourceAsset) => asset.type?.name === 'VideoPreviewImage'
+        );
+
+        // Find related TeachersGuide with "Discover" prefix
+        const teacherGuide = videoResults.find(
+          (guide) =>
+            guide.type?.name === 'TeachersGuide' &&
+            guide.title === `Discover ${resource.title}`
         );
 
         return {
@@ -334,12 +367,43 @@ export async function getListVideosByResourceId(
               ? thumbnailObject?.file_uri
               : `${baseImageUrl}${thumbnailObject?.file_uri}`,
           },
+          teacherGuide: teacherGuide
+            ? {
+                id: teacherGuide.id,
+                title: teacherGuide.title,
+              }
+            : null,
         };
       });
+      const currentResource = {
+        ...resourceResponse,
+        educator_resource: subCollectionResponse?.educator_resources?.length ? subCollectionResponse?.educator_resources[0] : null,
+      }
 
-    return { results: cleanVideoResults || [], resource: resourceResponse };
+    return { results: cleanVideoResults || [], resource: currentResource };
   } catch (error) {
     console.error('Error fetching list videos by resource id:', error);
     return { results: [], resource: null };
+  }
+}
+
+export const getConvertedHtmlContent = async (htmlContent: string) => {
+  try {
+    // Pattern to match {{resource:link:resourceId}}
+    const resourceLinkPattern = /\{\{resource:link:(\d+)\}\}/g;
+    let convertedContent = htmlContent;
+    
+    // Replace all patterns with placeholder divs that will be populated client-side
+    convertedContent = convertedContent.replace(resourceLinkPattern, (match, resourceId) => {
+      return `<div class="resource-link-placeholder inline-flex items-center gap-2 px-3 py-1 bg-gray-100 rounded animate-pulse" data-resource-id="${resourceId}">
+        <div class="w-4 h-4 bg-gray-300 rounded-full animate-pulse"></div>
+        <span class="text-gray-500">Loading resource ${resourceId}...</span>
+      </div>`;
+    });
+    
+    return convertedContent;
+  } catch (error) {
+    console.error('Error converting HTML content:', error);
+    return htmlContent; // Return original content on error
   }
 }
