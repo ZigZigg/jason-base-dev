@@ -4,74 +4,11 @@ import { authOptions } from '../../auth';
 import ApiClient from '../../api';
 import _ from 'lodash';
 import { terminalTypes } from './terminalTypes';
-
-export interface SubCollectionObjectResponse {
-  id: string;
-  banner?: string;
-  title: string;
-  description?: string;
-  type: CollectionResponseType;
-  data: SubCollectionItem[];
-}
-
-export type CollectionResponseType = 'SUB_COLLECTION' | 'ASSOCIATE_COLLECTION';
-
-export interface SubCollectionItem {
-  title?: string;
-  description?: string;
-  type?: ResourceType;
-  thumbnail?: string;
-}
-export interface SubCollectionResponse {
-  results: SubCollectionItem[];
-  type: CollectionResponseType;
-}
-
-export interface VideoResourceCollection {
-  id: string;
-  title: string;
-  description: string;
-  type: ResourceType;
-  associated_resources?: ResourceAsset[];
-  videoObject?: ResourceAsset;
-  thumbnailObject?: ResourceAsset;
-  parent_object?: {
-    id: string;
-    title: string;
-    title_prefix?: string;
-  }
-  teacherGuide?: {
-    id: string;
-    title: string;
-  }
-}
-
-// Extended ResourceAsset with optional assets property for nested resources
-interface ExtendedResourceAsset extends ResourceAsset {
-  assets?: ResourceAsset[];
-}
-
-interface ChildCollection {
-  id: string;
-  title?: string;
-  title_prefix?: string;
-  description?: string;
-  type?: ResourceType;
-  resource?: ResourceCollection;
-  thumbnail?: string;
-}
-
-interface ResourceCollectionResponse {
-  id: string;
-  title?: string;
-  title_prefix?: string;
-  description?: string;
-  type?: ResourceType;
-  child_collections?: ChildCollection[];
-  associated_resources?: ExtendedResourceAsset[];
-  resource?: ResourceCollection;
-  educator_resources?: ResourceCollection[];
-}
+import {
+  SubCollectionObjectResponse,
+  VideoResourceCollection,
+  ResourceCollectionResponse
+} from '../../interfaces/resource';
 
 // Extract collection ID from URL string
 function extractCollectionId(url: string): string {

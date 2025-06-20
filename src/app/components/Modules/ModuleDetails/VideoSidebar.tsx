@@ -1,6 +1,6 @@
 'use client';
 
-import { VideoResourceCollection } from '@/app/lib/modules/resource/data';
+import { VideoResourceCollection } from '@/app/lib/interfaces/resource';
 import Image from 'next/image';
 import { useState, useEffect, useRef, useMemo } from 'react';
 import VideoSidebarItem from './VideoSidebarItem';

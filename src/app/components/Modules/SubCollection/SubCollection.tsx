@@ -3,7 +3,7 @@
 import React, { useEffect } from 'react';
 import Image from 'next/image';
 import ModuleItem from './ModuleItem';
-import { SubCollectionObjectResponse } from '@/app/lib/modules/resource/data';
+import { SubCollectionObjectResponse } from '@/app/lib/interfaces/resource';
 import { useBreadcrumb } from '@/app/providers/BreadcrumbProvider';
 import EmptyResult from '../Search/Commons/EmptyResult';
 

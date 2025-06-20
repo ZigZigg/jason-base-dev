@@ -3,7 +3,7 @@
 import { useMemo, useRef, useState, useEffect } from 'react';
 import Image from 'next/image';
 import { ResourceCollection } from '@/app/lib/modules/subjects/data';
-import { VideoResourceCollection } from '@/app/lib/modules/resource/data';
+import { VideoResourceCollection } from '@/app/lib/interfaces/resource';
 import { Spin } from 'antd';
 import { PlayCircleFilled } from '@ant-design/icons';
 import BaseButton from '@/app/atomics/button/BaseButton';
