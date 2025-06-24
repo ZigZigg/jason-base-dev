@@ -1,88 +1,91 @@
 'use client';
+
+import React from 'react';
 import { Breadcrumb } from 'antd';
 import { useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import { IRoute, systemRoutes } from '@/app/utils/helpers';
 import Image from 'next/image';
+import { IRoute, systemRoutes } from '@/app/utils/helpers';
 import { useBreadcrumb } from '@/app/providers/BreadcrumbProvider';
+
+interface BreadcrumbItem {
+  title: React.ReactElement;
+}
+
 const BreadcrumbComponent = () => {
   const router = useRouter();
   const pathName = usePathname();
-  const navigate = (path: string) => {
-    router.push(path);
-  };
-  const {items: breadcrumbItems} = useBreadcrumb()
+  const { items: breadcrumbItems } = useBreadcrumb();
 
-  const [items, setItems] = useState([
+  const [items, setItems] = useState<BreadcrumbItem[]>([
     {
       title: <Image src="/assets/icon/home.svg" alt="Home" width={20} height={20} />,
     },
   ]);
 
+  const navigate = (path: string) => {
+    router.push(path);
+  };
+
+  const createClickableBreadcrumbItem = (title: string, path?: string): BreadcrumbItem => ({
+    title: (
+      <span
+        onClick={() => {
+          if (path) navigate(path);
+        }}
+        className="text-[#0F72F3] font-[600] cursor-pointer"
+      >
+        {title}
+      </span>
+    ),
+  });
+
+  const createHomeItem = (): BreadcrumbItem => ({
+    title: (
+      <div onClick={() => navigate('/')} className="cursor-pointer">
+        <Image
+          id="home-icon"
+          src="/assets/icon/home.svg"
+          alt="Home"
+          width={20}
+          height={20}
+        />
+      </div>
+    ),
+  });
+
   useEffect(() => {
-    const addItems: any = [];
+    const addItems: BreadcrumbItem[] = [];
     const paths = pathName.split('/').filter((path) => path);
 
     if (!paths?.length) return;
-    const getMatchPaths = (routes: IRoute[], pathIndex: number) => {
+
+    const getMatchPaths = (routes: IRoute[], pathIndex: number): void => {
       const route = routes.find((route) => {
-        return route.path && route.path.includes(paths[pathIndex])
-      })
+        return route.path && route.path.includes(paths[pathIndex]);
+      });
 
       if (!route) return;
 
-      addItems.push({
-        title: (
-          <span
-            onClick={() => {
-              if (!route.children?.length) navigate(route.path!);
-            }}
-            className='text-[#0F72F3] font-[600] cursor-pointer'
-          >
-            {route.breadcrumbName}
-          </span>
-        ),
-      });
-      if (route?.children?.length) getMatchPaths(route.children, pathIndex + 1);
+      const shouldNavigate = !route.children?.length;
+      const navigationPath = shouldNavigate ? route.path! : undefined;
+      
+      addItems.push(createClickableBreadcrumbItem(route.breadcrumbName, navigationPath));
+
+      if (route?.children?.length) {
+        getMatchPaths(route.children, pathIndex + 1);
+      }
     };
 
     getMatchPaths(systemRoutes, 0);
 
-    if(breadcrumbItems?.length) {
+    if (breadcrumbItems?.length) {
       breadcrumbItems.forEach((item) => {
-        addItems.push({
-          title: (
-            <span
-              onClick={() => {
-                navigate(item.path!);
-              }}
-              className='text-[#0F72F3] font-[600] cursor-pointer'
-            >
-              {item.title}
-            </span>
-          ),
-        })
-      })
+        addItems.push(createClickableBreadcrumbItem(item.title, item.path!));
+      });
     }
-    setItems([
-      {
-        title: (
-          <div 
-            onClick={() => navigate('/')} 
-            className="cursor-pointer"
-          >
-            <Image 
-              id='home-icon' 
-              src="/assets/icon/home.svg" 
-              alt="Home" 
-              width={20} 
-              height={20} 
-            />
-          </div>
-        ),
-      },
-      ...addItems,
-    ]);
+
+    setItems([createHomeItem(), ...addItems]);
   }, [pathName, breadcrumbItems]);
 
   return (

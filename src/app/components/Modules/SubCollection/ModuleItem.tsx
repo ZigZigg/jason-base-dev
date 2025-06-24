@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { CollectionResponseType, SubCollectionItem } from '@/app/lib/modules/resource/data';
+import { CollectionResponseType, SubCollectionItem } from '@/app/lib/interfaces/resource';
 import useExpandableText from '@/app/hooks/useExpandableText';
 
 interface ModuleItemProps {

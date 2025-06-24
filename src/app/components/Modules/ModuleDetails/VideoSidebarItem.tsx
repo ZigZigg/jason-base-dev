@@ -1,6 +1,6 @@
 'use client';
 
-import { VideoResourceCollection } from '@/app/lib/modules/resource/data';
+import { VideoResourceCollection } from '@/app/lib/interfaces/resource';
 import { Typography } from 'antd';
 import Image from 'next/image';
 import { useState, useEffect, useRef } from 'react';

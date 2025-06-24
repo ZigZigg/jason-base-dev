@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import VideoSidebar from './VideoSidebar';
 import VideoPlayer from './VideoPlayer';
 import { Empty } from 'antd';
-import { VideoResourceCollection } from '@/app/lib/modules/resource/data';
+import { VideoResourceCollection } from '@/app/lib/interfaces/resource';
 import { ResourceCollection } from '@/app/lib/modules/subjects/data';
 import { useBreadcrumb } from '@/app/providers/BreadcrumbProvider';
 import BaseButton from '@/app/atomics/button/BaseButton';
