@@ -3,14 +3,14 @@ import MultimediaContent from '@/app/components/Modules/MultimediaContentDetail/
 import React, { Suspense } from 'react'
 
 
-interface ContentResourcePageProps {
+interface ResourceDetailPageProps {
   params: Promise<{
     contentId: string,
     resourceId: string
   }>
 }
 
-const ContentResourcePage = async ({ params }: ContentResourcePageProps) => {
+const ResourceDetailPage = async ({ params }: ResourceDetailPageProps) => {
   const { contentId, resourceId } = await params
   
   return (
@@ -22,4 +22,4 @@ const ContentResourcePage = async ({ params }: ContentResourcePageProps) => {
   )
 }
 
-export default ContentResourcePage
+export default ResourceDetailPage

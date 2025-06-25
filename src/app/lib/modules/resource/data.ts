@@ -24,6 +24,7 @@ export async function getResourceById(resourceId: string): Promise<ResourceColle
     const resourceResponse = await apiClient.get<ResourceCollection>(resourceUrl, {
       next: { revalidate: 1800 },
     });
+
     return resourceResponse;
   } catch (error) {
     console.error(`Error fetching resource with ID ${resourceId}:`, error);
@@ -336,6 +337,30 @@ export const getConvertedHtmlContent = async (htmlContent: string) => {
         <div class="w-4 h-4 bg-gray-300 rounded-full animate-pulse"></div>
         <span class="text-gray-500">Loading resource ${resourceId}...</span>
       </div>`;
+    });
+    
+    // Pattern to match <img> tags and update relative src paths
+    const imgPattern = /<img([^>]*)\ssrc="([^"]+)"([^>]*)>/g;
+    convertedContent = convertedContent.replace(imgPattern, (match, beforeSrc, src, afterSrc) => {
+      // Check if src is already an absolute URL (starts with http)
+      if (src.startsWith('http')) {
+        return match; // Keep as is
+      } else {
+        // It's a relative path, prepend with base URL
+        const fullSrc = `${process.env.NEXT_PUBLIC_ASSETS_BASE_URL}${src}`;
+        return `<img${beforeSrc} src="${fullSrc}"${afterSrc}>`;
+      }
+    });
+    
+    // Pattern to match <a> tags with data-resource-id and update href
+    const linkPattern = /<a([^>]*)\sdata-resource-id="([^"]+)"([^>]*)>/g;
+    convertedContent = convertedContent.replace(linkPattern, (match, beforeDataId, resourceId, afterDataId) => {
+      // Check if href already exists and remove it to replace
+      const cleanedBefore = beforeDataId.replace(/\s*href="[^"]*"/g, '');
+      const cleanedAfter = afterDataId.replace(/\s*href="[^"]*"/g, '');
+      
+      // Add the new href
+      return `<a${cleanedBefore} data-resource-id="${resourceId}" href="/resource-detail/${resourceId}"${cleanedAfter}>`;
     });
     
     return convertedContent;
