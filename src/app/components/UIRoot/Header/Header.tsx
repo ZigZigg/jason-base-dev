@@ -140,10 +140,10 @@ export default function AppHeader() {
         </div>
         <div className="absolute left-0 -translate-x-0 md:left-1/2 md:-translate-x-1/2">
           <Image
-            src="/assets/logo.webp" // Path to your logo file in the public folder
+            src="/assets/logo-02.png" // Path to your logo file in the public folder
             alt="Logo"
-            className="w-[195px] md:w-[270px]"
-            width={270} // Adjust based on your logo's dimensions
+            className="w-[195px] md:w-[255px]"
+            width={255} // Adjust based on your logo's dimensions
             height={54}
           />
         </div>
