@@ -122,19 +122,19 @@ const VideoPlayer = ({ videoObject, resource }: VideoPlayerProps) => {
       </div>
 
       <div className="flex-grow">
-        <div className="flex flex-col md:flex-row items-start justify-between gap-[8px]">
+        <div className="flex flex-col md:flex-row items-start justify-between gap-[8px] pb-[12px] ">
           {videoObject.teacherGuide && (
             <BaseButton
               onClick={goToTeacherGuide}
-              className="!px-[16px] !py-[8px] !border-1 !border-[#000000] !gap-[0px] !rounded-[8px] !bg-[#00ABBD] flex flex-col !items-start order-1 md:order-2"
+              className="!p-[12px] !gap-[0px] !rounded-[12px] !bg-[#FFC858] flex flex-col !items-start order-2 "
             >
-              <span className="text-white text-[14px] font-[700]">
+              <span className="text-[#000000] text-[14px] font-[700]">
                 Discover this content’s Teacher Guide
               </span>
             </BaseButton>
           )}
 
-          <div className="order-2 md:order-1">
+          <div className="order-1">
             <div className="flex items-center mb-[4px]">
               <h4 className="!mb-0 text-[24px] font-[700] text-[#333333]">{videoObject.title}</h4>
             </div>

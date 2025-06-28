@@ -127,7 +127,7 @@ const VideoSidebar = ({ videos, selectedVideoId, onSelectVideo }: VideoSidebarPr
     <div
       id="video-sidebar-container"
       ref={sidebarRef}
-      className="w-full md:w-[320px] md:h-fit flex flex-col gap-[20px] md:relative"
+      className="w-full md:h-fit flex flex-col gap-[20px] md:relative"
     >
       {videoGroups.map((group) => {
         const isExpanded = expandedSections.has(group.id);
@@ -142,7 +142,7 @@ const VideoSidebar = ({ videos, selectedVideoId, onSelectVideo }: VideoSidebarPr
         return (
           <div
             key={group.id}
-            className={`border-2 gap-[4px] px-[16px] ${
+            className={`border-2 gap-[4px] px-[16px] md:px-[10px] xl:px-[16px] ${
               isActive ? 'border-[#0F72F3]' : 'border-[#F2F4F7]'
             } rounded-[12px] flex flex-col ${
               isMobile && isExpanded ? 'overflow-visible' : 'overflow-hidden'
@@ -188,7 +188,7 @@ const VideoSidebar = ({ videos, selectedVideoId, onSelectVideo }: VideoSidebarPr
                   : 'max-h-[532px] opacity-100 visible overflow-y-auto'
               } ${isMobile && isExpanded ? 'bg-white z-20' : ''}`}
             >
-              <div className="flex flex-col pb-[16px] gap-[4px]">
+              <div className="flex flex-col pb-[16px] gap-[4px] md:gap-[10px] xl:gap-[4px]">
                 {group.videos.map((video) => (
                   <VideoSidebarItem
                     key={video.id}

@@ -1,11 +1,8 @@
 'use client';
 
 import { VideoResourceCollection } from '@/app/lib/interfaces/resource';
-import { Typography } from 'antd';
 import Image from 'next/image';
 import { useState, useEffect, useRef } from 'react';
-
-const { Text } = Typography;
 
 interface VideoSidebarItemProps {
   video: VideoResourceCollection;
@@ -78,19 +75,19 @@ const VideoSidebarItem = ({ video, isSelected, onSelect, shouldLoadMetadata = tr
       onClick={onSelect}
     >
       <div
-        className={`flex p-2 rounded-lg ${
+        className={`flex flex-row md:flex-col xl:flex-row p-2 rounded-lg ${
           isSelected ? 'bg-blue-50' : 'hover:bg-gray-50'
         }`}
       >
         {/* Thumbnail */}
-        <div className="relative w-[102px] h-[60px] flex-shrink-0">
+        <div className="relative w-[102px] h-[60px] md:w-full md:h-[60px] xl:w-[102px] xl:h-[60px] flex-shrink-0">
           <Image
             src={video.thumbnailObject?.file_uri || ''}
             alt={video.thumbnailObject?.name || ''}
             width={102}
             height={60}
             style={{ objectFit: 'cover' }}
-            className="rounded h-full w-full"
+            className="rounded h-[60px] w-[102px] md:h-[60px] md:w-full xl:h-[60px] xl:w-[102px]"
           />
           <div id="video-duration" className="absolute bottom-[3px] right-[3px] bg-[#00000066] px-[6px] rounded-[4px] text-[12px] text-white">
             {formatDuration(duration)}
@@ -99,17 +96,17 @@ const VideoSidebarItem = ({ video, isSelected, onSelect, shouldLoadMetadata = tr
 
         {/* Video info */}
         <div className="ml-2 flex-1">
-          <Text
-            className={`block text-sm font-medium line-clamp-2 ${
+          <span
+            className={`block text-[16px] md:text-[14px] xl:text-[14px] font-medium line-clamp-2 ${
               isSelected ? 'text-blue-600' : 'text-gray-900'
             }`}
             title={video.title || ''}
           >
             {video.title || ''}
-          </Text>
-          <Text className="text-[12px] !text-[#0F72F3]">
+          </span>
+          <span className="text-[12px] !text-[#0F72F3]">
             {video.type?.name || "Video"}
-          </Text>
+          </span>
         </div>
       </div>
     </div>

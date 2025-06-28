@@ -60,6 +60,23 @@ export interface ResourceHtmlFragment {
   type: ResourceType;
 }
 
+export interface ResourceCollectionData {
+  id: string;
+  title: string;
+  title_prefix?: string;
+  parent_collection?: {
+    resource_collection: {
+      id: string;
+      title: string;
+      title_prefix?: string;
+    };
+  };
+}
+
+export interface ResourceCollectionItem {
+  resource_collection: ResourceCollectionData;
+}
+
 export interface ResourceCollection {
   id: string;
   title: string;
@@ -76,6 +93,7 @@ export interface ResourceCollection {
   };
   educator_resource?: ResourceCollection | null;
   html_fragments?: ResourceHtmlFragment[];
+  resource_collections?: ResourceCollectionItem[];
 }
 
 export interface ResourceCollectionResponse {

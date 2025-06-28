@@ -325,47 +325,71 @@ export async function getGroupListVideosByResourceId(
   }
 }
 
-export const getConvertedHtmlContent = async (htmlContent: string) => {
+const convertSingleHtmlContent = (htmlContent: string) => {
+  // Pattern to match {{resource:link:resourceId}}
+  const resourceLinkPattern = /\{\{resource:link:(\d+)\}\}/g;
+  // Pattern to match {{resource:embed_image:resourceId}} and {{resource:embed_image:resourceId:size-medium}}
+  const resourceEmbedImagePattern = /\{\{resource:embed_image:(\d+)(?::size-medium)?\}\}/g;
+  let convertedContent = htmlContent;
+  
+  // Replace all link patterns with placeholder divs that will be populated client-side
+  convertedContent = convertedContent.replace(resourceLinkPattern, (match, resourceId) => {
+    return `<div class="resource-link-placeholder inline-flex items-center gap-2 px-3 py-1 bg-gray-100 rounded animate-pulse" data-resource-id="${resourceId}">
+      <div class="w-4 h-4 bg-gray-300 rounded-full animate-pulse"></div>
+      <span class="text-gray-500">Loading resource ${resourceId}...</span>
+    </div>`;
+  });
+
+  // Replace all embed image patterns with placeholder divs that will be populated client-side
+  convertedContent = convertedContent.replace(resourceEmbedImagePattern, (match, resourceId) => {
+    return `<div class="resource-embed-image-placeholder flex items-center justify-center w-full h-48 bg-gray-100 rounded animate-pulse" data-resource-id="${resourceId}">
+      <div class="flex flex-col items-center gap-2">
+        <div class="w-8 h-8 bg-gray-300 rounded animate-pulse"></div>
+        <span class="text-gray-500 text-sm">Loading image ${resourceId}...</span>
+      </div>
+    </div>`;
+  });
+  
+  // Pattern to match <img> tags and update relative src paths
+  const imgPattern = /<img([^>]*)\ssrc="([^"]+)"([^>]*)>/g;
+  convertedContent = convertedContent.replace(imgPattern, (match, beforeSrc, src, afterSrc) => {
+    // Check if src starts with [CDNRoot]
+    if (src.startsWith('[CDNRoot]')) {
+      const fullSrc = src.replace('[CDNRoot]', process.env.NEXT_PUBLIC_ASSETS_ROOT_CDN || '');
+      return `<img${beforeSrc} src="${fullSrc}"${afterSrc}>`;
+    }
+    // Check if src is already an absolute URL (starts with http)
+    else if (src.startsWith('http')) {
+      return match; // Keep as is
+    } else {
+      // It's a relative path, prepend with base URL
+      const fullSrc = `${process.env.NEXT_PUBLIC_ASSETS_BASE_URL}${src}`;
+      return `<img${beforeSrc} src="${fullSrc}"${afterSrc}>`;
+    }
+  });
+  
+  // Pattern to match <a> tags with data-resource-id and update href
+  const linkPattern = /<a([^>]*)\sdata-resource-id="([^"]+)"([^>]*)>/g;
+  convertedContent = convertedContent.replace(linkPattern, (match, beforeDataId, resourceId, afterDataId) => {
+    // Check if href already exists and remove it to replace
+    const cleanedBefore = beforeDataId.replace(/\s*href="[^"]*"/g, '');
+    const cleanedAfter = afterDataId.replace(/\s*href="[^"]*"/g, '');
+    
+    // Add the new href
+    return `<a${cleanedBefore} data-resource-id="${resourceId}" href="/resource-detail/${resourceId}"${cleanedAfter}>`;
+  });
+  
+  return convertedContent;
+};
+
+export const getConvertedHtmlContent = (htmlFragments: any[]) => {
   try {
-    // Pattern to match {{resource:link:resourceId}}
-    const resourceLinkPattern = /\{\{resource:link:(\d+)\}\}/g;
-    let convertedContent = htmlContent;
-    
-    // Replace all patterns with placeholder divs that will be populated client-side
-    convertedContent = convertedContent.replace(resourceLinkPattern, (match, resourceId) => {
-      return `<div class="resource-link-placeholder inline-flex items-center gap-2 px-3 py-1 bg-gray-100 rounded animate-pulse" data-resource-id="${resourceId}">
-        <div class="w-4 h-4 bg-gray-300 rounded-full animate-pulse"></div>
-        <span class="text-gray-500">Loading resource ${resourceId}...</span>
-      </div>`;
-    });
-    
-    // Pattern to match <img> tags and update relative src paths
-    const imgPattern = /<img([^>]*)\ssrc="([^"]+)"([^>]*)>/g;
-    convertedContent = convertedContent.replace(imgPattern, (match, beforeSrc, src, afterSrc) => {
-      // Check if src is already an absolute URL (starts with http)
-      if (src.startsWith('http')) {
-        return match; // Keep as is
-      } else {
-        // It's a relative path, prepend with base URL
-        const fullSrc = `${process.env.NEXT_PUBLIC_ASSETS_BASE_URL}${src}`;
-        return `<img${beforeSrc} src="${fullSrc}"${afterSrc}>`;
-      }
-    });
-    
-    // Pattern to match <a> tags with data-resource-id and update href
-    const linkPattern = /<a([^>]*)\sdata-resource-id="([^"]+)"([^>]*)>/g;
-    convertedContent = convertedContent.replace(linkPattern, (match, beforeDataId, resourceId, afterDataId) => {
-      // Check if href already exists and remove it to replace
-      const cleanedBefore = beforeDataId.replace(/\s*href="[^"]*"/g, '');
-      const cleanedAfter = afterDataId.replace(/\s*href="[^"]*"/g, '');
-      
-      // Add the new href
-      return `<a${cleanedBefore} data-resource-id="${resourceId}" href="/resource-detail/${resourceId}"${cleanedAfter}>`;
-    });
-    
-    return convertedContent;
+    return htmlFragments.map(fragment => ({
+      ...fragment,
+      content: convertSingleHtmlContent(fragment.content || '')
+    }));
   } catch (error) {
     console.error('Error converting HTML content:', error);
-    return htmlContent; // Return original content on error
+    return htmlFragments; // Return original fragments on error
   }
 }

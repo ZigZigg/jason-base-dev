@@ -1,47 +1,69 @@
-'use client'
-import React, { useEffect } from 'react';
-import { ResourceLinkProcessor } from './ResourceLinkProcessor';
-import { RawHtml } from '../../RawHtml';
+'use client';
+import React, { useCallback, useEffect } from 'react';
 import { ResourceCollection } from '@/app/lib/modules/subjects/data';
 import { useBreadcrumb } from '@/app/providers/BreadcrumbProvider';
-import './jason-resources.scss'
+import './jason-resources.scss';
+import ContentClientHTMLItem from './ContentClientHTMLItem';
+import ContentClientVideoItem from './ContentClientVideoItem';
+import ContentClientPDFItem from './ContentClientPDFItem';
 type Props = {
-  convertedHtmlContent: string;
+  convertedHtmlFragments: any[];
   resource: ResourceCollection;
   parentResource?: ResourceCollection;
   resourceId?: string;
 };
 
 const ContentClient = (props: Props) => {
-  const { convertedHtmlContent, resource, resourceId, parentResource } = props;
+  const { convertedHtmlFragments, resource, resourceId, parentResource } = props;
 
   const { setItems } = useBreadcrumb();
-  
-  // Find audio asset from resource assets
-  const audioAsset = resource?.assets?.find(asset => asset.type?.name === 'AudioVersion');
-  const audioUrl = audioAsset?.file_uri;
-  const handleUpdateBreadcrumb = async () => {
 
-    const itemsBreadcrumb = []
-    if(parentResource?.id){
+  const handleUpdateBreadcrumb = async () => {
+    const itemsBreadcrumb = [];
+    if (parentResource?.id) {
       itemsBreadcrumb.push({
         title: parentResource.title,
         path: `/resource/${parentResource.id}`,
-      })
+      });
     }
-    const breadcrumbPath = resourceId 
+    const breadcrumbPath = resourceId
       ? `/resource/${resourceId}/content/${resource.id}`
       : `/content/${resource.id}`;
-      
+
     itemsBreadcrumb.push({
       title: resource.title,
       path: breadcrumbPath,
     });
     setItems(itemsBreadcrumb);
-  }
+  };
   useEffect(() => {
     handleUpdateBreadcrumb();
   }, [resource, resourceId]);
+
+  const renderContents = useCallback(() => {
+    // Check for actual assets rather than just resource type
+    const hasVideo = resource?.assets?.some(
+      asset => asset.type?.name === 'iOSfriendlymp4' && asset.type?.mime_type === 'video/mp4'
+    );
+    const hasPDF = resource?.assets?.some(
+      asset => asset.type?.name === 'PDFVersion' && asset.type?.mime_type === 'application/pdf'
+    );
+
+    if (convertedHtmlFragments.length) {
+      return (
+        <ContentClientHTMLItem
+          resource={resource}
+          convertedHtmlFragments={convertedHtmlFragments}
+        />
+      );
+    } else if (hasVideo && resource.type.name === 'Video') {
+      return <ContentClientVideoItem resource={resource} />;
+    } else if (hasPDF) {
+      return <ContentClientPDFItem resource={resource} />;
+    }
+    return <div>No content</div>;
+  }, [resource, convertedHtmlFragments]);
+
   return (
     <div id="multimedia-content" className="w-full resource-container mb-[32px]">
       <div className="flex flex-col gap-[8px] px-[16px] xl:px-[0px]">
@@ -53,30 +75,7 @@ const ContentClient = (props: Props) => {
         </span>
       </div>
       <div className="h-[1px] w-full bg-[#F2F4F7] my-[24px]"></div>
-      <div
-        id="html-content"
-        className="w-full px-[16px] xl:px-[0px] html-fragment fragment-type-resourcecontent"
-      >
-        <div id="audio-container">
-          {audioUrl && (
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-              <div className="flex items-center gap-2 mb-3">
-                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                <span className="text-sm font-medium text-blue-700">Audio Version</span>
-              </div>
-              <audio controls className="w-full">
-                <source src={audioUrl} type="audio/mpeg" />
-                Your browser does not support the audio element.
-              </audio>
-            </div>
-          )}
-        </div>
-        {convertedHtmlContent && (
-          <ResourceLinkProcessor>
-            <RawHtml>{convertedHtmlContent}</RawHtml>
-          </ResourceLinkProcessor>
-        )}
-      </div>
+      {renderContents()}
     </div>
   );
 };
