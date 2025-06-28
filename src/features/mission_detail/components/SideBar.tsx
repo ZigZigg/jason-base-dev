@@ -23,7 +23,7 @@ const Sidebar = ({ collections, selectedCollectionIndex, onCollectionSelect }: P
             })}
           >
             <p className="text-[#667085] text-[14px]">{collection.title_prefix}</p>
-            <p className="text-[#475467] text-[18px] font-bold">{collection.title || collection.resource?.title || ''}</p>
+            <p className={`${collectionIndex === selectedCollectionIndex ? 'text-[#0F72F3]' : 'text-[#475467]'} text-[18px] font-bold`}>{collection.title || collection.resource?.title || ''}</p>
           </div>
         ))}
       </div>

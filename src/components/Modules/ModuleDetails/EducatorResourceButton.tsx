@@ -2,7 +2,7 @@
 import BaseButton from '@/atomics/button/BaseButton';
 import { ResourceCollection } from '@/lib/modules/subjects/data';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+
 
 import React from 'react';
 
@@ -12,10 +12,11 @@ type Props = {
 
 const EducatorResourceButton = (props: Props) => {
   const { resource } = props;
-  const router = useRouter();
+
   const goToEducatorResources = () => {
     const educatorResourceId = resource?.educator_resource?.id;
-    router.push(`/resource-detail/${educatorResourceId}`);
+    const searchPath = window.location.search || '';
+    window.open(`/resource-detail/${educatorResourceId}${searchPath}`, '_blank');
   };
 
   return (

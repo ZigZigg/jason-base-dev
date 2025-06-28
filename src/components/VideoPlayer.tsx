@@ -101,6 +101,9 @@ const VideoPlayer = ({ file_uri, thumbnail_file_uri }: VideoPlayerProps) => {
           onClick={handlePlayPause}
           controls
           preload="auto"
+          muted={true}
+          playsInline={true}
+          autoPlay={true}
         />
       </div>
     </div>

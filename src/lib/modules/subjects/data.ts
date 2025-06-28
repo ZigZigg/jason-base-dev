@@ -64,14 +64,11 @@ export interface ResourceHtmlFragment {
 
 export interface ResourceCollectionData {
   id: string;
+  collection_resource_id: string;
   title: string;
   title_prefix?: string;
   parent_collection?: {
-    resource_collection: {
-      id: string;
-      title: string;
-      title_prefix?: string;
-    };
+    resource_collection: ResourceCollectionData
   };
 }
 

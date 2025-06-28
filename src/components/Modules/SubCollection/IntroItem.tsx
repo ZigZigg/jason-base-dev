@@ -32,7 +32,7 @@ const IntroItem = (props: Props) => {
         </div>
 
         {/* Description */}
-        <div className="w-full md:w-1/3 flex justify-end">
+        <div className="w-full md:w-1/3 flex justify-start">
           <p className="text-[14px] md:text-[16px] text-[#667085]">{description}</p>
         </div>
       </div>

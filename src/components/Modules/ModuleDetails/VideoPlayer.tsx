@@ -116,6 +116,8 @@ const VideoPlayer = ({ videoObject, resource }: VideoPlayerProps) => {
             controls
             preload="auto"
             autoPlay
+            playsInline
+            webkit-playsinline="true"
           />
         </div>
       </div>

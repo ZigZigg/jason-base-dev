@@ -27,13 +27,13 @@ const BreadcrumbComponent = () => {
     router.push(path);
   };
 
-  const createClickableBreadcrumbItem = (title: string, path?: string): BreadcrumbItem => ({
+  const createClickableBreadcrumbItem = (title: string, path?: string, isLastItem = false): BreadcrumbItem => ({
     title: (
       <span
         onClick={() => {
           if (path) navigate(path);
         }}
-        className="text-[#0F72F3] font-[600] cursor-pointer"
+        className={`${isLastItem ? 'text-[#0F72F3]' : 'text-[#475467]'} font-[600] cursor-pointer`}
       >
         {title}
       </span>
@@ -80,8 +80,9 @@ const BreadcrumbComponent = () => {
     getMatchPaths(systemRoutes, 0);
 
     if (breadcrumbItems?.length) {
-      breadcrumbItems.forEach((item) => {
-        addItems.push(createClickableBreadcrumbItem(item.title, item.path!));
+      breadcrumbItems.forEach((item, index) => {
+        const isLastItem = index === breadcrumbItems.length - 1;
+        addItems.push(createClickableBreadcrumbItem(item.title, item.path!, isLastItem));
       });
     }
 

@@ -1,5 +1,5 @@
 'use client';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { ResourceCollection } from '@/lib/modules/subjects/data';
 import { useBreadcrumb } from '@/providers/BreadcrumbProvider';
 import './jason-resources.scss';
@@ -14,26 +14,68 @@ type Props = {
 };
 
 const ContentClient = (props: Props) => {
-  const { convertedHtmlFragments, resource, resourceId, parentResource } = props;
+  const { convertedHtmlFragments, resource, resourceId } = props;
 
+  const resourceCollection = useMemo(() => {
+    const firstLayer = resource.resource_collections?.length ? resource.resource_collections[0] : null;
+    
+    return firstLayer ? firstLayer.resource_collection : null;
+  }, [resource]);
   const { setItems } = useBreadcrumb();
 
   const handleUpdateBreadcrumb = async () => {
     const itemsBreadcrumb = [];
-    if (parentResource?.id) {
+    const searchPath = window.location.search;
+    if(searchPath){
+      const urlParams = new URLSearchParams(searchPath);
+      const parentSubjectId = urlParams.get('parentSubjectId');
+      const parentSubjectName = urlParams.get('parentSubjectName');
+      
+      if (parentSubjectId && parentSubjectName) {
+        itemsBreadcrumb.push({
+          title: parentSubjectName,
+          path: `/subjects/${parentSubjectId}`,
+        });
+      }
+    }
+
+    // Traverse nested parent collections (max 2 levels)
+    const parentCollections = [];
+    let currentCollection = resourceCollection;
+    
+    // Collect up to 2 parent collections
+    while (currentCollection?.parent_collection?.resource_collection && parentCollections.length < 2) {
+      const parentCollection = currentCollection.parent_collection.resource_collection;
+      parentCollections.unshift(parentCollection); // Add to beginning to maintain order
+      currentCollection = parentCollection;
+    }
+
+    // Build breadcrumb based on number of parents found
+    if (parentCollections.length === 2) {
+      // 2 parents: parent2 > parent1 > current
       itemsBreadcrumb.push({
-        title: parentResource.title,
-        path: `/resource/${parentResource.id}`,
+        title: parentCollections[0].title,
+        path: `/resource/${parentCollections[0].collection_resource_id}`,
+      });
+      itemsBreadcrumb.push({
+        title: parentCollections[1].title,
+        path: `/mission-details/${parentCollections[1].collection_resource_id}`,
+      });
+    } else if (parentCollections.length === 1) {
+      // 1 parent: parent1 > current
+      itemsBreadcrumb.push({
+        title: parentCollections[0].title,
+        path: `/resource/${parentCollections[0].collection_resource_id}`,
       });
     }
-    const breadcrumbPath = resourceId
-      ? `/resource/${resourceId}/content/${resource.id}`
-      : `/content/${resource.id}`;
+    // If no parents found, we just show current resource
 
+    // Add current resource
     itemsBreadcrumb.push({
       title: resource.title,
-      path: breadcrumbPath,
+      path: `/resource-detail/${resource.id}`,
     });
+
     setItems(itemsBreadcrumb);
   };
   useEffect(() => {
@@ -76,6 +118,7 @@ const ContentClient = (props: Props) => {
       </div>
       <div className="h-[1px] w-full bg-[#F2F4F7] my-[24px]"></div>
       {renderContents()}
+
     </div>
   );
 };

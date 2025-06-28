@@ -111,9 +111,9 @@ const VideoSidebar = ({ videos, selectedVideoId, onSelectVideo }: VideoSidebarPr
   const handleVideoSelect = (video: VideoResourceCollection) => {
     onSelectVideo(video);
     // On mobile, collapse all sections after selecting a video
-    if (isMobile) {
-      setExpandedSections(new Set());
-    }
+    // if (isMobile) {
+    //   setExpandedSections(new Set());
+    // }
   };
 
   // Find which section contains the selected video to determine active state
