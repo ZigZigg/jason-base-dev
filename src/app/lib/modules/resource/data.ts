@@ -1,14 +1,16 @@
-import { getServerSession } from 'next-auth';
-import { ResourceAsset, ResourceCollection, ResourceType } from '../subjects/data';
-import { authOptions } from '../../auth';
-import ApiClient from '../../api';
 import _ from 'lodash';
-import { terminalTypes } from './terminalTypes';
+import { getServerSession } from 'next-auth';
+
+import { getVideoAsset } from '@/selectors/associated_resources_selector';
+import ApiClient from '../../api';
+import { authOptions } from '../../auth';
 import {
+  ResourceCollectionResponse,
   SubCollectionObjectResponse,
-  VideoResourceCollection,
-  ResourceCollectionResponse
+  VideoResourceCollection
 } from '../../interfaces/resource';
+import { ResourceAsset, ResourceCollection, ResourceType } from '../subjects/data';
+import { terminalTypes } from './terminalTypes';
 
 // Extract collection ID from URL string
 function extractCollectionId(url: string): string {
@@ -31,6 +33,24 @@ export async function getResourceById(resourceId: string): Promise<ResourceColle
   }
 }
 
+export async function getCollectionById(collectionId: string): Promise<ResourceCollectionResponse> {
+  try {
+    const session = await getServerSession(authOptions);
+    const apiClient = new ApiClient(session?.accessToken);
+    const resourceUrl = `/v2/resource_collections/${collectionId}`;
+    const resourceResponse = await apiClient.get<ResourceCollectionResponse>(resourceUrl, {
+      next: { revalidate: 1800 },
+    });
+
+    return resourceResponse;
+  } catch (error) {
+    console.error(`Error fetching collection with ID ${collectionId}:`, error);
+
+    throw error;
+  }
+}
+
+
 export async function getListSubCollectionsByResourceId(
   resourceId: string
 ): Promise<SubCollectionObjectResponse> {
@@ -51,7 +71,7 @@ export async function getListSubCollectionsByResourceId(
         const bannerAsset = resourceResponse?.assets.find(
           (asset: ResourceAsset) => asset.type?.name === 'DefaultImage'
         );
-    
+
         if (bannerAsset && bannerAsset.file_uri) {
             bannerLink = bannerAsset.file_uri.startsWith('http')
               ? bannerAsset.file_uri
@@ -92,6 +112,7 @@ export async function getListSubCollectionsByResourceId(
         ? bannerAsset.file_uri
         : `${baseImageUrl}${bannerAsset.file_uri}`;
     }
+
     // Check if collection has child collections
     if (collectionResponse.child_collections && collectionResponse.child_collections.length > 0) {
       const processedCollections = collectionResponse.child_collections.map((child) => {
@@ -127,6 +148,7 @@ export async function getListSubCollectionsByResourceId(
         description:
           collectionResponse.description || collectionResponse.resource?.description || '',
         banner: banner,
+        videoAsset: getVideoAsset(collectionResponse.associated_resources || []),
       };
     }
     // If no child collections but has associated resources
@@ -329,7 +351,7 @@ export const getConvertedHtmlContent = async (htmlContent: string) => {
     // Pattern to match {{resource:link:resourceId}}
     const resourceLinkPattern = /\{\{resource:link:(\d+)\}\}/g;
     let convertedContent = htmlContent;
-    
+
     // Replace all patterns with placeholder divs that will be populated client-side
     convertedContent = convertedContent.replace(resourceLinkPattern, (match, resourceId) => {
       return `<div class="resource-link-placeholder inline-flex items-center gap-2 px-3 py-1 bg-gray-100 rounded animate-pulse" data-resource-id="${resourceId}">
@@ -337,7 +359,7 @@ export const getConvertedHtmlContent = async (htmlContent: string) => {
         <span class="text-gray-500">Loading resource ${resourceId}...</span>
       </div>`;
     });
-    
+
     return convertedContent;
   } catch (error) {
     console.error('Error converting HTML content:', error);

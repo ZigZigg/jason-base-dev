@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useEffect } from 'react';
-import Image from 'next/image';
-import ModuleItem from './ModuleItem';
 import { SubCollectionObjectResponse } from '@/app/lib/interfaces/resource';
 import { useBreadcrumb } from '@/app/providers/BreadcrumbProvider';
+import VideoPlayer from '@/components/VideoPlayer';
+import Image from 'next/image';
+import { useEffect } from 'react';
 import EmptyResult from '../Search/Commons/EmptyResult';
+import ModuleItem from './ModuleItem';
 
 interface SubCollectionProps {
   module: SubCollectionObjectResponse;
@@ -16,8 +17,9 @@ interface SubCollectionProps {
 }
 
 const SubCollection = ({ module, parentSubject }: SubCollectionProps) => {
-  const { data, title, description, banner, type } = module;
+  const { data, title, description, banner, type, videoAsset } = module;
   const { setItems } = useBreadcrumb();
+
   useEffect(() => {
     let levelObject = null;
     // get search path from url
@@ -51,50 +53,52 @@ const SubCollection = ({ module, parentSubject }: SubCollectionProps) => {
       setItems([]);
     };
   }, [module, parentSubject]);
+
   return (
-    <div className="w-full flex flex-col gap-[50px] pb-[60px]">
-      {/* Banner */}
-      <div className="w-full bg-[#EAF0FC] rounded-[16px] flex flex-col overflow-hidden">
+    <div className="w-full flex flex-col gap-6 px-4 xl:px-0 pb-[60px]">
+      {/* Title */}
+      <h1 className="text-2xl lg:text-[40px] lg:leading-[52px] text-[#333333]">{title}</h1>
+
+      <div className="w-full flex flex-col md:flex-row gap-10">
+
         {/* Banner Image */}
-        <div className="w-full aspect-[343/88] md:aspect-[1160/300]">
-          <Image
-            src={banner || '/assets/subjects/default-banner.jpg'}
-            alt={title}
-            width={1160}
-            height={300}
-            className="w-full h-full object-cover aspect-[343/88] md:aspect-[1160/300]"
-          />
+        <div className="w-full md:w-2/3">
+          <div className="w-full bg-[#EAF0FC] rounded-[16px] flex flex-col overflow-hidden">
+            <div className="w-full aspect-[343/88] md:aspect-[1160/300]">
+              {videoAsset ? (
+                <VideoPlayer file_uri={videoAsset.video_file_uri} thumbnail_file_uri={videoAsset.video_thumbnail_file_uri} />
+              ): (
+                <Image
+                  src={banner || '/assets/subjects/default-banner.jpg'}
+                  alt={title}
+                  width={1160}
+                  height={300}
+                  className="w-full h-full object-cover aspect-[343/88] md:aspect-[1160/300]"
+                />
+              )
+
+              }
+            </div>
+          </div>
         </div>
 
-        {/* Banner Text Content */}
-        <div className="flex flex-col items-start justify-center gap-[8px] p-[16px] md:p-[24px]">
-          <h2 className="text-[16px] md:text-[20px] font-bold text-[#182230]">{title}</h2>
+        {/* Description */}
+        <div className="w-full md:w-1/3 flex justify-end">
           <p className="text-[14px] md:text-[16px] text-[#667085]">{description}</p>
         </div>
       </div>
 
-      {/* Module List */}
-      <div className="w-full flex flex-col gap-[24px]">
-        {data.length > 0 ? (
-          <>
-            {/* Header with Count and Sort */}
-            {/* <div className="w-full flex flex-col sm:flex-row justify-between items-start sm:items-center gap-[24px]">
-                <div className="text-[14px] md:text-[16px] text-[#475467]">
-                  {data.length} modules
-                </div>
-              </div> */}
-
-            {/* Module Items */}
-            <div className="w-full flex flex-col gap-[24px]">
-              {data.map((module, index) => (
-                <ModuleItem key={index} item={module} type={type} />
-              ))}
+      {data.length > 0 ? (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {data.map((module, index) => (
+            <div key={index} className="w-full">
+              <ModuleItem item={module} type={type} />
             </div>
-          </>
-        ) : (
-          <EmptyResult title="No modules available" />
-        )}
-      </div>
+          ))}
+        </div>
+      ) : (
+        <EmptyResult title="No modules available" />
+      )}
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth";
-import { authOptions } from "../../auth";
 import ApiClient from "../../api";
+import { authOptions } from "../../auth";
 
 
 
@@ -14,6 +14,8 @@ export interface SubjectData {
 export interface ResourceAsset {
   id: number;
   type_id: number;
+  title: string;
+  description: string;
   name: string;
   path: string;
   file_uri: string;
@@ -62,6 +64,7 @@ export interface ResourceHtmlFragment {
 
 export interface ResourceCollection {
   id: string;
+  resource_collection_id: string;
   title: string;
   description: string;
   type: ResourceType;

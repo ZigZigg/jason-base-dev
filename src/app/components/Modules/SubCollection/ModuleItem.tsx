@@ -1,9 +1,10 @@
 'use client';
 
-import React from 'react';
 import Image from 'next/image';
-import { CollectionResponseType, SubCollectionItem } from '@/app/lib/interfaces/resource';
+import Link from 'next/link';
+
 import useExpandableText from '@/app/hooks/useExpandableText';
+import { CollectionResponseType, SubCollectionItem } from '@/app/lib/interfaces/resource';
 
 interface ModuleItemProps {
   item: SubCollectionItem;
@@ -40,20 +41,9 @@ const ModuleItem = ({ item, type }: ModuleItemProps) => {
       <div className="flex flex-col gap-[8px] flex-grow">
         <div className="flex flex-row justify-between w-full">
           <div className="flex flex-col">
-            <h3 className="text-[18px] font-medium text-black">{title}</h3>
-            {type === 'SUB_COLLECTION' ? (
-              <span className="text-[#0F72F3] text-[14px] font-medium">Module</span>
-            ) : (
-              <div className="flex flex-row gap-[4px] rounded-[4px] p-[4px] bg-[#EAF0FC] w-fit">
-                <Image
-                  src="/assets/subcollection/resource-icon.svg"
-                  alt="resource-icon"
-                  width={16}
-                  height={16}
-                />
-                <span className="text-[#0F72F3] text-[12px] font-[600]">{'Resource'}</span>
-              </div>
-            )}
+            <h3 className="text-[18px] font-medium text-black">
+              <Link href={`/mission-details/${item.resource_id}`}>{title}</Link>
+            </h3>
           </div>
         </div>
         <div className="relative">
