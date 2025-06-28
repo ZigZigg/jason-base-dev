@@ -7,7 +7,6 @@ import { VideoResourceCollection } from '@/lib/interfaces/resource';
 import { Spin } from 'antd';
 import { PlayCircleFilled } from '@ant-design/icons';
 import BaseButton from '@/atomics/button/BaseButton';
-import { useRouter } from 'next/navigation';
 
 interface VideoPlayerProps {
   videoObject: VideoResourceCollection;
@@ -20,7 +19,6 @@ const VideoPlayer = ({ videoObject, resource }: VideoPlayerProps) => {
   const [isLoading, setIsLoading] = useState(true);
   const [showThumbnail, setShowThumbnail] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const router = useRouter();
   const thumbnailUrl = useMemo(() => {
     if (videoObject.thumbnailObject?.file_uri) {
       return videoObject.thumbnailObject?.file_uri;
@@ -53,7 +51,7 @@ const VideoPlayer = ({ videoObject, resource }: VideoPlayerProps) => {
   };
 
   const goToTeacherGuide = () => {
-    router.push(`/resource/${resource?.id}/content/${videoObject.teacherGuide?.id}`);
+    window.open(`/resource/${resource?.id}/content/${videoObject.teacherGuide?.id}`, '_blank');
   };
 
   useEffect(() => {
@@ -117,6 +115,7 @@ const VideoPlayer = ({ videoObject, resource }: VideoPlayerProps) => {
             onClick={handlePlayPause}
             controls
             preload="auto"
+            autoPlay
           />
         </div>
       </div>

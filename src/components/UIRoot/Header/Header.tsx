@@ -126,6 +126,10 @@ export default function AppHeader() {
     );
   }, [session]);
 
+  const goToSubjectPages = () => {
+    router.push('/subjects/0');
+  }
+
   return (
     <header className="h-[60px] md:h-[78px] bg-[var(--primary-color)] flex justify-center items-center px-[16px]">
       <div className="flex justify-between items-center h-[100%] w-[100%] xl:w-[1344px] relative">
@@ -138,7 +142,7 @@ export default function AppHeader() {
             </div>
           )}
         </div>
-        <div className="absolute left-0 -translate-x-0 md:left-1/2 md:-translate-x-1/2">
+        <div onClick={goToSubjectPages} className="absolute left-0 -translate-x-0 md:left-1/2 md:-translate-x-1/2 cursor-pointer">
           <Image
             src="/assets/logo-02.png" // Path to your logo file in the public folder
             alt="Logo"

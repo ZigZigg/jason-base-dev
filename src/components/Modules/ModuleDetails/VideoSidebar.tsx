@@ -201,9 +201,9 @@ const VideoSidebar = ({ videos, selectedVideoId, onSelectVideo }: VideoSidebarPr
               </div>
 
               {/* Scrollbar indicator */}
-              {group.videos.length > 6 && (
+              {/* {group.videos.length > 6 && (
                 <div className="absolute right-[16px] top-[50%] translate-y-[-50%] w-[4px] h-[144px] bg-[#C4C4C4] rounded-[4px]" />
-              )}
+              )} */}
             </div>
           </div>
         );

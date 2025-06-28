@@ -17,7 +17,7 @@ type Props = {
 };
 
 const MissionDetail = ({ collection, parentCollection, childCollections }: Props) => {
-console.log("🚀 ~ MissionDetail ~ collection:", collection)
+
 
   const { setItems } = useBreadcrumb();
   const [videoResource, setVideoResource] = useState<TVideoResource | undefined>(undefined);

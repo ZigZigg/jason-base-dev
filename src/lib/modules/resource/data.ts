@@ -102,6 +102,7 @@ export async function getListSubCollectionsByResourceId(
     const collectionResponse = await apiClient.get<ResourceCollectionResponse>(collectionUrl, {
       next: { revalidate: 1800 },
     });
+
     let banner = undefined;
     // Look for thumbnail asset
     const bannerAsset = collectionResponse.resource?.assets.find(
@@ -115,6 +116,7 @@ export async function getListSubCollectionsByResourceId(
     }
 
     // Check if collection has child collections
+    const currentTitle = collectionResponse.title_prefix ? `${collectionResponse.title_prefix} - ${collectionResponse.title}` : collectionResponse.title || '';
     if (collectionResponse.child_collections && collectionResponse.child_collections.length > 0) {
       const processedCollections = collectionResponse.child_collections.map((child) => {
         let thumbnail = undefined;
@@ -145,7 +147,7 @@ export async function getListSubCollectionsByResourceId(
         id: resourceId,
         data: processedCollections,
         type: 'SUB_COLLECTION',
-        title: collectionResponse.title || '',
+        title: currentTitle,
         description:
           collectionResponse.description || collectionResponse.resource?.description || '',
         banner: banner,
@@ -173,7 +175,7 @@ export async function getListSubCollectionsByResourceId(
         id: resourceId,
         data: resourceTypes,
         type: 'ASSOCIATE_COLLECTION',
-        title: collectionResponse.title || '',
+        title: currentTitle,
         description:
           collectionResponse.description || collectionResponse.resource?.description || '',
         banner: banner,
@@ -185,7 +187,7 @@ export async function getListSubCollectionsByResourceId(
       id: resourceId,
       data: [],
       type: 'SUB_COLLECTION',
-      title: collectionResponse.title || '',
+      title: currentTitle,
       description: collectionResponse.description || collectionResponse.resource?.description || '',
       banner: banner,
     };
@@ -399,6 +401,13 @@ const convertSingleHtmlContent = (htmlContent: string) => {
     
     // Add the new href
     return `<a${cleanedBefore} data-resource-id="${resourceId}" href="/resource-detail/${resourceId}"${cleanedAfter}>`;
+  });
+
+  // Pattern to match href="/ResourceDetails/<resourceId>/..." and update only the href value
+  const resourceDetailsHrefPattern = /href="\/ResourceDetails\/(\d+)[^"]*"/g;
+  convertedContent = convertedContent.replace(resourceDetailsHrefPattern, (match, resourceId) => {
+    // Replace only the href value with the new format
+    return `href="/resource-detail/${resourceId}"`;
   });
   
   return convertedContent;

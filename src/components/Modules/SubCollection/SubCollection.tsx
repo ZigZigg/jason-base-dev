@@ -16,6 +16,7 @@ interface SubCollectionProps {
 }
 
 const SubCollection = ({ module, parentSubject }: SubCollectionProps) => {
+
   const { data, title, description, banner, type, videoAsset } = module;
 
   const { setItems } = useBreadcrumb();

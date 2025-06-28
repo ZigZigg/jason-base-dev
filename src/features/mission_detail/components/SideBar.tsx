@@ -10,7 +10,7 @@ type Props = {
 };
 
 const Sidebar = ({ collections, selectedCollectionIndex, onCollectionSelect }: Props) => {
-  console.log("🚀 ~ Sidebar ~ collections:", collections)
+
   return (
     <div className="p-4">
       <div className="flex flex-col gap-6">
