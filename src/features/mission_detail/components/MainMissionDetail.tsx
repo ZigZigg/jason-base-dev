@@ -2,6 +2,7 @@ import {
   extractCollectionId,
   getCollectionById,
   getResourceById,
+  groupAssociatedResourcesByType,
 } from '@/lib/modules/resource/data';
 import React from 'react';
 import MissionDetail from './MissionDetail';
@@ -22,7 +23,10 @@ const MainMissionDetail = async (props: Props) => {
 
   const childCollections = collection.child_collections?.length
     ? await Promise.all(collection.child_collections.map((child) => getCollectionById(child.id)))
-    : [collection];
+    : groupAssociatedResourcesByType(collection.associated_resources || [], collection.id);
+
+
+
   return (
     <MissionDetail
       collection={collection}

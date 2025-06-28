@@ -1,4 +1,5 @@
 import React from 'react';
+import { redirect } from 'next/navigation';
 import {
   getGroupListVideosByResourceId,
   getListSubCollectionsByResourceId,
@@ -21,6 +22,11 @@ const MainContentResource = async ({ id, parentSubject }: Props) => {
   // Check if current ID is in the allowed list
   if (!allowedIds.includes(id) && !allowedIds2ndLayer.includes(id)) {
     const result = await getListSubCollectionsByResourceId(id);
+
+    // Redirect to mission-details if type is ASSOCIATE_COLLECTION
+    if (result.type === 'ASSOCIATE_COLLECTION') {
+      redirect(`/mission-details/${result.id}`);
+    }
 
     return <SubCollection module={result} parentSubject={parentSubject} />;
   }

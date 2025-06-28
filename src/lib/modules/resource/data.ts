@@ -424,3 +424,32 @@ export const getConvertedHtmlContent = (htmlFragments: any[]) => {
     return htmlFragments; // Return original fragments on error
   }
 }
+
+export const groupAssociatedResourcesByType = (associatedResources: any[], collectionId: string): ResourceCollectionResponse[] => {
+  if (!associatedResources?.length) {
+    return [];
+  }
+
+  // Group by resource type
+  const groupedByType = _.groupBy(
+    associatedResources,
+    (resource) => resource.type?.name || 'Unknown'
+  );
+
+  // Convert to array of types with their resources, structured like ResourceCollectionResponse
+  const resourceTypes = Object.entries(groupedByType).map(([typeName, resources], index) => ({
+    id: `${collectionId}-${typeName}-${index}`, // Generate unique ID
+    parent_id: collectionId,
+    resource_id: resources[0]?.id || null,
+    title: resources[0]?.type?.friendly_name || typeName,
+    title_prefix: '', // Empty as this represents a resource type group
+    description: '',
+    type: resources[0]?.type || null,
+    resource: undefined,
+    child_collections: [],
+    associated_resources: resources,
+    educator_resources: [],
+  } as ResourceCollectionResponse));
+
+  return resourceTypes;
+}
