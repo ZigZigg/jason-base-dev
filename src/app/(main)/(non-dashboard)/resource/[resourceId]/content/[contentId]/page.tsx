@@ -1,7 +1,7 @@
-import LoadingResourceDetail from '@/app/components/Modules/ModuleDetails/Loading'
-import MultimediaContent from '@/app/components/Modules/MultimediaContentDetail/MultimediaContent'
+import LoadingResourceDetail from '@/components/Modules/ModuleDetails/Loading'
+import MultimediaContent from '@/components/Modules/MultimediaContentDetail/MultimediaContent'
 import React, { Suspense } from 'react'
-import './jason-resources.scss'
+
 
 interface ContentResourcePageProps {
   params: Promise<{

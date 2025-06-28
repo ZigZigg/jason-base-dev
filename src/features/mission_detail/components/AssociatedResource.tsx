@@ -1,37 +1,38 @@
 'use client';
 
-import { ExtendedResourceAsset } from "@/app/lib/interfaces/resource";
-import Image from "next/image";
-import { useMemo } from "react";
-import { getAssociatedResourceThumbnail } from "../selectors";
+import { ExtendedResourceAsset } from '@/lib/interfaces/resource';
+import Image from 'next/image';
+import { useMemo } from 'react';
+import { getAssociatedResourceThumbnail } from '../selectors';
+import Link from 'next/link';
 
 type Props = {
   associatedResource: ExtendedResourceAsset;
 };
 
 const AssociatedResource = ({ associatedResource }: Props) => {
-  const thumbnail = useMemo(() => getAssociatedResourceThumbnail(associatedResource), [associatedResource]);
+  const thumbnail = useMemo(
+    () => getAssociatedResourceThumbnail(associatedResource),
+    [associatedResource]
+  );
 
   return (
-    <div
-        key={associatedResource.id}
-        className="flex flex-col lg:flex-row gap-[30px]"
-      >
-        <div className="w-1/2 lg:w-1/4 relative">
-          <Image
-            src={thumbnail}
-            alt={associatedResource.title}
-            width={0}
-            height={0}
-            sizes="100vw"
-            className="w-full h-auto"
-          /></div>
-        <div className="w-full lg:w-3/4">
-          <p className="font-medium text-lg">{associatedResource.title}</p>
-          <p className="font-medium text-[#DE1514]">{associatedResource.type.name}</p>
-          <p className="mt-2 text-base text-[#667085]">{associatedResource.description}</p>
-        </div>
+    <Link href={`/resource-detail/${associatedResource.id}`} key={associatedResource.id} className="flex flex-col lg:flex-row gap-[16px] md:gap-[30px]">
+      <div className="w-full aspect-[287/170] md:aspect-[175/100] md:w-[175px] md:h-[100px] relative flex-shrink-0">
+        <Image
+          src={thumbnail}
+          alt={associatedResource.title}
+          width={175}
+          height={100}
+          className="object-cover w-full h-full rounded-[8px]"
+        />
       </div>
+      <div className="flex-1">
+        <p className="font-[500] text-[18px] text-[#000000]">{associatedResource.title}</p>
+        <p className="font-[500] text-[#DE1514] text-[14px]">{associatedResource.type.name}</p>
+        <p className="mt-2 text-[16px] text-[#667085]">{associatedResource.description}</p>
+      </div>
+    </Link>
   );
 };
 

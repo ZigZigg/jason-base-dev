@@ -1,9 +1,9 @@
 import { Metadata } from 'next';
 import { Suspense } from 'react';
 
-import LoadingResourceDetail from '@/app/components/Modules/ModuleDetails/Loading';
-import { getCollectionById, getResourceById } from '@/app/lib/modules/resource/data';
-import MissionDetail from '@/features/mission_detail/components/MissionDetail';
+import LoadingResourceDetail from '@/components/Modules/ModuleDetails/Loading';
+import { getResourceById } from '@/lib/modules/resource/data';
+import MainMissionDetail from '@/features/mission_detail/components/MainMissionDetail';
 
 type Props = {
   params: Promise<{
@@ -38,21 +38,11 @@ export async function generateMetadata({ params }: PropMeta): Promise<Metadata> 
 
 export default async function ResourceDetailsPage({ params }: Props) {
   const { resourceId } = await params;
-  const resource = await getResourceById(resourceId);
-  const collection = await getCollectionById(resource.resource_collection_id)
-  const parentCollection = collection.parent_id ? await getCollectionById(collection.parent_id) : null;
-  const childCollections = collection.child_collections ? await Promise.all(
-    collection.child_collections.map((child) => getCollectionById(child.id)
-  )) : []
 
   return (
     <div className="w-full xl:w-[1280px]">
         <Suspense fallback={<LoadingResourceDetail />}>
-          <MissionDetail
-            collection={collection}
-            parentCollection={parentCollection}
-            childCollections={childCollections}
-          />
+          <MainMissionDetail resourceId={resourceId} />
         </Suspense>
     </div>
   );

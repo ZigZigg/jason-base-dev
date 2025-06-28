@@ -1,8 +1,8 @@
 import { Suspense } from 'react';
-import LoadingResourceDetail from '@/app/components/Modules/ModuleDetails/Loading';
-import MainContentResource from '@/app/components/Modules/ModuleDetails/MainContent';
+import LoadingResourceDetail from '@/components/Modules/ModuleDetails/Loading';
+import MainContentResource from '@/components/Modules/ModuleDetails/MainContent';
 import { Metadata } from 'next';
-import { getResourceById } from '@/app/lib/modules/resource/data';
+import { getResourceById } from '@/lib/modules/resource/data';
 
 type Props = {
   params: Promise<{

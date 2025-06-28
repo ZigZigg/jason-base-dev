@@ -1,11 +1,11 @@
-import CategoryTabs from '@/app/components/Modules/Subjects/CategoryTabs'
-import SubjectModuleContent from '@/app/components/Modules/Subjects/Content'
-import FilteringSubject from '@/app/components/Modules/Subjects/Filtering'
+import CategoryTabs from '@/components/Modules/Subjects/CategoryTabs'
+import SubjectModuleContent from '@/components/Modules/Subjects/Content'
+import FilteringSubject from '@/components/Modules/Subjects/Filtering'
 import React from 'react'
-import { getSubjectById, getSubjectResources } from '@/app/lib/modules/subjects/data'
+import { getSubjectById, getSubjectResources } from '@/lib/modules/subjects/data'
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { mockThumbnail } from '@/app/components/Modules/Subjects/subjectData'
+import { mockThumbnail } from '@/components/Modules/Subjects/subjectData'
 
 
 type Props = {

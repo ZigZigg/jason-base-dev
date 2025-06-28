@@ -1,7 +1,7 @@
-import SearchContent from '@/app/components/Modules/Search/Content';
-import SearchFiltering from '@/app/components/Modules/Search/Filtering';
-import LoadingSearch from '@/app/components/Modules/Search/Loading';
-import { SearchParams } from '@/app/lib/interfaces/search';
+import SearchContent from '@/components/Modules/Search/Content';
+import SearchFiltering from '@/components/Modules/Search/Filtering';
+import LoadingSearch from '@/components/Modules/Search/Loading';
+import { SearchParams } from '@/lib/interfaces/search';
 import { Metadata } from 'next';
 import { Suspense } from 'react';
 

@@ -2,9 +2,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import styles from './page.module.scss';
-import { getSubjectData } from '@/app/lib/modules/subjects/data';
+import { getSubjectData } from '@/lib/modules/subjects/data';
 import { Metadata } from 'next';
-import { mockThumbnail } from '@/app/components/Modules/Subjects/subjectData';
+import { mockThumbnail } from '@/components/Modules/Subjects/subjectData';
 
 export const metadata: Metadata = {
   title: 'Subject Categories | Jason Learning',

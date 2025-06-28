@@ -1,4 +1,4 @@
-import { ExtendedResourceAsset, ResourceCollectionResponse } from "@/app/lib/interfaces/resource";
+import { ExtendedResourceAsset, ResourceCollectionResponse } from "@/lib/interfaces/resource";
 
 export type TVideoResource = {
   file_uri: string;
