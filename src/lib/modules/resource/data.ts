@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { getServerSession } from 'next-auth';
 
-import { getVideoAsset } from '@/selectors/associated_resources_selector';
+import { getVideoAssetFromAssociatedResources } from '@/selectors/video_asset_selector';
 import ApiClient from '../../api';
 import { authOptions } from '../../auth';
 import {
@@ -151,7 +151,7 @@ export async function getListSubCollectionsByResourceId(
         description:
           collectionResponse.description || collectionResponse.resource?.description || '',
         banner: banner,
-        videoAsset: getVideoAsset(collectionResponse.associated_resources || []),
+        videoAsset: getVideoAssetFromAssociatedResources(collectionResponse.associated_resources || []),
       };
     }
     // If no child collections but has associated resources
@@ -352,10 +352,15 @@ export async function getGroupListVideosByResourceId(
 const convertSingleHtmlContent = (htmlContent: string) => {
   // Pattern to match {{resource:link:resourceId}}
   const resourceLinkPattern = /\{\{resource:link:(\d+)\}\}/g;
+
   // Pattern to match {{resource:embed_image:resourceId}} and {{resource:embed_image:resourceId:size-medium}}
   const resourceEmbedImagePattern = /\{\{resource:embed_image:(\d+)(?::size-(?:small|medium))?\}\}/g;
+
+  // <p>When you are done, be sure to complete the quiz for this lesson!</p>\n<p>{{resource:embed:46029}}</p>
+  const resourceEmbedVideoPattern = /\{\{resource:embed:(\d+)\}\}/g;
+
   let convertedContent = htmlContent;
-  
+
   // Replace all link patterns with placeholder divs that will be populated client-side
   convertedContent = convertedContent.replace(resourceLinkPattern, (match, resourceId) => {
     return `<div class="resource-link-placeholder inline-flex items-center gap-2 px-3 py-1 bg-gray-100 rounded animate-pulse" data-resource-id="${resourceId}">
@@ -373,7 +378,15 @@ const convertSingleHtmlContent = (htmlContent: string) => {
       </div>
     </div>`;
   });
-  
+
+  // Prepare placeholder for resource embeds
+  convertedContent = convertedContent.replace(resourceEmbedVideoPattern, (match, resourceId) => {
+    return `<div class="resource-embed-video-placeholder inline-flex items-center gap-2 px-3 py-1 bg-gray-100 rounded animate-pulse" data-resource-id="${resourceId}">
+      <div class="w-4 h-4 bg-gray-300 rounded-full animate-pulse"></div>
+      <span class="text-gray-500">Loading embed video resource ${resourceId}...</span>
+    </div>`;
+  });
+
   // Pattern to match <img> tags and update relative src paths
   const imgPattern = /<img([^>]*)\ssrc="([^"]+)"([^>]*)>/g;
   convertedContent = convertedContent.replace(imgPattern, (match, beforeSrc, src, afterSrc) => {
@@ -391,14 +404,14 @@ const convertSingleHtmlContent = (htmlContent: string) => {
       return `<img${beforeSrc} src="${fullSrc}"${afterSrc}>`;
     }
   });
-  
+
   // Pattern to match <a> tags with data-resource-id and update href
   const linkPattern = /<a([^>]*)\sdata-resource-id="([^"]+)"([^>]*)>/g;
   convertedContent = convertedContent.replace(linkPattern, (match, beforeDataId, resourceId, afterDataId) => {
     // Check if href already exists and remove it to replace
     const cleanedBefore = beforeDataId.replace(/\s*href="[^"]*"/g, '');
     const cleanedAfter = afterDataId.replace(/\s*href="[^"]*"/g, '');
-    
+
     // Add the new href
     return `<a${cleanedBefore} data-resource-id="${resourceId}" href="/resource-detail/${resourceId}"${cleanedAfter}>`;
   });
@@ -409,7 +422,7 @@ const convertSingleHtmlContent = (htmlContent: string) => {
     // Replace only the href value with the new format
     return `href="/resource-detail/${resourceId}"`;
   });
-  
+
   return convertedContent;
 };
 

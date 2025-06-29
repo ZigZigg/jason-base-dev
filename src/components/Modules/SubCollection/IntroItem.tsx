@@ -1,6 +1,5 @@
-import { TVideoAsset } from '@/selectors/associated_resources_selector';
-import React from 'react';
 import VideoPlayer from '@/components/VideoPlayer';
+import { TVideoAsset } from '@/selectors/video_asset_selector';
 import Image from 'next/image';
 
 type Props = {

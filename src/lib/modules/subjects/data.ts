@@ -17,6 +17,7 @@ export interface ResourceAsset {
   title: string;
   description: string;
   name: string;
+  display_name: string;
   path: string;
   file_uri: string;
   type: {

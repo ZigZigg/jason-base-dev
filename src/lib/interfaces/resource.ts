@@ -1,4 +1,4 @@
-import { TVideoAsset } from '@/selectors/associated_resources_selector';
+import { TVideoAsset } from '@/selectors/video_asset_selector';
 import { ResourceAsset, ResourceCollection, ResourceType } from '../modules/subjects/data';
 
 export interface SubCollectionObjectResponse {
