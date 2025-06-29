@@ -1,5 +1,6 @@
 'use client';
 
+import EducatorResourceButton from '@/components/Modules/ModuleDetails/EducatorResourceButton';
 import { ResourceCollectionResponse } from '@/lib/interfaces/resource';
 import { useBreadcrumb } from '@/providers/BreadcrumbProvider';
 import { useEffect, useMemo, useState } from 'react';
@@ -8,7 +9,6 @@ import Banner from './Banner';
 import CollectionDetail from './CollectionDetail';
 import Sidebar from './SideBar';
 import SidebarMobile from './SidebarMobile';
-import EducatorResourceButton from '@/components/Modules/ModuleDetails/EducatorResourceButton';
 
 type Props = {
   collection: ResourceCollectionResponse;
@@ -34,7 +34,7 @@ const MissionDetail = ({ collection, parentCollection, childCollections }: Props
     }
 
     breadcrumbItems.push({
-      title: collection.title_prefix || '',
+      title: [collection.title_prefix, collection.title].filter(Boolean).join(' : '),
       path: `/mission-details/${collection.resource_id}`,
     });
 
