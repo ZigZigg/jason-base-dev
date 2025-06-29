@@ -26,6 +26,7 @@ const MainMissionDetail = async (props: Props) => {
   } else if (collection.associated_resources?.length) {
     sideBarCollections = [collection];
   }
+  sideBarCollections = sideBarCollections.filter((collection) => collection.associated_resources?.length);
 
   return (
     <MissionDetail
