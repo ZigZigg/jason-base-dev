@@ -53,7 +53,7 @@ export async function getCollectionById(collectionId: string): Promise<ResourceC
 
 
 export async function getListSubCollectionsByResourceId(
-  resourceId: string
+  resourceId: number
 ): Promise<SubCollectionObjectResponse> {
   try {
     const session = await getServerSession(authOptions);

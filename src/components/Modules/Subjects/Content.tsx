@@ -1,9 +1,9 @@
 'use client';
-import React, { useEffect, useState, useRef, useCallback } from 'react';
-import SubjectItem from './SubjectItem';
 import { ResourceCollection } from '@/lib/modules/subjects/data';
 import { Spin } from 'antd';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { SubjectSkeletonGrid } from './SkeletonItem';
+import SubjectItem from './SubjectItem';
 
 interface PaginationInfo {
   currentPage: number;
@@ -180,7 +180,7 @@ const SubjectModuleContent = ({
               name: subjectName,
             }}
             item={{
-              id: parseInt(resource.id) || 0,
+              id: resource.id || 0,
               imageUrl: resource.thumbnail || '/assets/subject-category.webp',
               label: resource.title,
               moduleCounts: resource.subjects.length || 0,

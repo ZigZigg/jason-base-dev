@@ -1,8 +1,8 @@
-import { Suspense } from 'react';
 import LoadingResourceDetail from '@/components/Modules/ModuleDetails/Loading';
 import MainContentResource from '@/components/Modules/ModuleDetails/MainContent';
-import { Metadata } from 'next';
 import { getResourceById } from '@/lib/modules/resource/data';
+import { Metadata } from 'next';
+import { Suspense } from 'react';
 
 type Props = {
   params: Promise<{
@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: PropMeta): Promise<Metadata> 
       description: `Resource Not Found`,
     };
   }
-  
+
   return {
     title: `${resource.title} | Jason Learning`,
     description: resource.description,

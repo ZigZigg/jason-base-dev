@@ -2,7 +2,7 @@ import { TVideoAsset } from '@/selectors/video_asset_selector';
 import { ResourceAsset, ResourceCollection, ResourceType } from '../modules/subjects/data';
 
 export interface SubCollectionObjectResponse {
-  id: string;
+  id: number;
   banner?: string;
   title: string;
   description?: string;
