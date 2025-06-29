@@ -2,7 +2,8 @@ import { ResourceCollectionResponse } from '@/lib/interfaces/resource';
 import {
   extractCollectionId,
   getCollectionById,
-  getResourceById
+  getResourceById,
+  groupAssociatedResourcesByType
 } from '@/lib/modules/resource/data';
 import MissionDetail from './MissionDetail';
 
@@ -24,7 +25,7 @@ const MainMissionDetail = async (props: Props) => {
   if (collection.child_collections?.length) {
     sideBarCollections = await Promise.all(collection.child_collections.map((child) => getCollectionById(child.id)));
   } else if (collection.associated_resources?.length) {
-    sideBarCollections = [collection];
+    sideBarCollections = groupAssociatedResourcesByType(collection.associated_resources || [], collection.id);
   }
   sideBarCollections = sideBarCollections.filter((collection) => collection.associated_resources?.length);
 

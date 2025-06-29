@@ -24,7 +24,8 @@ const BreadcrumbComponent = () => {
   ]);
 
   const navigate = (path: string) => {
-    router.push(path);
+    const searchParams = window.location.search;
+    router.push(`${path}${searchParams || ''}`);
   };
 
   const createClickableBreadcrumbItem = (title: string, path?: string, isLastItem = false): BreadcrumbItem => ({

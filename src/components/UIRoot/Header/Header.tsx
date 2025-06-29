@@ -146,7 +146,7 @@ export default function AppHeader() {
           <Image
             src="/assets/logo-02.png" // Path to your logo file in the public folder
             alt="Logo"
-            className="w-[195px] md:w-[255px]"
+            className="w-[195px] md:w-[255px] h-[60px] md:h-[78px] object-cover"
             width={255} // Adjust based on your logo's dimensions
             height={54}
           />

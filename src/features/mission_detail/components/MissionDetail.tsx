@@ -26,7 +26,7 @@ const MissionDetail = ({ collection, parentCollection, sideBarCollections }: Pro
 
     if (parentCollection) {
       breadcrumbItems.push({
-        title: parentCollection.title || '',
+        title: parentCollection.title_prefix ? `${parentCollection.title_prefix} - ${parentCollection.title}` : (parentCollection.title || ''),
         path: `/resource/${parentCollection.resource_id}`,
       });
     }
