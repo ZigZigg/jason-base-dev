@@ -1,10 +1,11 @@
 'use client';
 
+import { RawHtml } from '@/components/RawHtml';
 import { ExtendedResourceAsset } from '@/lib/interfaces/resource';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useMemo } from 'react';
 import { getAssociatedResourceThumbnail } from '../selectors';
-import Link from 'next/link';
 
 type Props = {
   associatedResource: ExtendedResourceAsset;
@@ -30,7 +31,9 @@ const AssociatedResource = ({ associatedResource }: Props) => {
       <div className="flex-1">
         <p className="font-[500] text-[18px] text-[#000000]">{associatedResource.title}</p>
         <p className="font-[500] text-[#DE1514] text-[14px]">{associatedResource.type.name}</p>
-        <p className="mt-2 text-[16px] text-[#667085]">{associatedResource.description}</p>
+        <p className="mt-2 text-[16px] text-[#667085]">
+          <RawHtml>{associatedResource.description}</RawHtml>
+        </p>
       </div>
     </Link>
   );

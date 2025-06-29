@@ -78,7 +78,7 @@ export interface ResourceCollectionItem {
 }
 
 export interface ResourceCollection {
-  id: string;
+  id: number;
   resource_collection_id: string;
   title: string;
   description: string;

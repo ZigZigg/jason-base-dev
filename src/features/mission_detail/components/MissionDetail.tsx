@@ -13,12 +13,10 @@ import SidebarMobile from './SidebarMobile';
 type Props = {
   collection: ResourceCollectionResponse;
   parentCollection: ResourceCollectionResponse | null;
-  childCollections: ResourceCollectionResponse[];
+  sideBarCollections: ResourceCollectionResponse[];
 };
 
-const MissionDetail = ({ collection, parentCollection, childCollections }: Props) => {
-
-
+const MissionDetail = ({ collection, parentCollection, sideBarCollections }: Props) => {
   const { setItems } = useBreadcrumb();
   const [videoResource, setVideoResource] = useState<TVideoResource | undefined>(undefined);
   const [selectedCollectionIndex, setSelectedCollectionIndex] = useState<number>(0);
@@ -45,7 +43,7 @@ const MissionDetail = ({ collection, parentCollection, childCollections }: Props
   }, []);
 
   useEffect(() => {
-    const videoResource = getVideoResource(collection, childCollections);
+    const videoResource = getVideoResource(collection, sideBarCollections);
     setVideoResource(videoResource);
   }, []);
 
@@ -64,8 +62,8 @@ const MissionDetail = ({ collection, parentCollection, childCollections }: Props
   }, [collection, videoResource]);
 
   const selectedCollection = useMemo(
-    () => childCollections[selectedCollectionIndex],
-    [childCollections, selectedCollectionIndex]
+    () => sideBarCollections[selectedCollectionIndex],
+    [sideBarCollections, selectedCollectionIndex]
   );
   const currentResource = useMemo(() => {
     return {
@@ -95,7 +93,7 @@ const MissionDetail = ({ collection, parentCollection, childCollections }: Props
       {/* Mobile Sidebar - Outside main container */}
       <div className="md:hidden mt-[10px]">
         <SidebarMobile
-          collections={childCollections}
+          collections={sideBarCollections}
           selectedCollectionIndex={selectedCollectionIndex}
           onCollectionSelect={handleCollectionSelect}
         />
@@ -104,7 +102,7 @@ const MissionDetail = ({ collection, parentCollection, childCollections }: Props
       <div id="mission-detail-sidebar" className="w-full flex flex-col md:flex-row gap-8 p-[12px] bg-[#EAF0FC] rounded-[16px]">
         <div className="hidden md:block w-full md:w-[260px] flex-shrink-0">
           <Sidebar
-            collections={childCollections}
+            collections={sideBarCollections}
             selectedCollectionIndex={selectedCollectionIndex}
             onCollectionSelect={handleCollectionSelect}
           />

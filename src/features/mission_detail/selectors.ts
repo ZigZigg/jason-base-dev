@@ -33,22 +33,10 @@ export const getVideoResource = (
 export const getAssociatedResourceThumbnail = (
   associatedResource: ExtendedResourceAsset,
 ): string => {
-  if (associatedResource.type.name === 'HostResearcher') {
-    return 'https://assets.jason.org/common/resource_assets/thumbnails/hostresearcher/thumbnail_medium.png';
+  const thumbnail = associatedResource.assets?.find((asset) => asset.type.name === 'ThumbnailMedium');
+  if (thumbnail) {
+    return thumbnail.file_uri;
   }
 
-  if (associatedResource.type.name === 'Article') {
-    return 'https://assets.jason.org/common/resource_assets/thumbnails/article/thumbnail_medium.png';
-  }
-
-  if (associatedResource.type.name === 'Laboratory') {
-    return 'https://assets.jason.org/common/resource_assets/thumbnails/laboratory/thumbnail_medium.png';
-  }
-
-  if (associatedResource.type.name === 'Video') {
-    const videoThumbnail = associatedResource.assets?.find((asset) => asset.type.name === 'ThumbnailMedium');
-    return videoThumbnail ? videoThumbnail.file_uri : '';
-  }
-
-  return '/assets/subject-category.webp';
+  return `https://assets.jason.org/common/resource_assets/thumbnails/${associatedResource.type.name.toLowerCase()}/thumbnail_medium.png`
 }
