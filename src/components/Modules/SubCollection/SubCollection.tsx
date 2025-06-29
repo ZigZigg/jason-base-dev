@@ -4,8 +4,8 @@ import { SubCollectionObjectResponse } from '@/lib/interfaces/resource';
 import { useBreadcrumb } from '@/providers/BreadcrumbProvider';
 import { useEffect } from 'react';
 import EmptyResult from '../Search/Commons/EmptyResult';
-import ModuleItem from './ModuleItem';
 import IntroItem from './IntroItem';
+import ModuleItem from './ModuleItem';
 
 interface SubCollectionProps {
   module: SubCollectionObjectResponse;
@@ -58,7 +58,7 @@ const SubCollection = ({ module, parentSubject }: SubCollectionProps) => {
   return (
     <div className="w-full flex flex-col gap-[20px] px-4 xl:px-0 pb-[60px]">
       {/* Title */}
-      <h1 className="text-2xl lg:text-[40px] lg:leading-[52px] text-[#333333]">{title}</h1>
+      <h1 className="text-[24px] lg:text-[40px] lg:leading-[52px] text-[#333333] font-bold">{title}</h1>
 
       <IntroItem videoAsset={videoAsset} banner={banner} title={title} description={description} />
       <span className="text-[16px] text-[#475467]">{`${data.length} modules in ${title}`}</span>
