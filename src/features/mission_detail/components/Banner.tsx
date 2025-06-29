@@ -38,15 +38,16 @@ const Banner = ({ videoResource, title, banner, description }: Props) => {
   };
 
   const renderBanner = () => {
-    if (!title) {
-      return null;
+    if (!banner) {
+      return <div className="p-5 pb-0 text-[#667085] text-[14px]">{description}</div>
     }
+
     return (
       <div className="w-full bg-[#EAF0FC] rounded-[16px] flex flex-col overflow-hidden">
         {/* Banner Image */}
         <div className="w-full aspect-[343/88] md:aspect-[1160/300]">
           <Image
-            src={banner || '/assets/subjects/default-banner.jpg'}
+            src={banner}
             alt={title || ''}
             width={1160}
             height={300}
