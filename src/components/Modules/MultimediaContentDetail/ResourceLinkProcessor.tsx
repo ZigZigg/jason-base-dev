@@ -158,7 +158,7 @@ export const ResourceLinkProcessor: React.FC<Props> = ({ children }) => {
 
       if (videoAsset) {
         const embedVideoContainer = document.createElement('div');
-        embedVideoContainer.className = 'w-1/2';
+        embedVideoContainer.className = 'w-full lg:w-1/2';
 
         const nameElement = document.createElement('div');
         nameElement.textContent = videoAsset.video_display_name;
