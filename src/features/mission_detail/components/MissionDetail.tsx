@@ -32,7 +32,7 @@ const MissionDetail = ({ collection, parentCollection, sideBarCollections }: Pro
     }
 
     breadcrumbItems.push({
-      title: [collection.title_prefix, collection.title].filter(Boolean).join(' : '),
+      title: [collection.title_prefix, collection.title].filter(Boolean).join(': '),
       path: `/mission-details/${collection.resource_id}`,
     });
 
@@ -75,7 +75,7 @@ const MissionDetail = ({ collection, parentCollection, sideBarCollections }: Pro
     <div className="w-full flex flex-col gap-6 px-4 xl:px-0 pb-[60px]">
       <div className="w-full flex flex-col md:flex-row items-start md:items-center justify-between gap-[4px] md:gap-[16px]">
       <h1 className="text-[24px] md:text-[40px] lg:leading-[52px] font-[700] text-[#333333]">
-        {`${collection.title_prefix ? `${collection.title_prefix} : ` : ''}${collection.title}`}
+        {collection.title_prefix || ''}
       </h1>
       {currentResource?.educator_resource && (
         <EducatorResourceButton resource={currentResource} />
@@ -87,7 +87,7 @@ const MissionDetail = ({ collection, parentCollection, sideBarCollections }: Pro
         banner={banner}
         description={description}
         videoResource={videoResource}
-        title={[collection.title_prefix, collection.title].filter(Boolean).join(' : ')}
+        title={[collection.title_prefix, collection.title].filter(Boolean).join(': ')}
       />
 
       {/* Mobile Sidebar - Outside main container */}
