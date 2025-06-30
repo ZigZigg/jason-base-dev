@@ -54,9 +54,11 @@ const Banner = ({ videoResource, banner, description }: Props) => {
         </div>
 
         {/* Banner Text Content */}
-        <div className="flex flex-col items-start justify-center gap-[8px] p-[16px] md:p-[24px] text-[14px] md:text-[16px] text-[#667085]">
-          {description}
-        </div>
+        {description && (
+          <div className="flex flex-col items-start justify-center gap-[8px] p-[16px] md:p-[24px] text-[14px] md:text-[16px] text-[#667085]">
+            {description}
+          </div>
+        )}
       </div>
     );
   };

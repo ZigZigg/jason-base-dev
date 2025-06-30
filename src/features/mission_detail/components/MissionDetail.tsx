@@ -62,7 +62,7 @@ const MissionDetail = ({ collection, parentCollection, sideBarCollections }: Pro
   }, [collection]);
 
   const description = useMemo(() => {
-    return videoResource?.description || collection.resource?.description;
+    return videoResource?.description || collection.description;
   }, [collection, videoResource]);
 
   const selectedCollection = useMemo(
