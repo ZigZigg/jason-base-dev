@@ -63,7 +63,7 @@ const SubCollection = ({ module, parentSubject }: SubCollectionProps) => {
       <IntroItem videoAsset={videoAsset} banner={banner} description={description} />
       <span className="text-[16px] text-[#475467]">{`${data.length} modules in ${title}`}</span>
       {data.length > 0 ? (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-[24px]">
           {data.map((module, index) => (
             <div key={index} className="w-full">
               <ModuleItem item={module} type={type} />

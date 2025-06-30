@@ -42,12 +42,12 @@ const ModuleItem = ({ item }: ModuleItemProps) => {
 
       {/* Content */}
       <div className="flex flex-col gap-[8px] flex-grow">
-        <h3 className="text-[16px] md:text-[18px] font-medium text-black line-clamp-2">{title}</h3>
+        <h3 className="text-[18px] font-medium text-black line-clamp-2">{title}</h3>
         <div className="relative">
           <p
             id="module-description"
             ref={textRef}
-            className={`text-[#667085] text-[12px] md:text-[16px] ${
+            className={`text-[#667085] text-[16px] ${
               !isExpanded ? 'line-clamp-2' : ''
             }`}
           >
@@ -56,7 +56,7 @@ const ModuleItem = ({ item }: ModuleItemProps) => {
           {(isOverflowing || isExpanded) && (
             <button
               onClick={toggleExpand}
-              className="text-[#000000] font-[700] text-[12px] ml-1 mt-1 hover:underline"
+              className="text-[#000000] font-[700] text-[16px] ml-1 mt-1 hover:underline"
             >
               {isExpanded ? 'Show less' : 'Show more'}
             </button>
