@@ -53,7 +53,7 @@ const SidebarMobile = ({ collections, selectedCollectionIndex, onCollectionSelec
                 {collectionIndex === selectedCollectionIndex && (
                   <div className="absolute rounded-full -left-[10px] top-[0px] w-0 h-full border-l-4 border-[#FFC858]" />
                 )}
-                <p className="text-[14px] line-clamp-1">{`${collection.title_prefix ? `${collection.title_prefix} : ` : ''}${collection.title}`}</p>
+                <p className="text-[14px] line-clamp-1">{[collection.title_prefix, collection.title].filter(Boolean).join(': ')}</p>
               </div>
             ))}
           </div>
