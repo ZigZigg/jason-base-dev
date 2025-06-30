@@ -5,12 +5,11 @@ import Image from 'next/image';
 type Props = {
   videoAsset?: TVideoAsset;
   banner?: string;
-  title?: string;
   description?: string;
 };
 
 const IntroItem = (props: Props) => {
-  const { videoAsset, banner, title, description } = props;
+  const { videoAsset, banner, description } = props;
 
   const renderVideo = () => {
     if (!videoAsset) {
@@ -48,7 +47,7 @@ const IntroItem = (props: Props) => {
         <div className="w-full aspect-[343/88] md:aspect-[1160/300]">
           <Image
             src={banner || '/assets/subjects/default-banner.jpg'}
-            alt={title || ''}
+            alt={''}
             width={1160}
             height={300}
             className="w-full h-full object-cover aspect-[343/88] md:aspect-[1160/300]"
@@ -57,7 +56,6 @@ const IntroItem = (props: Props) => {
 
         {/* Banner Text Content */}
         <div className="flex flex-col items-start justify-center gap-[8px] p-[16px] md:p-[24px]">
-          <h2 className="text-[16px] md:text-[20px] font-bold text-[#182230]">{title}</h2>
           <p className="text-[14px] md:text-[16px] text-[#667085]">{description}</p>
         </div>
       </div>
