@@ -89,10 +89,22 @@ const BreadcrumbComponent = () => {
 
     setItems([createHomeItem(), ...addItems]);
   }, [pathName, breadcrumbItems]);
-
+  console.log(breadcrumbItems);
+  const renderBreadbrumbMobile = () => {
+    const title = breadcrumbItems?.length >=2 ? breadcrumbItems[breadcrumbItems.length - 2].title : 'Homepage';
+    const path = breadcrumbItems?.length >=2 ? breadcrumbItems[breadcrumbItems.length - 2].path : '/';
+    return (
+      <div onClick={() => path && navigate(path)} className='flex md:hidden items-center justify-center flex-row gap-[10px] cursor-pointer'>
+        <Image src="/assets/icon/up-icon.svg" alt="Home" className='-rotate-90' width={16} height={30} />
+        <span className='text-[#667085] text-[14px] font-[400]'>{`Back to ${title}`}</span>
+      </div>
+    )
+  }
   return (
+    <>
+    {renderBreadbrumbMobile()}
     <Breadcrumb
-      className=""
+      className="hidden md:block"
       items={items}
       separator={
         <div className="flex items-center justify-center h-full w-[16px]">
@@ -100,6 +112,8 @@ const BreadcrumbComponent = () => {
         </div>
       }
     />
+    </>
+
   );
 };
 
