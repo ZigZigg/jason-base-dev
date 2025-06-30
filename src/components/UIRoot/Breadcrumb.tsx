@@ -89,7 +89,7 @@ const BreadcrumbComponent = () => {
 
     setItems([createHomeItem(), ...addItems]);
   }, [pathName, breadcrumbItems]);
-  console.log(breadcrumbItems);
+
   const renderBreadbrumbMobile = () => {
     const title = breadcrumbItems?.length >=2 ? breadcrumbItems[breadcrumbItems.length - 2].title : 'Homepage';
     const path = breadcrumbItems?.length >=2 ? breadcrumbItems[breadcrumbItems.length - 2].path : '/';

@@ -28,6 +28,20 @@ const MissionDetail = ({ collection, parentCollection, sideBarCollections }: Pro
   useEffect(() => {
     const breadcrumbItems = [];
 
+    const searchPath = window.location.search;
+    if(searchPath){
+      const urlParams = new URLSearchParams(searchPath);
+      const parentSubjectId = urlParams.get('parentSubjectId');
+      const parentSubjectName = urlParams.get('parentSubjectName');
+      
+      if (parentSubjectId && parentSubjectName) {
+        breadcrumbItems.push({
+          title: parentSubjectName,
+          path: `/subjects/${parentSubjectId}`,
+        });
+      }
+    }
+
     if (parentCollection) {
       breadcrumbItems.push({
         title: parentCollection.title_prefix ? `${parentCollection.title_prefix} - ${parentCollection.title}` : (parentCollection.title || ''),

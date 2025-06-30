@@ -5,6 +5,7 @@ import Link from 'next/link';
 
 import useExpandableText from '@/hooks/useExpandableText';
 import { CollectionResponseType, SubCollectionItem } from '@/lib/interfaces/resource';
+import { useMemo } from 'react';
 
 interface ModuleItemProps {
   item: SubCollectionItem;
@@ -16,9 +17,15 @@ const ModuleItem = ({ item }: ModuleItemProps) => {
   const { isExpanded, isOverflowing, textRef, toggleExpand } =
     useExpandableText<HTMLParagraphElement>();
 
+  const resourceUrl = useMemo(() => {
+    const url = new URL(window.location.href);
+    const searchParams = url.searchParams.toString();
+    return `/mission-details/${item.resource_id}${searchParams ? `?${searchParams}` : ''}`;
+  }, [item.resource_id]);
+
   return (
     <Link
-      href={`/mission-details/${item.resource_id}`}
+      href={resourceUrl}
       className="flex flex-row gap-[12px] md:gap-[30px] w-full"
     >
       {/* Thumbnail */}

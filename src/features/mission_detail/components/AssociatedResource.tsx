@@ -17,8 +17,14 @@ const AssociatedResource = ({ associatedResource }: Props) => {
     [associatedResource]
   );
 
+  const resourceUrl = useMemo(() => {
+    const url = new URL(window.location.href);
+    const searchParams = url.searchParams.toString();
+    return `/resource-detail/${associatedResource.id}${searchParams ? `?${searchParams}` : ''}`;
+  }, [associatedResource.id]);
+
   return (
-    <Link href={`/resource-detail/${associatedResource.id}`} key={associatedResource.id} className="flex flex-col lg:flex-row gap-[16px] md:gap-[30px]">
+    <Link href={resourceUrl} key={associatedResource.id} className="flex flex-col lg:flex-row gap-[16px] md:gap-[30px]">
       <div className="w-full aspect-[287/170] md:aspect-[175/100] md:w-[175px] md:h-[100px] relative flex-shrink-0">
         <Image
           src={thumbnail}
