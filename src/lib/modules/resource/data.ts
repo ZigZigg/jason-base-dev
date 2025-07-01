@@ -65,6 +65,7 @@ export async function getListSubCollectionsByResourceId(
     const resourceResponse = await apiClient.get<ResourceCollection>(resourceUrl, {
       next: { revalidate: 1800 },
     });
+    const resourceContentHtmlFragment = resourceResponse?.html_fragments?.find((fragment) => fragment.type.name === 'ResourceContent');
 
     if (!resourceResponse.links?.resource_collection) {
         let bannerLink = undefined;
@@ -80,7 +81,6 @@ export async function getListSubCollectionsByResourceId(
 
         }
 
-
         return {
             id: resourceId,
             data: [],
@@ -88,6 +88,7 @@ export async function getListSubCollectionsByResourceId(
             title: resourceResponse.title || '',
             description: resourceResponse.description || '',
             banner: bannerLink,
+            resourceContentHtmlFragment,
         }
     }
 
@@ -152,6 +153,7 @@ export async function getListSubCollectionsByResourceId(
           collectionResponse.description || collectionResponse.resource?.description || '',
         banner: banner,
         videoAsset: getVideoAssetFromAssociatedResources(collectionResponse.associated_resources || []),
+        resourceContentHtmlFragment,
       };
     }
     // If no child collections but has associated resources
@@ -179,6 +181,7 @@ export async function getListSubCollectionsByResourceId(
         description:
           collectionResponse.description || collectionResponse.resource?.description || '',
         banner: banner,
+        resourceContentHtmlFragment,
       };
     }
 
@@ -190,6 +193,7 @@ export async function getListSubCollectionsByResourceId(
       title: currentTitle,
       description: collectionResponse.description || collectionResponse.resource?.description || '',
       banner: banner,
+      resourceContentHtmlFragment,
     };
   } catch (error) {
     console.error('Error fetching list subcollections by resource id:', error);

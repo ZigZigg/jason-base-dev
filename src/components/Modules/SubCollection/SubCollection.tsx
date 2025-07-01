@@ -17,7 +17,7 @@ interface SubCollectionProps {
 
 const SubCollection = ({ module, parentSubject }: SubCollectionProps) => {
 
-  const { data, title, description, banner, type, videoAsset } = module;
+  const { data, title, description, banner, type, videoAsset, resourceContentHtmlFragment } = module;
 
   const { setItems } = useBreadcrumb();
 
@@ -60,7 +60,12 @@ const SubCollection = ({ module, parentSubject }: SubCollectionProps) => {
       {/* Title */}
       <h1 className="text-[24px] lg:text-[40px] lg:leading-[52px] text-[#333333] font-bold">{title}</h1>
 
-      <IntroItem videoAsset={videoAsset} banner={banner} description={description} />
+      <IntroItem
+        videoAsset={videoAsset}
+        banner={banner}
+        description={description}
+        resourceContentHtmlFragment={resourceContentHtmlFragment}
+      />
       <span className="text-[16px] text-[#475467]">{`${data.length} modules in ${title}`}</span>
       {data.length > 0 ? (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-[24px]">

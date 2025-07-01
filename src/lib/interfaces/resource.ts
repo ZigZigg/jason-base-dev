@@ -1,5 +1,5 @@
 import { TVideoAsset } from '@/selectors/video_asset_selector';
-import { ResourceAsset, ResourceCollection, ResourceType } from '../modules/subjects/data';
+import { ResourceAsset, ResourceCollection, ResourceHtmlFragment, ResourceType } from '../modules/subjects/data';
 
 export interface SubCollectionObjectResponse {
   id: number;
@@ -9,6 +9,7 @@ export interface SubCollectionObjectResponse {
   type: CollectionResponseType;
   data: SubCollectionItem[];
   videoAsset?: TVideoAsset;
+  resourceContentHtmlFragment?: ResourceHtmlFragment;
 }
 
 export type CollectionResponseType = 'SUB_COLLECTION' | 'ASSOCIATE_COLLECTION';
