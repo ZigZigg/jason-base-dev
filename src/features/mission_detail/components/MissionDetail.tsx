@@ -4,7 +4,7 @@ import EducatorResourceButton from '@/components/Modules/ModuleDetails/EducatorR
 import { ResourceCollectionResponse } from '@/lib/interfaces/resource';
 import { useBreadcrumb } from '@/providers/BreadcrumbProvider';
 import { useEffect, useMemo, useState } from 'react';
-import { getVideoResource, TVideoResource } from '../selectors';
+import { getVideoResource } from '../selectors';
 import Banner from './Banner';
 import CollectionDetail from './CollectionDetail';
 import Sidebar from './SideBar';
@@ -18,12 +18,15 @@ type Props = {
 
 const MissionDetail = ({ collection, parentCollection, sideBarCollections }: Props) => {
   const { setItems } = useBreadcrumb();
-  const [videoResource, setVideoResource] = useState<TVideoResource | undefined>(undefined);
   const [selectedCollectionIndex, setSelectedCollectionIndex] = useState<number>(0);
 
   const fullTitle = useMemo(() => {
     return [collection.title_prefix, collection.title].filter(Boolean).join(': ');
   }, [collection]);
+
+  const videoResource = useMemo(() => getVideoResource(collection, sideBarCollections), [
+    collection, sideBarCollections,
+  ]);
 
   useEffect(() => {
     const breadcrumbItems = [];
@@ -33,7 +36,7 @@ const MissionDetail = ({ collection, parentCollection, sideBarCollections }: Pro
       const urlParams = new URLSearchParams(searchPath);
       const parentSubjectId = urlParams.get('parentSubjectId');
       const parentSubjectName = urlParams.get('parentSubjectName');
-      
+
       if (parentSubjectId && parentSubjectName) {
         breadcrumbItems.push({
           title: parentSubjectName,
@@ -59,12 +62,6 @@ const MissionDetail = ({ collection, parentCollection, sideBarCollections }: Pro
       setItems([]);
     };
   }, [fullTitle]);
-
-  useEffect(() => {
-    const videoResource = getVideoResource(collection, sideBarCollections);
-    setVideoResource(videoResource);
-  }, []);
-
 
   const handleCollectionSelect = (collectionIndex: number) => {
     setSelectedCollectionIndex(collectionIndex);

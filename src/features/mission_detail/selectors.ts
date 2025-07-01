@@ -14,7 +14,10 @@ export const getVideoResource = (
   ).flat();
   const mainAssociatedResources = collection.associated_resources?.filter((associatedResource) => !childAssociatedResourcesIds.includes(associatedResource.id)) || [];
 
-  const videoResource = mainAssociatedResources.find((resource) => resource.type.name === 'Video');
+  let videoResource = mainAssociatedResources.find((resource) => resource.type.name === 'Video');
+  if (!videoResource) {
+    videoResource = collection.associated_resources?.find((resource) => resource.type.name === 'Video');
+  }
 
   const videoAsset = videoResource?.assets?.find((asset) => asset.type.name === 'iOSfriendlymp4')
   const videoThumbnail = videoResource?.assets?.find((asset) => asset.type.name === 'VideoPreviewImage')

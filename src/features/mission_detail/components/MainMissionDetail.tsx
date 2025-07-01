@@ -27,7 +27,8 @@ const MainMissionDetail = async (props: Props) => {
   } else if (collection.associated_resources?.length) {
     sideBarCollections = groupAssociatedResourcesByType(collection.associated_resources || [], collection.id);
   }
-  sideBarCollections = sideBarCollections.filter((collection) => collection.associated_resources?.length);
+
+  sideBarCollections = sideBarCollections.filter((sideBarCollection) => sideBarCollection.resource_id !== collection.resource_id && sideBarCollection.associated_resources?.length);
 
   return (
     <MissionDetail
