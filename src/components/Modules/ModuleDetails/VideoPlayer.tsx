@@ -51,7 +51,8 @@ const VideoPlayer = ({ videoObject, resource }: VideoPlayerProps) => {
   };
 
   const goToTeacherGuide = () => {
-    window.open(`/resource/${resource?.id}/content/${videoObject.teacherGuide?.id}`, '_blank');
+    const search = window.location.search;
+    window.open(`/resource-detail/${videoObject.teacherGuide?.id}${search || ''}`, '_blank');
   };
 
   useEffect(() => {

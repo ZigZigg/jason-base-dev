@@ -57,10 +57,14 @@ const ContentClient = (props: Props) => {
         title: parentCollections[0].title_prefix ? `${parentCollections[0].title_prefix} - ${parentCollections[0].title}` : parentCollections[0].title,
         path: `/resource/${parentCollections[0].collection_resource_id}`,
       });
+      const allowedIds = process.env.NEXT_PUBLIC_FIX_PLAYWATCH_IDS?.split(',') || [];
+
+      if(!allowedIds.includes(parentCollections[0].collection_resource_id.toString())) {
       itemsBreadcrumb.push({
         title: parentCollections[1].title_prefix ? `${parentCollections[1].title_prefix} - ${parentCollections[1].title}` : parentCollections[1].title,
-        path: `/mission-details/${parentCollections[1].collection_resource_id}`,
-      });
+          path: `/mission-details/${parentCollections[1].collection_resource_id}`,
+        });
+      }
     } else if (parentCollections.length === 1) {
       // 1 parent: parent1 > current
       itemsBreadcrumb.push({

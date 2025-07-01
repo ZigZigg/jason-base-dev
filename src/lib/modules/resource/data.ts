@@ -358,7 +358,7 @@ const convertSingleHtmlContent = (htmlContent: string) => {
   const resourceLinkPattern = /\{\{resource:link:(\d+)\}\}/g;
 
   // Pattern to match {{resource:embed_image:resourceId}} and {{resource:embed_image:resourceId:size-medium}}
-  const resourceEmbedImagePattern = /\{\{resource:embed_image:(\d+)(?::size-(?:small|medium))?\}\}/g;
+  const resourceEmbedImagePattern = /\{\{resource:embed_image:(\d+)(?::size-(?:small|medium|large))?\}\}/g;
 
   // <p>When you are done, be sure to complete the quiz for this lesson!</p>\n<p>{{resource:embed:46029}}</p>
   const resourceEmbedVideoPattern = /\{\{resource:embed:(\d+)\}\}/g;
