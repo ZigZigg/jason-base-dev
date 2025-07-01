@@ -56,7 +56,7 @@ const IntroItem = (props: Props) => {
 
         {/* Banner Text Content */}
         <div className="flex flex-col items-start justify-center gap-[8px] p-[16px] md:p-[24px]">
-          <p className="text-[14px] md:text-[16px] text-[#667085]">{description}</p>
+          <p className="text-[16px] text-[#667085]">{description}</p>
         </div>
       </div>
     );

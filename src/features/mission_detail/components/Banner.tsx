@@ -28,7 +28,7 @@ const Banner = ({ videoResource, banner, description }: Props) => {
           </div>
         </div>
 
-        <div className="w-full md:w-1/3 p-[0px] md:p-[20px] text-[#667085] text-[14px]">
+        <div className="w-full md:w-1/3 p-[0px] md:p-[20px] text-[#667085] text-[16px]">
           {description}
         </div>
       </div>
@@ -55,7 +55,7 @@ const Banner = ({ videoResource, banner, description }: Props) => {
 
         {/* Banner Text Content */}
         {description && (
-          <div className="flex flex-col items-start justify-center gap-[8px] p-[16px] md:p-[24px] text-[14px] md:text-[16px] text-[#667085]">
+          <div className="flex flex-col items-start justify-center gap-[8px] p-[16px] md:p-[24px] text-[16px] text-[#667085]">
             {description}
           </div>
         )}
