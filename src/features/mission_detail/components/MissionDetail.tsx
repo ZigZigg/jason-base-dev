@@ -124,8 +124,8 @@ const MissionDetail = ({ collection, parentCollection, sideBarCollections }: Pro
 
         <div className="flex-1 flex flex-col gap-[12px]">
           <div className="flex flex-col md:hidden py-[4px]">
-            <span className="text-[14px] text-[#667085] font-[500]">{selectedCollection.title_prefix || ''}</span>
-            <span className="text-[18px] text-[#0F72F3] font-[700]">{selectedCollection.title || ''}</span>
+            <span className="text-[14px] text-[#667085] font-[500]">{selectedCollection?.title_prefix || ''}</span>
+            <span className="text-[18px] text-[#0F72F3] font-[700]">{selectedCollection?.title || ''}</span>
           </div>
           <CollectionDetail collection={selectedCollection} />
         </div>
