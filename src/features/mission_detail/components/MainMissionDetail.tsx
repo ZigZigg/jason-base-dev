@@ -6,6 +6,7 @@ import {
   groupAssociatedResourcesByType
 } from '@/lib/modules/resource/data';
 import MissionDetail from './MissionDetail';
+import EmptyResult from '@/components/Modules/Search/Commons/EmptyResult';
 
 type Props = {
   resourceId: string;
@@ -15,6 +16,9 @@ const MainMissionDetail = async (props: Props) => {
   const { resourceId } = props;
   const resource = await getResourceById(resourceId);
   const collectionId = extractCollectionId(resource.links.resource_collection);
+  if(!collectionId) {
+    return <EmptyResult title="No modules available" />;
+  }
   const collection = await getCollectionById(collectionId);
 
   const parentCollection = collection.parent_id

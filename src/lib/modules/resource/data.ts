@@ -14,6 +14,10 @@ import { terminalTypes } from './terminalTypes';
 
 // Extract collection ID from URL string
 export function extractCollectionId(url: string): string {
+
+  if(!url) {
+    return '';
+  }
   const match = url.match(/\/([^\/]+)$/);
   return match ? match[1] : '';
 }
@@ -94,6 +98,7 @@ export async function getListSubCollectionsByResourceId(
 
     const collectionId = extractCollectionId(resourceResponse.links.resource_collection);
 
+
     if (!collectionId) {
       throw new Error('Could not extract collection ID from link');
     }
@@ -103,6 +108,7 @@ export async function getListSubCollectionsByResourceId(
     const collectionResponse = await apiClient.get<ResourceCollectionResponse>(collectionUrl, {
       next: { revalidate: 1800 },
     });
+
 
     let banner = undefined;
     // Look for thumbnail asset
