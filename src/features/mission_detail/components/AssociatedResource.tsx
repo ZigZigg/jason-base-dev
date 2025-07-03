@@ -1,8 +1,8 @@
 'use client';
 
 import { RawHtml } from '@/components/RawHtml';
+import SafeImage from '@/components/SafeImage';
 import { ExtendedResourceAsset } from '@/lib/interfaces/resource';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useMemo } from 'react';
 import { getAssociatedResourceThumbnail } from '../selectors';
@@ -12,22 +12,20 @@ type Props = {
 };
 
 const AssociatedResource = ({ associatedResource }: Props) => {
-  const thumbnail = useMemo(
-    () => getAssociatedResourceThumbnail(associatedResource),
-    [associatedResource]
-  );
-
   const resourceUrl = useMemo(() => {
     const url = new URL(window.location.href);
     const searchParams = url.searchParams.toString();
     return `/resource-detail/${associatedResource.id}${searchParams ? `?${searchParams}` : ''}`;
   }, [associatedResource.id]);
 
+  const thumbnail = useMemo(() => getAssociatedResourceThumbnail(associatedResource), [associatedResource]);
+
   return (
     <Link href={resourceUrl} key={associatedResource.id} className="flex flex-col lg:flex-row gap-[16px] md:gap-[30px]">
       <div className="w-full aspect-[287/170] md:aspect-[175/100] md:w-[175px] md:h-[100px] relative flex-shrink-0">
-        <Image
-          src={thumbnail}
+        <SafeImage
+          src={thumbnail.uri || thumbnail.fallbackUri}
+          fallbackUri={thumbnail.fallbackUri}
           alt={associatedResource.title}
           width={175}
           height={100}

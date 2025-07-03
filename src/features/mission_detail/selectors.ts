@@ -33,13 +33,24 @@ export const getVideoResource = (
   return undefined;
 }
 
+
+export type TAssociatedResourceThumbnail = {
+  uri: string | null;
+  fallbackUri: string;
+}
 export const getAssociatedResourceThumbnail = (
   associatedResource: ExtendedResourceAsset,
-): string => {
+): TAssociatedResourceThumbnail => {
+  let uri: string | null = null;
   const thumbnail = associatedResource.assets?.find((asset) => asset.type.name === 'ThumbnailMedium');
   if (thumbnail) {
-    return thumbnail.file_uri;
+    uri = thumbnail.file_uri;
   }
 
-  return `https://assets.jason.org/common/resource_assets/thumbnails/${associatedResource.type.name.toLowerCase()}/thumbnail_medium.png`
+  const fallbackUri = `https://assets.jason.org/common/resource_assets/thumbnails/${associatedResource.type.name.toLowerCase()}/thumbnail_medium.png`
+
+  return {
+    uri,
+    fallbackUri,
+  };
 }
