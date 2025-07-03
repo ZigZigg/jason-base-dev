@@ -69,7 +69,7 @@ export async function getListSubCollectionsByResourceId(
     const resourceResponse = await apiClient.get<ResourceCollection>(resourceUrl, {
       next: { revalidate: 1800 },
     });
-    const resourceContentHtmlFragment = resourceResponse?.html_fragments?.find((fragment) => fragment.type.name === 'ResourceContent');
+    const resourceContentHtmlFragment = resourceResponse?.html_fragments?.find((fragment) => fragment.type?.name === 'ResourceContent');
 
     if (!resourceResponse.links?.resource_collection) {
         let bannerLink = undefined;
@@ -147,8 +147,9 @@ export async function getListSubCollectionsByResourceId(
           title: child.title_prefix ? `${child.title_prefix} - ${child.title}` : child.title,
           description: child.description || child.resource?.description || '',
           thumbnail,
+          sort_order: child.sort_order || 0,
         };
-      });
+      }).sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0));
 
       return {
         id: resourceId,

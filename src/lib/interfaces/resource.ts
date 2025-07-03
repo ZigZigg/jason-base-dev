@@ -60,6 +60,7 @@ export interface ChildCollection {
   type?: ResourceType;
   resource?: ResourceCollection;
   thumbnail?: string;
+  sort_order?: number;
 }
 
 export interface ResourceCollectionResponse {
