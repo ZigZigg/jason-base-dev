@@ -1,0 +1,17 @@
+.carouselContainer {
+  :global {
+    .slick-dots {
+      bottom: -20px !important;
+
+      li {
+        :after {
+          background-color: #999999;
+        }
+
+        &.slick-active:after {
+          background-color: #0F72F3;
+        }
+      }
+    }
+  }
+}

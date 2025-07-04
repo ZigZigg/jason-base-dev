@@ -1,11 +1,13 @@
 'use client';
 
+import { useEffect, useMemo, useState } from 'react';
+
 import EducatorResourceButton from '@/components/Modules/ModuleDetails/EducatorResourceButton';
 import { ResourceCollectionResponse } from '@/lib/interfaces/resource';
 import { useBreadcrumb } from '@/providers/BreadcrumbProvider';
-import { useEffect, useMemo, useState } from 'react';
+
 import { getVideoResource } from '../selectors';
-import Banner from './Banner';
+import Banner from './Banner/Banner';
 import CollectionDetail from './CollectionDetail';
 import Sidebar from './SideBar';
 import SidebarMobile from './SidebarMobile';
@@ -87,7 +89,7 @@ const MissionDetail = ({ collection, parentCollection, sideBarCollections }: Pro
   }, [collection]);
   
   return (
-    <div className="w-full flex flex-col gap-6 px-4 xl:px-0 pb-[60px]">
+    <div className="w-full flex flex-col gap-8 px-4 xl:px-0 pb-[60px]">
       <div className="w-full flex flex-col md:flex-row items-start md:items-center justify-between gap-[4px] md:gap-[16px]">
       <h1 className="text-[24px] md:text-[40px] lg:leading-[52px] font-[700] text-[#333333]">
         {fullTitle}
