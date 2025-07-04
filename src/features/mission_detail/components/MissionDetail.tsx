@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 import EducatorResourceButton from '@/components/Modules/ModuleDetails/EducatorResourceButton';
 import { ResourceCollectionResponse } from '@/lib/interfaces/resource';
+import { ResourceCollection } from '@/lib/modules/subjects/data';
 import { useBreadcrumb } from '@/providers/BreadcrumbProvider';
 
 import { getVideoResource } from '../selectors';
@@ -11,15 +12,20 @@ import Banner from './Banner/Banner';
 import CollectionDetail from './CollectionDetail';
 import Sidebar from './SideBar';
 import SidebarMobile from './SidebarMobile';
+
 type Props = {
+  resource: ResourceCollection;
   collection: ResourceCollectionResponse;
   parentCollection: ResourceCollectionResponse | null;
   sideBarCollections: ResourceCollectionResponse[];
 };
 
-const MissionDetail = ({ collection, parentCollection, sideBarCollections }: Props) => {
+const MissionDetail = ({ resource, collection, parentCollection, sideBarCollections }: Props) => {
   const { setItems } = useBreadcrumb();
   const [selectedCollectionIndex, setSelectedCollectionIndex] = useState<number>(0);
+
+  const resourceContentHtmlFragment = resource?.html_fragments?.find((fragment) => (fragment.html_fragment?.type.name || fragment.type.name) === 'ResourceContent');
+  const htmlDescription = resourceContentHtmlFragment?.html_fragment?.content || resourceContentHtmlFragment?.content;
 
   const fullTitle = useMemo(() => {
     return [collection.title_prefix, collection.title].filter(Boolean).join(': ');
@@ -74,7 +80,7 @@ const MissionDetail = ({ collection, parentCollection, sideBarCollections }: Pro
   }, [collection]);
 
   const description = useMemo(() => {
-    return videoResource?.description || collection.description;
+    return videoResource?.description || collection.description || resource.description;
   }, [collection, videoResource]);
 
   const selectedCollection = useMemo(
@@ -87,7 +93,7 @@ const MissionDetail = ({ collection, parentCollection, sideBarCollections }: Pro
       educator_resource: collection.educator_resources?.length ? collection.educator_resources[0] : null,
     } as any;
   }, [collection]);
-  
+
   return (
     <div className="w-full flex flex-col gap-8 px-4 xl:px-0 pb-[60px]">
       <div className="w-full flex flex-col md:flex-row items-start md:items-center justify-between gap-[4px] md:gap-[16px]">
@@ -104,6 +110,7 @@ const MissionDetail = ({ collection, parentCollection, sideBarCollections }: Pro
         banner={banner}
         description={description}
         videoResource={videoResource}
+        htmlDescription={htmlDescription}
       />
 
       {/* Mobile Sidebar - Outside main container */}

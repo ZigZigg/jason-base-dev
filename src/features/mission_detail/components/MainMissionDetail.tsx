@@ -1,3 +1,4 @@
+import EmptyResult from '@/components/Modules/Search/Commons/EmptyResult';
 import { ResourceCollectionResponse } from '@/lib/interfaces/resource';
 import {
   extractCollectionId,
@@ -6,7 +7,6 @@ import {
   groupAssociatedResourcesByType
 } from '@/lib/modules/resource/data';
 import MissionDetail from './MissionDetail';
-import EmptyResult from '@/components/Modules/Search/Commons/EmptyResult';
 
 type Props = {
   resourceId: string;
@@ -15,6 +15,10 @@ type Props = {
 const MainMissionDetail = async (props: Props) => {
   const { resourceId } = props;
   const resource = await getResourceById(resourceId);
+  if(!resource) {
+    return <EmptyResult title="No modules available" />;
+  }
+
   const collectionId = extractCollectionId(resource?.links.resource_collection || '');
   if(!collectionId) {
     return <EmptyResult title="No modules available" />;
@@ -35,6 +39,7 @@ const MainMissionDetail = async (props: Props) => {
 
   return (
     <MissionDetail
+      resource={resource}
       collection={collection}
       parentCollection={parentCollection}
       sideBarCollections={sideBarCollections}

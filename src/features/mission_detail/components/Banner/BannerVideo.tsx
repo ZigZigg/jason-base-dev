@@ -3,14 +3,16 @@
 
 import VideoPlayer from '@/components/VideoPlayer';
 
+import { RawHtml } from '@/components/RawHtml';
 import { TVideoResource } from '../../selectors';
 
 type Props = {
   videoResource: TVideoResource;
   description?: string;
+  htmlDescription?: string;
 };
 
-const BannerVideo = ({ videoResource, description }: Props) => {
+const BannerVideo = ({ videoResource, description, htmlDescription }: Props) => {
   return (
     <div className="w-full flex flex-col md:flex-row gap-[20px] md:gap-[30px]">
       <div className="w-full md:w-2/3">
@@ -25,7 +27,7 @@ const BannerVideo = ({ videoResource, description }: Props) => {
       </div>
 
       <div className="w-full md:w-1/3 p-[0px] md:p-[20px] text-[#667085] text-[16px]">
-        {description}
+        { htmlDescription ? <RawHtml>{htmlDescription}</RawHtml> : description }
       </div>
     </div>
   );

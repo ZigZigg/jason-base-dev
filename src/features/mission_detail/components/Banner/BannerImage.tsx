@@ -1,13 +1,16 @@
 'use client';
 
+import { RawHtml } from '@/components/RawHtml';
 import Image from 'next/image';
+
 
 type Props = {
   banner: string;
   description?: string;
+  htmlDescription?: string;
 };
 
-const BannerImage = ({ banner, description }: Props) => {
+const BannerImage = ({ banner, description, htmlDescription }: Props) => {
   return (
       <div className="w-full bg-[#EAF0FC] rounded-[16px] flex flex-col overflow-hidden">
         {/* Banner Image */}
@@ -24,7 +27,7 @@ const BannerImage = ({ banner, description }: Props) => {
         {/* Banner Text Content */}
         {description && (
           <div className="flex flex-col items-start justify-center gap-[8px] p-[16px] md:p-[24px] text-[16px] text-[#667085]">
-            {description}
+            { htmlDescription ? <RawHtml>{htmlDescription}</RawHtml> : description }
           </div>
         )}
       </div>
