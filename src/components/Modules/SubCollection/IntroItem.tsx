@@ -14,6 +14,8 @@ type Props = {
 const IntroItem = (props: Props) => {
   const { videoAsset, banner, description, resourceContentHtmlFragment } = props;
 
+  const htmlDescription = resourceContentHtmlFragment?.html_fragment?.content || resourceContentHtmlFragment?.content;
+
   const renderVideo = () => {
     if (!videoAsset) {
       return null;
@@ -35,7 +37,7 @@ const IntroItem = (props: Props) => {
         {/* Description */}
         <div className="w-full md:w-1/3 flex justify-start">
           <p className="text-[14px] md:text-[16px] text-[#667085]">
-            { resourceContentHtmlFragment ? <RawHtml>{resourceContentHtmlFragment.content}</RawHtml> : description }
+            { htmlDescription ? <RawHtml>{htmlDescription}</RawHtml> : description }
           </p>
         </div>
       </div>
@@ -62,7 +64,7 @@ const IntroItem = (props: Props) => {
         {/* Banner Text Content */}
         <div className="flex flex-col items-start justify-center gap-[8px] p-[16px] md:p-[24px]">
           <p className="text-[16px] text-[#667085]">
-            { resourceContentHtmlFragment ? <RawHtml>{resourceContentHtmlFragment.content}</RawHtml> : description }
+            { htmlDescription ? <RawHtml>{htmlDescription}</RawHtml> : description }
           </p>
         </div>
       </div>
