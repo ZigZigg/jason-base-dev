@@ -10,7 +10,7 @@
 // Responsive typography for html fragments
 @media screen and (min-width: 600px) {
   .html-fragment {
-    p, .component-resource .description, li {
+    .component-resource .description, li {
       font-size: 1.25em;
     }
     
@@ -19,12 +19,14 @@
     }
   }
 }
-
+.html-fragment p {
+  font-size: 16px;
+}
 
 
 @media screen and (min-width: 1200px) {
   .html-fragment {
-    p, .component-resource .description, li {
+    .component-resource .description, li {
       font-size: 1.5em;
     }
     

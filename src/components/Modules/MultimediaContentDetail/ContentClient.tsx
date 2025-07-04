@@ -12,7 +12,6 @@ type Props = {
   parentResource?: ResourceCollection | null;
   resourceId?: string;
 };
-import _ from 'lodash';
 import RelatedResources from './RelatedResources';
 
 const ContentClient = (props: Props) => {
@@ -113,7 +112,7 @@ const ContentClient = (props: Props) => {
   }, [resource, convertedHtmlFragments]);
 
   const associatedResources = useMemo(() => {
-    return resource.associated_collections ? _.flatMap(resource.associated_collections, 'associated_resources') : [];
+    return resource.associated_collections?.length ? resource.associated_collections[0].associated_resources || [] : [];
   }, [resource]);
 
   return (

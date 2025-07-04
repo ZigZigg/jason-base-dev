@@ -1,6 +1,7 @@
 import { getServerSession } from "next-auth";
 import ApiClient from "../../api";
 import { authOptions } from "../../auth";
+import { ResourceCollectionResponse } from "@/lib/interfaces/resource";
 
 
 
@@ -99,7 +100,7 @@ export interface ResourceCollection {
   associated_collections?: ResourceCollectionResponse[];
 }
 
-export interface ResourceCollectionResponse {
+export interface ResourceCollectionResponseData {
   results: ResourceCollection[];
   total: number;
   current_page: number;
@@ -190,7 +191,7 @@ export async function getSubjectResources(
       url += `&sort_by=${encodeURIComponent(sortBy)}`;
     }
 
-    const resources = await apiClient.get<ResourceCollectionResponse>(url, {
+    const resources = await apiClient.get<ResourceCollectionResponseData>(url, {
       next: { revalidate: 1800 }, // Cache for 30 minutes
     });
 
