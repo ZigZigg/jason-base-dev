@@ -9,7 +9,6 @@ import Banner from './Banner';
 import CollectionDetail from './CollectionDetail';
 import Sidebar from './SideBar';
 import SidebarMobile from './SidebarMobile';
-
 type Props = {
   collection: ResourceCollectionResponse;
   parentCollection: ResourceCollectionResponse | null;
@@ -86,6 +85,7 @@ const MissionDetail = ({ collection, parentCollection, sideBarCollections }: Pro
       educator_resource: collection.educator_resources?.length ? collection.educator_resources[0] : null,
     } as any;
   }, [collection]);
+  
   return (
     <div className="w-full flex flex-col gap-6 px-4 xl:px-0 pb-[60px]">
       <div className="w-full flex flex-col md:flex-row items-start md:items-center justify-between gap-[4px] md:gap-[16px]">

@@ -22,19 +22,19 @@ export function extractCollectionId(url: string): string {
   return match ? match[1] : '';
 }
 
-export async function getResourceById(resourceId: string): Promise<ResourceCollection> {
+export async function getResourceById(resourceId: string): Promise<ResourceCollection | null> {
   try {
     const session = await getServerSession(authOptions);
     const apiClient = new ApiClient(session?.accessToken);
     const resourceUrl = `/v2/resources/${resourceId}`;
+
     const resourceResponse = await apiClient.get<ResourceCollection>(resourceUrl, {
       next: { revalidate: 1800 },
     });
-
     return resourceResponse;
   } catch (error) {
     console.error(`Error fetching resource with ID ${resourceId}:`, error);
-    throw error;
+    return null;
   }
 }
 
@@ -69,7 +69,7 @@ export async function getListSubCollectionsByResourceId(
     const resourceResponse = await apiClient.get<ResourceCollection>(resourceUrl, {
       next: { revalidate: 1800 },
     });
-    const resourceContentHtmlFragment = resourceResponse?.html_fragments?.find((fragment) => fragment.type?.name === 'ResourceContent');
+    const resourceContentHtmlFragment = resourceResponse?.html_fragments?.find((fragment) => (fragment.html_fragment?.type.name || fragment.type.name) === 'ResourceContent');
 
     if (!resourceResponse.links?.resource_collection) {
         let bannerLink = undefined;
@@ -439,10 +439,17 @@ const convertSingleHtmlContent = (htmlContent: string) => {
 
 export const getConvertedHtmlContent = (htmlFragments: any[]) => {
   try {
-    return htmlFragments.map(fragment => ({
-      ...fragment,
-      content: convertSingleHtmlContent(fragment.content || '')
-    }));
+    return htmlFragments.map(fragment => {
+      // Handle different content structures:
+      // Some resources have: fragment.html_fragment.content
+      // Some resources have: fragment.content
+      const content = fragment.html_fragment?.content || fragment.content || '';
+      
+      return {
+        ...(fragment.html_fragment ? fragment.html_fragment : fragment),
+        content: convertSingleHtmlContent(content)
+      };
+    });
   } catch (error) {
     console.error('Error converting HTML content:', error);
     return htmlFragments; // Return original fragments on error

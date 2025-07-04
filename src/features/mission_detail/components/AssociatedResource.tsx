@@ -33,8 +33,8 @@ const AssociatedResource = ({ associatedResource }: Props) => {
         />
       </div>
       <div className="flex-1">
-        <p className="font-[500] text-[18px] text-[#000000]">{associatedResource.title}</p>
-        <p className="font-[500] text-[#DE1514] text-[14px]">{associatedResource.type.name}</p>
+        <p className="font-[500] text-[18px] text-[#000000] line-clamp-2">{associatedResource.title}</p>
+        <p className="font-[500] text-[#DE1514] text-[14px] break-words">{associatedResource.type.name}</p>
         <p className="mt-2 text-[16px] text-[#667085]">
           <RawHtml>{associatedResource.description}</RawHtml>
         </p>

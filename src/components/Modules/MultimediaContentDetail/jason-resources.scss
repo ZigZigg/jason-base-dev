@@ -20,6 +20,8 @@
   }
 }
 
+
+
 @media screen and (min-width: 1200px) {
   .html-fragment {
     p, .component-resource .description, li {
@@ -450,6 +452,9 @@ div.maps img {
   .box-500.center, .box-500.center img,
   .box-600.center, .box-600.center img {
     width: 100%;
+  }
+  .html-fragment p{
+    font-size: 1.2em !important;
   }
 }
 

@@ -9,9 +9,11 @@ import ContentClientPDFItem from './ContentClientPDFItem';
 type Props = {
   convertedHtmlFragments: any[];
   resource: ResourceCollection;
-  parentResource?: ResourceCollection;
+  parentResource?: ResourceCollection | null;
   resourceId?: string;
 };
+import _ from 'lodash';
+import RelatedResources from './RelatedResources';
 
 const ContentClient = (props: Props) => {
   const { convertedHtmlFragments, resource, resourceId } = props;
@@ -110,6 +112,10 @@ const ContentClient = (props: Props) => {
     return <div>No content</div>;
   }, [resource, convertedHtmlFragments]);
 
+  const associatedResources = useMemo(() => {
+    return resource.associated_collections ? _.flatMap(resource.associated_collections, 'associated_resources') : [];
+  }, [resource]);
+
   return (
     <div id="multimedia-content" className="w-full resource-container mb-[32px]">
       <div className="flex flex-col gap-[8px] px-[16px] xl:px-[0px]">
@@ -122,7 +128,9 @@ const ContentClient = (props: Props) => {
       </div>
       <div className="h-[1px] w-full bg-[#F2F4F7] my-[24px]"></div>
       {renderContents()}
-
+      {
+        associatedResources.length  && <RelatedResources associated_resources={associatedResources} />
+      }
     </div>
   );
 };

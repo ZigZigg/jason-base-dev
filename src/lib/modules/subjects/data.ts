@@ -61,6 +61,7 @@ export interface ResourceHtmlFragment {
   description: string;
   content: string;
   type: ResourceType;
+  html_fragment?: ResourceHtmlFragment;
 }
 
 export interface ResourceCollectionData {
@@ -95,6 +96,7 @@ export interface ResourceCollection {
   educator_resource?: ResourceCollection | null;
   html_fragments?: ResourceHtmlFragment[];
   resource_collections?: ResourceCollectionItem[];
+  associated_collections?: ResourceCollectionResponse[];
 }
 
 export interface ResourceCollectionResponse {

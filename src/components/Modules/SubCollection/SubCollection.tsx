@@ -66,7 +66,7 @@ const SubCollection = ({ module, parentSubject }: SubCollectionProps) => {
         description={description}
         resourceContentHtmlFragment={resourceContentHtmlFragment}
       />
-      <span className="text-[16px] text-[#475467]">{`${data.length} modules in ${title}`}</span>
+      <span className="text-[16px] text-[#475467]">{`${data.length} ${data.length === 1 ? 'module' : 'modules'} in ${title}`}</span>
       {data.length > 0 ? (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-[24px]">
           {data.map((module, index) => (

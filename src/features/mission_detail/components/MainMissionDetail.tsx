@@ -15,12 +15,11 @@ type Props = {
 const MainMissionDetail = async (props: Props) => {
   const { resourceId } = props;
   const resource = await getResourceById(resourceId);
-  const collectionId = extractCollectionId(resource.links.resource_collection);
+  const collectionId = extractCollectionId(resource?.links.resource_collection || '');
   if(!collectionId) {
     return <EmptyResult title="No modules available" />;
   }
   const collection = await getCollectionById(collectionId);
-
   const parentCollection = collection.parent_id
     ? await getCollectionById(collection.parent_id)
     : null;
