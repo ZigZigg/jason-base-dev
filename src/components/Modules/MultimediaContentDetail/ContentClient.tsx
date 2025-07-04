@@ -118,10 +118,10 @@ const ContentClient = (props: Props) => {
   return (
     <div id="multimedia-content" className="w-full resource-container mb-[32px]">
       <div className="flex flex-col gap-[8px] px-[16px] xl:px-[0px]">
-        <h1 className=" xl:text-[40px] text-[30px] font-bold !mb-0 xl:leading-[48px] leading-[32px]">
+        <h1 className="text-[30px] xl:text-[40px] text-center font-bold !mb-0 xl:leading-[48px] leading-[32px]">
           {resource?.title}{' '}
         </h1>
-        <span className="xl:text-[16px] text-[14px] font-[400] text-[#667085]">
+        <span className="xl:text-[16px] text-[14px] font-[400] text-[#667085] text-center mt-[8px]">
           {resource?.description}
         </span>
       </div>
