@@ -1,10 +1,28 @@
 .carouselContainer {
   :global {
+    .slick-arrow {
+      background-color: #00000066 !important;
+      backdrop-filter: blur(3.5);
+      width: 36px !important;
+      height: 36px !important;
+      border-radius: 50%;
+
+      &.slick-prev:after {
+        top: 12px !important;
+        left: 14px !important;
+      }
+
+      &.slick-next:after {
+        top: 12px !important;
+        left: 10px !important;
+      }
+    }
+
     .slick-dots {
       bottom: -20px !important;
 
       li {
-        :after {
+        &:after {
           background-color: #999999;
         }
 
