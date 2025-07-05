@@ -1,25 +1,25 @@
 'use client';
-import React, { useCallback, useEffect, useMemo } from 'react';
 import { ResourceCollection } from '@/lib/modules/subjects/data';
 import { useBreadcrumb } from '@/providers/BreadcrumbProvider';
-import './jason-resources.scss';
+import { useCallback, useEffect, useMemo } from 'react';
 import ContentClientHTMLItem from './ContentClientHTMLItem';
-import ContentClientVideoItem from './ContentClientVideoItem';
 import ContentClientPDFItem from './ContentClientPDFItem';
+import ContentClientVideoItem from './ContentClientVideoItem';
+import './jason-resources.scss';
+import RelatedResources from './RelatedResources';
 type Props = {
   convertedHtmlFragments: any[];
   resource: ResourceCollection;
   parentResource?: ResourceCollection | null;
   resourceId?: string;
 };
-import RelatedResources from './RelatedResources';
 
 const ContentClient = (props: Props) => {
   const { convertedHtmlFragments, resource, resourceId } = props;
 
   const resourceCollection = useMemo(() => {
     const firstLayer = resource.resource_collections?.length ? resource.resource_collections[0] : null;
-    
+
     return firstLayer ? firstLayer.resource_collection : null;
   }, [resource]);
   const { setItems } = useBreadcrumb();
@@ -31,7 +31,7 @@ const ContentClient = (props: Props) => {
       const urlParams = new URLSearchParams(searchPath);
       const parentSubjectId = urlParams.get('parentSubjectId');
       const parentSubjectName = urlParams.get('parentSubjectName');
-      
+
       if (parentSubjectId && parentSubjectName) {
         itemsBreadcrumb.push({
           title: parentSubjectName,
@@ -43,7 +43,7 @@ const ContentClient = (props: Props) => {
     // Traverse nested parent collections (max 2 levels)
     const parentCollections = [];
     let currentCollection = resourceCollection;
-    
+
     // Collect up to 2 parent collections
     while (currentCollection?.parent_collection?.resource_collection && parentCollections.length < 2) {
       const parentCollection = currentCollection.parent_collection.resource_collection;
@@ -112,7 +112,9 @@ const ContentClient = (props: Props) => {
   }, [resource, convertedHtmlFragments]);
 
   const associatedResources = useMemo(() => {
-    return resource.associated_collections?.length ? resource.associated_collections[0].associated_resources || [] : [];
+    const resources = resource.associated_collections?.length ? resource.associated_collections[0].associated_resources || [] : [];
+
+    return resources.filter(resource => resource.type?.name !== 'CurriculumSectionIntroduction');
   }, [resource]);
 
   return (
