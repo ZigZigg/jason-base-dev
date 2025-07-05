@@ -22,7 +22,7 @@ const BannerMulti = ({ videoResource, banner, description, htmlDescription }: Pr
       <div className="w-full md:w-2/3">
         <div className="w-full rounded-[16px] flex flex-col overflow-hidden">
           <div className="w-full aspect-[343/88] md:aspect-[1160/300] pb-16">
-            <Carousel arrows className={styles.carouselContainer}>
+            <Carousel arrows infinite={false} className={styles.carouselContainer}>
               <div className="h-full">
                 <Image
                   src={banner}
