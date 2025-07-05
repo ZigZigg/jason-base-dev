@@ -3,19 +3,24 @@
 import { PlayCircleFilled } from '@ant-design/icons';
 import { Spin } from 'antd';
 import Image from 'next/image';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 interface VideoPlayerProps {
   file_uri: string;
   thumbnail_file_uri: string;
+  isActive?: boolean;
 }
 
-const VideoPlayer = ({ file_uri, thumbnail_file_uri }: VideoPlayerProps) => {
+const VideoPlayer = ({ file_uri, thumbnail_file_uri, isActive = true }: VideoPlayerProps) => {
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [showThumbnail, setShowThumbnail] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  const autoPlay = useMemo(() => {
+    return !!isActive;
+  }, []);
 
   // Reset states when video changes
   useEffect(() => {
@@ -27,7 +32,21 @@ const VideoPlayer = ({ file_uri, thumbnail_file_uri }: VideoPlayerProps) => {
     if (videoRef.current) {
       videoRef.current.load();
     }
-  }, []);
+  }, [file_uri]);
+
+  // Handle auto-play based on isActive prop
+  useEffect(() => {
+    if (videoRef.current && !isLoading) {
+      if (isActive && !isPlaying) {
+        videoRef.current.play();
+        setIsPlaying(true);
+        setShowThumbnail(false);
+      } else if (!isActive && isPlaying) {
+        videoRef.current.pause();
+        setIsPlaying(false);
+      }
+    }
+  }, [isActive, isLoading, isPlaying]);
 
   const handlePlayPause = () => {
     if (videoRef.current) {
@@ -103,7 +122,7 @@ const VideoPlayer = ({ file_uri, thumbnail_file_uri }: VideoPlayerProps) => {
           preload="auto"
           muted={true}
           playsInline={true}
-          autoPlay={true}
+          autoPlay={autoPlay}
         />
       </div>
     </div>

@@ -2,6 +2,7 @@
 
 import { Carousel } from "antd";
 import Image from 'next/image';
+import { useState } from 'react';
 
 import VideoPlayer from '@/components/VideoPlayer';
 
@@ -17,12 +18,19 @@ type Props = {
 };
 
 const BannerMulti = ({ videoResource, banner, description, htmlDescription }: Props) => {
+  const [activeSlide, setActiveSlide] = useState(0);
+
   return (
     <div className="w-full flex flex-col md:flex-row gap-[20px] md:gap-[30px]">
       <div className="w-full md:w-2/3">
         <div className="w-full rounded-[16px] flex flex-col overflow-hidden">
           <div className="w-full aspect-[343/88] md:aspect-[1160/300] pb-16">
-            <Carousel arrows infinite={false} className={styles.carouselContainer}>
+            <Carousel
+              arrows
+              infinite={false}
+              className={styles.carouselContainer}
+              afterChange={(current) => setActiveSlide(current)}
+            >
               <div className="h-full">
                 <Image
                   src={banner}
@@ -36,6 +44,7 @@ const BannerMulti = ({ videoResource, banner, description, htmlDescription }: Pr
                 <VideoPlayer
                   file_uri={videoResource.file_uri}
                   thumbnail_file_uri={videoResource.thumbnail_file_uri}
+                  isActive={activeSlide === 1}
                 />
               </div>
             </Carousel>
