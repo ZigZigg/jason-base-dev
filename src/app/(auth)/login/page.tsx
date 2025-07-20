@@ -6,7 +6,8 @@ export const metadata: Metadata = {
 };
 export default function LoginPage() {
 
-
+  console.log("NEXTAUTH_SECRET", process.env.NEXTAUTH_SECRET);
+  console.log("NEXTAUTH_URL", process.env.NEXTAUTH_URL);
   return (
     <SignInMain />
   );
