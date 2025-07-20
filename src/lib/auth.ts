@@ -1,8 +1,13 @@
 import { Session } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 
+// Ensure required environment variables
+if (!process.env.NEXTAUTH_SECRET) {
+  throw new Error('NEXTAUTH_SECRET is required');
+}
 
 export const authOptions = {
+  url: process.env.NEXTAUTH_URL || process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000',
   providers: [
     Credentials({
       id: "login", // Unique ID for login provider
