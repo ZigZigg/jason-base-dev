@@ -1,10 +1,6 @@
 import { Session } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 
-// Ensure required environment variables
-if (!process.env.NEXTAUTH_SECRET) {
-  throw new Error('NEXTAUTH_SECRET is required');
-}
 
 export const authOptions = {
   providers: [
