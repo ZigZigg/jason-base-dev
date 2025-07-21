@@ -1,13 +1,10 @@
 import { Session } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 
-// Ensure required environment variables
-if (!process.env.NEXTAUTH_SECRET) {
-  throw new Error('NEXTAUTH_SECRET is required');
-}
+
 
 export const authOptions = {
-  url: process.env.NEXTAUTH_URL || process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000',
+  url: 'https://main.d39yo7dsx74pmj.amplifyapp.com',
   providers: [
     Credentials({
       id: "login", // Unique ID for login provider
@@ -113,5 +110,5 @@ export const authOptions = {
     signIn: "/login", // Custom login page
     newUser: "/signup", // Custom signup page
   },
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: "aSZnWWSW3S0oggDx82SaQ+ZCSfAD2lggD8skxMnHkF8=",
 };
