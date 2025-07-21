@@ -7,7 +7,6 @@ if (!process.env.NEXTAUTH_SECRET) {
 }
 
 export const authOptions = {
-  url: process.env.NEXTAUTH_URL || process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000',
   providers: [
     Credentials({
       id: "login", // Unique ID for login provider
