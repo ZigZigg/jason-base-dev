@@ -4,7 +4,6 @@ import Credentials from "next-auth/providers/credentials";
 
 
 export const authOptions = {
-  url: 'https://main.d39yo7dsx74pmj.amplifyapp.com',
   providers: [
     Credentials({
       id: "login", // Unique ID for login provider
@@ -110,5 +109,5 @@ export const authOptions = {
     signIn: "/login", // Custom login page
     newUser: "/signup", // Custom signup page
   },
-  secret: "aSZnWWSW3S0oggDx82SaQ+ZCSfAD2lggD8skxMnHkF8=",
+  secret: process.env.NEXTAUTH_SECRET,
 };
